@@ -3,7 +3,7 @@
 namespace Zone.Campaign.WebServices.Model
 {
     [Schema(Schema)]
-    public class SrcSchema : XmlData
+    public class SrcSchema : Entity
     {
         #region Fields
 

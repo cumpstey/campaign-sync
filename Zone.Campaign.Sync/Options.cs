@@ -9,24 +9,11 @@ namespace Zone.Campaign.Sync
         [ParserState]
         public IParserState LastParserState { get; set; }
 
-        [Option('d', "dir", MutuallyExclusiveSet = "UploadOrDownload", HelpText = "Download root directory.")]
-        public string OutputDirectory { get; set; }
+        [Option('m', "mode", Required = true,  HelpText ="Mode. [upload, download]")]
+        public string Mode { get; set; }
 
-        [Option("schemadir", DefaultValue = true, HelpText = "Create subdirectory for schema.")]
-        public bool CreateSchemaSubdirectory { get; set; }
+        #region Shared parameters
 
-        [Option("schema", HelpText = "Schema of items to download, eg. xtk:jst.")]
-        public string Schema { get; set; }
-
-        [OptionList("conditions", HelpText = @"Filter conditions to be applied, eg. ""@namespace = 'zne'"".")]
-        public IList<string> Conditions { get; set; }
-
-        [Option('l', "list", MutuallyExclusiveSet = "UploadOrDownload", HelpText = "Path to file containing list of items to upload.")]
-        public string UploadListFilePath { get; set; }
-
-        [Option("uploadtest", HelpText = "Upload test mode: don't upload, but print list of files.")]
-        public bool UploadTestMode { get; set; }
-        
         [Option('s', "server", Required = true, HelpText = "Server root url, eg. https://neolane.com/.")]
         public string Server { get; set; }
 
@@ -38,6 +25,34 @@ namespace Zone.Campaign.Sync
 
         [Option("prompt", HelpText = "Prompt to exit.")]
         public bool PromptToExit { get; set; }
+
+        #endregion
+
+        #region Download parameters
+
+        [Option("dir", HelpText = "Download: Root directory.")]
+        public string OutputDirectory { get; set; }
+
+        [Option("dirmode", DefaultValue = "default", HelpText = "Download: Directory mode - option to split on underscore. [default, underscore]")]
+        public string DirectoryMode { get; set; }
+
+        [Option("schema", HelpText = "Download: Schema of items to download eg. xtk:jst.")]
+        public string Schema { get; set; }
+
+        [OptionList("conditions", HelpText = @"Download: Filter conditions to be applied, eg. ""@namespace = 'zne'"".")]
+        public IList<string> Conditions { get; set; }
+
+        #endregion
+
+        #region Upload parameters
+
+        [OptionList("files", HelpText = "Upload: List of filepaths or patterns of items to upload.")]
+        public IList<string> UploadFilePaths { get; set; }
+
+        [Option("uploadtest", HelpText = "Upload: Test mode - don't upload, but print list of files.")]
+        public bool UploadTestMode { get; set; }
+
+        #endregion
 
         [HelpOption]
         public string GetUsage()

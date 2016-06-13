@@ -3,7 +3,7 @@
 namespace Zone.Campaign.WebServices.Model
 {
     [Schema(Schema)]
-    public class Form : XmlData
+    public class Form : Entity
     {
         #region Fields
 

@@ -10,7 +10,7 @@ namespace Zone.Campaign.Templates.Services
         {
            switch (fileExtension)
            {
-               case ".html":
+               case FileTypes.Html:
                    return new HtmlTemplateTransformer();
                default:
                    return new NullTemplateTransformer();

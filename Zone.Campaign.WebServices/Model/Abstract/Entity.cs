@@ -4,7 +4,7 @@ using Zone.Campaign;
 
 namespace Zone.Campaign.WebServices.Model.Abstract
 {
-    public abstract class XmlData : Persistable, IPersistable
+    public abstract class Entity : Persistable, IPersistable
     {
         #region Properties
 

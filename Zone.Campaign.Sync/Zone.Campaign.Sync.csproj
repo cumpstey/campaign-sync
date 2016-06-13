@@ -50,13 +50,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FileExtensionAttribute.cs" />
-    <Compile Include="EnumExtensions.cs" />
+    <Compile Include="SubdirectoryMode.cs" />
+    <Compile Include="Mode.cs" />
     <Compile Include="Options.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="FileType.cs" />
-    <Compile Include="SchemaInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
