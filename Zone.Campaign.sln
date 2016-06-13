@@ -1,0 +1,51 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25123.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zone.Campaign.Sync", "Zone.Campaign.Sync\Zone.Campaign.Sync.csproj", "{C068A4AC-93B0-4323-A80F-B473418EC1B6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zone.Campaign.Common", "Zone.Campaign.Common\Zone.Campaign.Common.csproj", "{17C71387-CE81-449D-B30B-5D6A00EA3DC2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zone.Campaign.Common.Tests", "Zone.Campaign.Common.Tests\Zone.Campaign.Common.Tests.csproj", "{76B06509-D403-47E6-A380-C3B15211189E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{C01B2E53-F2FA-482B-9A3A-4CCE6A4CF965}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zone.Campaign.Templates.Common", "Zone.Campaign.Templates.Common\Zone.Campaign.Templates.Common.csproj", "{9A86F4F9-AF68-40B0-BBD3-3315851FB35D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zone.Campaign.WebServices", "Zone.Campaign.WebServices\Zone.Campaign.WebServices.csproj", "{DD56EB62-B74E-4D2B-A7F6-6821D3938779}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C068A4AC-93B0-4323-A80F-B473418EC1B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C068A4AC-93B0-4323-A80F-B473418EC1B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C068A4AC-93B0-4323-A80F-B473418EC1B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C068A4AC-93B0-4323-A80F-B473418EC1B6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{17C71387-CE81-449D-B30B-5D6A00EA3DC2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{17C71387-CE81-449D-B30B-5D6A00EA3DC2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{17C71387-CE81-449D-B30B-5D6A00EA3DC2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{17C71387-CE81-449D-B30B-5D6A00EA3DC2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{76B06509-D403-47E6-A380-C3B15211189E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{76B06509-D403-47E6-A380-C3B15211189E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{76B06509-D403-47E6-A380-C3B15211189E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{76B06509-D403-47E6-A380-C3B15211189E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9A86F4F9-AF68-40B0-BBD3-3315851FB35D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9A86F4F9-AF68-40B0-BBD3-3315851FB35D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9A86F4F9-AF68-40B0-BBD3-3315851FB35D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9A86F4F9-AF68-40B0-BBD3-3315851FB35D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DD56EB62-B74E-4D2B-A7F6-6821D3938779}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DD56EB62-B74E-4D2B-A7F6-6821D3938779}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DD56EB62-B74E-4D2B-A7F6-6821D3938779}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DD56EB62-B74E-4D2B-A7F6-6821D3938779}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{76B06509-D403-47E6-A380-C3B15211189E} = {C01B2E53-F2FA-482B-9A3A-4CCE6A4CF965}
+	EndGlobalSection
+EndGlobal
