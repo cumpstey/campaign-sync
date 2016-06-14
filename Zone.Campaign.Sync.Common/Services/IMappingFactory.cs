@@ -1,6 +1,6 @@
-﻿using Zone.Campaign.Templates.Common.Mappings;
+﻿using Zone.Campaign.Sync.Mappings.Abstract;
 
-namespace Zone.Campaign.Templates.Services
+namespace Zone.Campaign.Sync.Services
 {
     public interface IMappingFactory
     {

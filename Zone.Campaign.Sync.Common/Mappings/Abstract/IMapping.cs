@@ -7,13 +7,13 @@ using Zone.Campaign.Templates.Model;
 using Zone.Campaign.WebServices.Model;
 using Zone.Campaign.WebServices.Model.Abstract;
 
-namespace Zone.Campaign.Templates.Common.Mappings
+namespace Zone.Campaign.Sync.Mappings.Abstract
 {
     public interface IMapping
     {
         #region Properties
 
-        Type MappingFor { get; }
+        //Type MappingFor { get; }
 
         IEnumerable<string> QueryFields { get; }
         

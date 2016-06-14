@@ -6,7 +6,7 @@
 
         public const string JavaScript = ".js";
 
-        public const string Text = ".txt";
+        public const string Jssp = ".jssp";
 
         public const string Xml = ".xml";
     }

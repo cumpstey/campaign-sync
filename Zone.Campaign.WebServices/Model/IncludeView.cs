@@ -19,7 +19,7 @@ namespace Zone.Campaign.WebServices.Model
 
         public string Label { get; set; }
 
-        public string Code { get; set; }
+        public string TextCode { get; set; }
 
         #endregion
 
@@ -27,19 +27,21 @@ namespace Zone.Campaign.WebServices.Model
 
         public virtual XmlElement GetXmlForPersist(XmlDocument ownerDocument)
         {
-            var element = GetBaseXmlForPersist(ownerDocument, "@namespace, @name");
-            element.AppendAttribute("namespace", Name.Namespace);
+            var element = GetBaseXmlForPersist(ownerDocument, "@name");
             element.AppendAttribute("name", Name.Name);
 
-            if (!string.IsNullOrEmpty(Label))
+            if (Label != null)
             {
                 element.AppendAttribute("label", Label);
             }
 
-            var sourceElement = element.AppendChild("source");
-            var textElement = element.AppendChild("text");
-            var textCData = ownerDocument.CreateCDataSection(Code);
-            textElement.AppendChild(textCData);
+            if (TextCode != null)
+            {
+                var sourceElement = element.AppendChild("source");
+                var textElement = element.AppendChild("text");
+                var textCData = ownerDocument.CreateCDataSection(TextCode);
+                textElement.AppendChild(textCData);
+            }
 
             return element;
         }

@@ -31,16 +31,16 @@ namespace Zone.Campaign.Sync
         #region Download parameters
 
         [Option("dir", HelpText = "Download: Root directory.")]
-        public string OutputDirectory { get; set; }
+        public string DownloadOutputDirectory { get; set; }
 
         [Option("dirmode", DefaultValue = "default", HelpText = "Download: Directory mode - option to split on underscore. [default, underscore]")]
-        public string DirectoryMode { get; set; }
+        public string DownloadDirectoryMode { get; set; }
 
         [Option("schema", HelpText = "Download: Schema of items to download eg. xtk:jst.")]
-        public string Schema { get; set; }
+        public string DownloadSchema { get; set; }
 
         [OptionList("conditions", HelpText = @"Download: Filter conditions to be applied, eg. ""@namespace = 'zne'"".")]
-        public IList<string> Conditions { get; set; }
+        public IList<string> DownloadConditions { get; set; }
 
         #endregion
 

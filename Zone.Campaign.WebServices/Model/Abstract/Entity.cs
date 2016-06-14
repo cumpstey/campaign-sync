@@ -24,7 +24,7 @@ namespace Zone.Campaign.WebServices.Model.Abstract
             element.AppendAttribute("namespace", Name.Namespace);
             element.AppendAttribute("name", Name.Name);
 
-            if (!string.IsNullOrEmpty(Label))
+            if (Label != null)
             {
                 element.AppendAttribute("label", Label);
             }

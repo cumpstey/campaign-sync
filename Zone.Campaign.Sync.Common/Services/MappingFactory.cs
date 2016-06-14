@@ -1,8 +1,9 @@
 ﻿using System;
-using Zone.Campaign.Templates.Common.Mappings;
+using Zone.Campaign.Sync.Mappings;
+using Zone.Campaign.Sync.Mappings.Abstract;
 using Zone.Campaign.WebServices.Model;
 
-namespace Zone.Campaign.Templates.Services
+namespace Zone.Campaign.Sync.Services
 {
     public class MappingFactory : IMappingFactory
     {
@@ -21,6 +22,8 @@ namespace Zone.Campaign.Templates.Services
                     return new JavaScriptCodeMapping();
                 case JavaScriptTemplate.Schema:
                     return new JavaScriptTemplateMapping();
+                case Publishing.Schema:
+                    return new PublishingMapping();
                 case SrcSchema.Schema:
                     return new SrcSchemaMapping();
                 default:

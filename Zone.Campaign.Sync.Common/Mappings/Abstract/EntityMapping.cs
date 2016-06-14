@@ -1,33 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Xml;
+using Zone.Campaign.Templates;
 using Zone.Campaign.Templates.Model;
 using Zone.Campaign.WebServices.Model;
 using Zone.Campaign.WebServices.Model.Abstract;
 
-namespace Zone.Campaign.Templates.Common.Mappings
+namespace Zone.Campaign.Sync.Mappings.Abstract
 {
-    public abstract class EntityMapping : IMapping
+    public abstract class EntityMapping<T> : Mapping<T>
     {
         #region Fields
 
-        private readonly string[] _queryFields = { "@xtkschema" };
+        private readonly string[] _queryFields = { "data" };
 
         #endregion
 
         #region Properties
 
-        protected abstract string Schema { get; }
-
-        public abstract Type MappingFor { get; }
-
-        public virtual IEnumerable<string> QueryFields { get { return _queryFields; } }
+        public override IEnumerable<string> QueryFields { get { return _queryFields; } }
 
         #endregion
 
         #region Methods
 
-        public virtual IPersistable GetPersistableItem(Template template)
+        public override IPersistable GetPersistableItem(Template template)
         {
             return new Form
             {
@@ -37,14 +34,14 @@ namespace Zone.Campaign.Templates.Common.Mappings
             };
         }
 
-        public virtual Template ParseQueryResponse(string rawQueryResponse)
+        public override Template ParseQueryResponse(string rawQueryResponse)
         {
             var doc = new XmlDocument();
             doc.LoadXml(rawQueryResponse);
 
             var metadata = new TemplateMetadata
             {
-                Schema = InternalName.Parse(JavaScriptCode.Schema),
+                Schema = InternalName.Parse(Schema),
                 Name = new InternalName(doc.DocumentElement.Attributes["namespace"].InnerText, doc.DocumentElement.Attributes["name"].InnerText),
                 Label = doc.DocumentElement.Attributes["label"].InnerText,
             };

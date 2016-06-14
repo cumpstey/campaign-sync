@@ -10,19 +10,19 @@ using log4net;
 
 namespace Zone.Campaign.WebServices.Services
 {
-    public class Persist : Service
+    public class PersistService : Service, IWriteService
     {
         #region Fields
 
         public const string ServiceNamespace = "xtk:persist";
 
-        private static readonly ILog Log = LogManager.GetLogger(typeof(Persist));
+        private static readonly ILog Log = LogManager.GetLogger(typeof(PersistService));
 
         #endregion
 
         #region Constructor
 
-        public Persist(Uri rootUri)
+        public PersistService(Uri rootUri)
             : base(rootUri)
         {
         }

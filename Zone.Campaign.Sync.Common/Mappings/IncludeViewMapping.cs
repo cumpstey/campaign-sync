@@ -1,43 +1,40 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Xml;
+using Zone.Campaign.Templates;
 using Zone.Campaign.Templates.Model;
 using Zone.Campaign.WebServices.Model;
 using Zone.Campaign.WebServices.Model.Abstract;
 
-namespace Zone.Campaign.Templates.Common.Mappings
+namespace Zone.Campaign.Sync.Mappings
 {
-    public class JavaScriptTemplateMapping : IMapping
+    public class IncludeViewMapping : Mapping<IncludeView>
     {
         #region Fields
 
-        private readonly string[] _queryFields = { "@entitySchema", "code" };
+        private readonly string[] _queryFields = { "source/text", "source/html" };
 
         #endregion
 
         #region Properties
 
-        protected string Schema { get { return JavaScriptTemplate.Schema; } }
-
-        public Type MappingFor { get { return typeof(JavaScriptTemplate); } }
-
-        public IEnumerable<string> QueryFields { get { return _queryFields; } }
+        public override IEnumerable<string> QueryFields { get { return _queryFields; } }
 
         #endregion
 
         #region Methods
 
-        public IPersistable GetPersistableItem(Template template)
+        public override IPersistable GetPersistableItem(Template template)
         {
-            return new JavaScriptTemplate
+            return new IncludeView
             {
                 Name = template.Metadata.Name,
                 Label = template.Metadata.Label,
-                Code = template.Code,
+                TextCode = template.Code,
             };
         }
 
-        public Template ParseQueryResponse(string rawQueryResponse)
+        public override Template ParseQueryResponse(string rawQueryResponse)
         {
             var doc = new XmlDocument();
             doc.LoadXml(rawQueryResponse);
@@ -45,21 +42,20 @@ namespace Zone.Campaign.Templates.Common.Mappings
             var metadata = new TemplateMetadata
             {
                 Schema = InternalName.Parse(JavaScriptTemplate.Schema),
-                Name = new InternalName(doc.DocumentElement.Attributes["namespace"].InnerText, doc.DocumentElement.Attributes["name"].InnerText),
+                Name = new InternalName(null, doc.DocumentElement.Attributes["name"].InnerText),
                 Label = doc.DocumentElement.Attributes["label"].InnerText,
             };
 
-            var codeNode = doc.DocumentElement.SelectSingleNode("code");
+            var codeNode = doc.DocumentElement.SelectSingleNode("source/text");
             var rawCode = codeNode == null
                           ? string.Empty
                           : codeNode.InnerText;
 
-            // TODO somehow deal with text versions of these templates.
             return new Template
             {
                 Code = rawCode,
                 Metadata = metadata,
-                FileExtension = FileTypes.Html,
+                FileExtension = FileTypes.Jssp,
             };
         }
 

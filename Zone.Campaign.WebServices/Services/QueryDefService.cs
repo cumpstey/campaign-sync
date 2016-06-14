@@ -9,19 +9,19 @@ using log4net;
 
 namespace Zone.Campaign.WebServices.Services
 {
-    public class QueryDef : Service
+    public class QueryDefService : Service, IQueryService
     {
         #region Fields
 
         public const string ServiceNamespace = "xtk:queryDef";
 
-        private static readonly ILog Log = LogManager.GetLogger(typeof(QueryDef));
+        private static readonly ILog Log = LogManager.GetLogger(typeof(QueryDefService));
 
         #endregion
 
         #region Constructor
 
-        public QueryDef(Uri rootUri)
+        public QueryDefService(Uri rootUri)
             : base(rootUri)
         {
         }

@@ -19,7 +19,7 @@ namespace Zone.Campaign.WebServices.Model
 
         public string Label { get; set; }
 
-        public string Data { get; set; }
+        public string Code { get; set; }
 
         #endregion
 
@@ -31,14 +31,17 @@ namespace Zone.Campaign.WebServices.Model
             element.AppendAttribute("namespace", Name.Namespace);
             element.AppendAttribute("name", Name.Name);
 
-            if (!string.IsNullOrEmpty(Label))
+            if (Label != null)
             {
                 element.AppendAttribute("label", Label);
             }
 
-            var codeElement = element.AppendChild("data");
-            var codeCData = ownerDocument.CreateCDataSection(Data);
-            codeElement.AppendChild(codeCData);
+            if (Code != null)
+            {
+                var codeElement = element.AppendChild("data");
+                var codeCData = ownerDocument.CreateCDataSection(Code);
+                codeElement.AppendChild(codeCData);
+            }
 
             return element;
         }

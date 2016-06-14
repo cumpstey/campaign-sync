@@ -14,6 +14,8 @@ namespace Zone.Campaign.Templates.Services
                     return new HtmlMetadataProcessor();
                 case FileTypes.JavaScript:
                     return new JavaScriptMetadataProcessor();
+                case FileTypes.Jssp:
+                    return new JsspMetadataProcessor();
                 case FileTypes.Xml:
                     return new XmlMetadataProcessor();
                 default:
@@ -29,6 +31,8 @@ namespace Zone.Campaign.Templates.Services
                     return new HtmlMetadataProcessor();
                 case FileTypes.JavaScript:
                     return new JavaScriptMetadataProcessor();
+                case FileTypes.Jssp:
+                    return new JsspMetadataProcessor();
                 case FileTypes.Xml:
                     return new XmlMetadataProcessor();
                 default:

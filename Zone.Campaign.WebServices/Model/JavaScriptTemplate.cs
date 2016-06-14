@@ -31,14 +31,17 @@ namespace Zone.Campaign.WebServices.Model
             element.AppendAttribute("namespace", Name.Namespace);
             element.AppendAttribute("name", Name.Name);
 
-            if (!string.IsNullOrEmpty(Label))
+            if (Label != null)
             {
                 element.AppendAttribute("label", Label);
             }
 
-            var codeElement = element.AppendChild("code");
-            var codeCData = ownerDocument.CreateCDataSection(Code);
-            codeElement.AppendChild(codeCData);
+            if (Code != null)
+            {
+                var codeElement = element.AppendChild("code");
+                var codeCData = ownerDocument.CreateCDataSection(Code);
+                codeElement.AppendChild(codeCData);
+            }
 
             return element;
         }

@@ -6,19 +6,19 @@ using log4net;
 
 namespace Zone.Campaign.WebServices.Services
 {
-    public class Session : Service
+    public class SessionService : Service, IAuthenticationService
     {
         #region Fields
 
         public const string ServiceNamespace = "xtk:session";
 
-        private static readonly ILog Log = LogManager.GetLogger(typeof(Session));
+        private static readonly ILog Log = LogManager.GetLogger(typeof(SessionService));
 
         #endregion
 
         #region Constructor
 
-        public Session(Uri rootUri)
+        public SessionService(Uri rootUri)
             : base(rootUri)
         {
         }

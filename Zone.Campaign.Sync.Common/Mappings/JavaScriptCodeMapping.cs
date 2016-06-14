@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Xml;
+using Zone.Campaign.Templates;
 using Zone.Campaign.Templates.Model;
 using Zone.Campaign.WebServices.Model;
 using Zone.Campaign.WebServices.Model.Abstract;
 
-namespace Zone.Campaign.Templates.Common.Mappings
+namespace Zone.Campaign.Sync.Mappings
 {
-    public class JavaScriptCodeMapping : IMapping
+    public class JavaScriptCodeMapping : Mapping<JavaScriptCode>
     {
         #region Fields
 
@@ -17,27 +18,23 @@ namespace Zone.Campaign.Templates.Common.Mappings
 
         #region Properties
 
-        protected string Schema { get { return JavaScriptTemplate.Schema; } }
-
-        public Type MappingFor { get { return typeof(JavaScriptCode); } }
-
-        public IEnumerable<string> QueryFields { get { return _queryFields; } }
+        public override IEnumerable<string> QueryFields { get { return _queryFields; } }
 
         #endregion
 
         #region Methods
 
-        public IPersistable GetPersistableItem(Template template)
+        public override IPersistable GetPersistableItem(Template template)
         {
             return new JavaScriptCode
             {
                 Name = template.Metadata.Name,
                 Label = template.Metadata.Label,
-                Data = template.Code,
+                Code = template.Code,
             };
         }
 
-        public Template ParseQueryResponse(string rawQueryResponse)
+        public override Template ParseQueryResponse(string rawQueryResponse)
         {
             var doc = new XmlDocument();
             doc.LoadXml(rawQueryResponse);
