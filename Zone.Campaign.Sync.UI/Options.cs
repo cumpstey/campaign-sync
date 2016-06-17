@@ -9,8 +9,8 @@ namespace Zone.Campaign.Sync
         [ParserState]
         public IParserState LastParserState { get; set; }
 
-        [Option('m', "mode", Required = true,  HelpText ="Mode. [upload, download]")]
-        public string Mode { get; set; }
+        [Option('m', "mode", Required = true,  HelpText ="Mode. [Upload, Download]")]
+        public SyncMode SyncMode { get; set; }
 
         #region Shared parameters
 
@@ -33,21 +33,21 @@ namespace Zone.Campaign.Sync
         [Option("dir", HelpText = "Download: Root directory.")]
         public string DownloadOutputDirectory { get; set; }
 
-        [Option("dirmode", DefaultValue = "default", HelpText = "Download: Directory mode - option to split on underscore. [default, underscore]")]
-        public string DownloadDirectoryMode { get; set; }
+        [Option("dirmode", DefaultValue = SubdirectoryMode.Default, HelpText = "Download: Directory mode - option to split on underscore. [Default, UnderscoreDelimited]")]
+        public SubdirectoryMode DownloadSubdirectoryMode { get; set; }
 
         [Option("schema", HelpText = "Download: Schema of items to download eg. xtk:jst.")]
         public string DownloadSchema { get; set; }
 
-        [OptionList("conditions", HelpText = @"Download: Filter conditions to be applied, eg. ""@namespace = 'zne'"".")]
-        public IList<string> DownloadConditions { get; set; }
+        [OptionArray("conditions", HelpText = @"Download: Filter conditions to be applied, eg. ""@namespace = 'zne'"".")]
+        public string[] DownloadConditions { get; set; }
 
         #endregion
 
         #region Upload parameters
 
-        [OptionList("files", HelpText = "Upload: List of filepaths or patterns of items to upload.")]
-        public IList<string> UploadFilePaths { get; set; }
+        [OptionArray("files", HelpText = "Upload: List of filepaths or patterns of items to upload.")]
+        public string[] UploadFilePaths { get; set; }
 
         [Option("uploadtest", HelpText = "Upload: Test mode - don't upload, but print list of files.")]
         public bool UploadTestMode { get; set; }

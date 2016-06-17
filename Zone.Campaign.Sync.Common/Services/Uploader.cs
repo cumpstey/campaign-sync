@@ -8,7 +8,7 @@ using Zone.Campaign.WebServices.Services;
 
 namespace Zone.Campaign.Sync.Services
 {
-    public class Uploader
+    public class Uploader : IUploader
     {
         #region Fields
 
@@ -20,15 +20,21 @@ namespace Zone.Campaign.Sync.Services
 
         private readonly ITemplateTransformerFactory _templateTransformerFactory;
 
+        private readonly IWriteService _writeService;
+
         #endregion
 
         #region Constructor
 
-        public Uploader(IMappingFactory mappingFactory, IMetadataExtractorFactory metadataExtractorFactory, ITemplateTransformerFactory templateTransformerFactory)
+        public Uploader(IMappingFactory mappingFactory,
+                        IMetadataExtractorFactory metadataExtractorFactory,
+                        ITemplateTransformerFactory templateTransformerFactory,
+                        IWriteService writeService)
         {
             _mappingFactory = mappingFactory;
             _metadataExtractorFactory = metadataExtractorFactory;
             _templateTransformerFactory = templateTransformerFactory;
+            _writeService = writeService;
         }
 
         #endregion
@@ -37,8 +43,6 @@ namespace Zone.Campaign.Sync.Services
 
         public void DoUpload(Uri rootUri, Tokens tokens, UploadSettings settings)
         {
-            var persistService = new PersistService(rootUri);
-
             var pathList = settings.FilePaths.SelectMany(i =>
             {
                 if (File.Exists(i))
@@ -59,31 +63,34 @@ namespace Zone.Campaign.Sync.Services
 
                 Log.WarnFormat("{0} specified for upload but no matching files found.", i);
                 return new string[0];
-            });
+            }).ToArray();
 
             var templateList = pathList.Select(i =>
             {
                 var fileExtension = Path.GetExtension(i);
                 var metadataExtractor = _metadataExtractorFactory.GetExtractor(fileExtension);
 
-                // TODO: I think maybe this should be set by the mapping, not the file extension.
-                var templateTransformer = _templateTransformerFactory.GetTransformer(fileExtension);
-
                 var raw = File.ReadAllText(i);
                 var template = metadataExtractor.ExtractMetadata(raw);
-                var workingDirectory = Path.GetDirectoryName(i);
-                template.Code = templateTransformer.Transform(template.Code, workingDirectory);
+
                 if (template.Metadata == null)
                 {
                     Log.WarnFormat("No metadata found in {0}.", i);
+                    return template;
                 }
                 else if (template.Metadata.Schema == null)
                 {
                     Log.WarnFormat("No schema found in {0}.", i);
+                    return template;
                 }
 
+                // TODO: I think maybe this should be set by the mapping, not the file extension.
+                var templateTransformer = _templateTransformerFactory.GetTransformer(fileExtension);
+                var workingDirectory = Path.GetDirectoryName(i);
+                template.Code = templateTransformer.Transform(template.Code, workingDirectory);
+
                 return template;
-            }).Where(i => i.Metadata != null && i.Metadata.Schema != null);
+            }).Where(i => i.Metadata != null && i.Metadata.Schema != null).ToArray();
 
             if (settings.TestMode)
             {
@@ -98,7 +105,7 @@ namespace Zone.Campaign.Sync.Services
                     var mapping = _mappingFactory.GetMapping(template.Metadata.Schema.ToString());
                     var persistable = mapping.GetPersistableItem(template);
 
-                    var response = persistService.Write(tokens, persistable);
+                    var response = _writeService.Write(rootUri, tokens, persistable);
                     if (!response.Success)
                     {
                         Log.WarnFormat("Upload of {0} failed: {1}", template.Metadata.Name, response.Message);

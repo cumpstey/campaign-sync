@@ -75,8 +75,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Initialization\Registry.cs" />
-    <Compile Include="SubdirectoryMode.cs" />
-    <Compile Include="Mode.cs" />
+    <Compile Include="SyncMode.cs" />
     <Compile Include="Options.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

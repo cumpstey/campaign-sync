@@ -21,7 +21,8 @@ namespace Zone.Campaign.Sync.UI.Initialization
             For<IMetadataInserterFactory>().Use<MetadataProcessorFactory>();
             For<IAuthenticationService>().Use<SessionService>();
             For<IQueryService>().Use<QueryDefService>();
-            For<IWriteService>().Use<PersistService>();
+            //For<IWriteService>().Use<PersistService>();
+            For<IWriteService>().Use<ZippedPersistService>();
         }
     }
 }

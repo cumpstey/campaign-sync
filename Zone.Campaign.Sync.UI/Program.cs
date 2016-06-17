@@ -38,7 +38,7 @@ namespace Zone.Campaign.Sync.UI
             // Logon
             var rootUri = new Uri(options.Server);
             var sessionService = container.With(rootUri).GetInstance<IAuthenticationService>();
-            var logonResponse = sessionService.Logon(options.Username, options.Password);
+            var logonResponse = sessionService.Logon(rootUri, options.Username, options.Password);
             if (logonResponse.Status != ResponseStatus.Success)
             {
                 // Logon failed - take no further action.
@@ -49,27 +49,25 @@ namespace Zone.Campaign.Sync.UI
             var tokens = logonResponse.Data;
 
             // Do download or upload as specified.
-            switch (options.Mode)
+            switch (options.SyncMode)
             {
-                case "download":
+                case SyncMode.Download:
                     var downloader = container.GetInstance<IDownloader>();
                     downloader.DoDownload(rootUri, tokens, new DownloadSettings
                     {
                         Conditions = options.DownloadConditions,
-                        DirectoryMode = options.DownloadDirectoryMode,
+                        SubdirectoryMode = options.DownloadSubdirectoryMode,
                         OutputDirectory = options.DownloadOutputDirectory,
                         Schema = options.DownloadSchema,
                     });
-                    //DoDownload(options, rootUri, tokens);
                     break;
-                case "upload":
+                case SyncMode.Upload:
                     var uploader = container.GetInstance<IUploader>();
                     uploader.DoUpload(rootUri, tokens, new UploadSettings
                     {
                         FilePaths = options.UploadFilePaths,
                         TestMode = options.UploadTestMode,
                     });
-                    //DoUpload(options, rootUri, tokens);
                     break;
             }
 
@@ -92,7 +90,7 @@ namespace Zone.Campaign.Sync.UI
 
             var errors = new List<string>();
 
-            switch (options.Mode)
+            switch (options.SyncMode)
             {
                 case SyncMode.Download:
                     // TODO: we do need something like this.
@@ -101,7 +99,7 @@ namespace Zone.Campaign.Sync.UI
                     //    errors.Add(string.Format("Unrecognised schema: {0}. Known schemas are: {1}", options.Schema, string.Join(", ", KnownSchemas.Keys)));
                     //}
 
-                    if (options.DownloadDirectoryMode != SubdirectoryMode.Default && options.DownloadDirectoryMode != SubdirectoryMode.UnderscoreDelimited)
+                    if (options.DownloadSubdirectoryMode != SubdirectoryMode.Default && options.DownloadSubdirectoryMode != SubdirectoryMode.UnderscoreDelimited)
                     {
                         errors.Add(string.Format("Subdirectory mode must be one of: {0}, {1}.", SubdirectoryMode.Default, SubdirectoryMode.UnderscoreDelimited));
                     }

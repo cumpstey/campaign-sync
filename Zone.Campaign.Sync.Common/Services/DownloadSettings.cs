@@ -6,10 +6,10 @@ namespace Zone.Campaign.Sync.Services
     {
         public string OutputDirectory { get; set; }
 
-        public string DirectoryMode { get; set; }
+        public SubdirectoryMode SubdirectoryMode { get; set; }
 
         public string Schema { get; set; }
 
-        public IList<string> Conditions { get; set; }
+        public string[] Conditions { get; set; }
     }
 }

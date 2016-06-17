@@ -17,21 +17,6 @@ namespace Zone.Campaign.WebServices.Services.Abstract
 
         #endregion
 
-        #region Constructor
-
-        protected Service(Uri rootUri)
-        {
-            RootUri = rootUri;
-        }
-
-        #endregion
-
-        #region Properties
-
-        protected Uri RootUri { get; private set; }
-
-        #endregion
-
         #region Helpers
 
         protected XmlNode CreateServiceRequest(string serviceName, string serviceNs, Tokens tokens)
@@ -55,13 +40,13 @@ namespace Zone.Campaign.WebServices.Services.Abstract
             return serviceElement;
         }
 
-        protected Response<XmlNode> ExecuteRequest(Tokens tokens, string serviceName, string serviceNamespace, XmlDocument requestDoc)
+        protected Response<XmlNode> ExecuteRequest(Uri rootUri, Tokens tokens, string serviceName, string serviceNamespace, XmlDocument requestDoc)
         {
             // Execute request and get response from server.
             string responseFromServer;
             try
             {
-                responseFromServer = ExecuteRequest(tokens, serviceName, serviceNamespace, requestDoc.InnerXml);
+                responseFromServer = ExecuteRequest(rootUri, tokens, serviceName, serviceNamespace, requestDoc.InnerXml);
             }
             catch (WebException ex)
             {
@@ -117,10 +102,10 @@ namespace Zone.Campaign.WebServices.Services.Abstract
             }
         }
 
-        private string ExecuteRequest(Tokens tokens, string serviceName, string serviceNamespace, string requestBody)
+        private string ExecuteRequest(Uri rootUri, Tokens tokens, string serviceName, string serviceNamespace, string requestBody)
         {
             // We have done the login now we can actually do a query on Neolane
-            var reqData = (HttpWebRequest)WebRequest.Create(new Uri(RootUri, "nl/jsp/soaprouter.jsp"));
+            var reqData = (HttpWebRequest)WebRequest.Create(new Uri(rootUri, "nl/jsp/soaprouter.jsp"));
             reqData.Method = "POST";
             reqData.ContentType = "text/xml; charset=utf-8";
 

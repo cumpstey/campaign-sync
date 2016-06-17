@@ -16,15 +16,6 @@ namespace Zone.Campaign.WebServices.Services
 
         #endregion
 
-        #region Constructor
-
-        public SessionService(Uri rootUri)
-            : base(rootUri)
-        {
-        }
-
-        #endregion
-
         #region Methods
 
         /// <summary>
@@ -33,7 +24,7 @@ namespace Zone.Campaign.WebServices.Services
         /// <param name="username">Username</param>
         /// <param name="password">Password</param>
         /// <returns>Security and session tokens</returns>
-        public Response<Tokens> Logon(string username, string password)
+        public Response<Tokens> Logon(Uri rootUri, string username, string password)
         {
             const string serviceName = "Logon";
             var serviceNs = string.Concat("urn:", ServiceNamespace);
@@ -48,7 +39,7 @@ namespace Zone.Campaign.WebServices.Services
             serviceElement.AppendChild("urn:elemParameters", serviceNs);
 
             // Execute request and get response from server.
-            var response = ExecuteRequest(null, serviceName, ServiceNamespace, requestDoc);
+            var response = ExecuteRequest(rootUri, null, serviceName, ServiceNamespace, requestDoc);
 
             Log.DebugFormat("Response to {0} received: {1}", serviceName, response.Status);
 

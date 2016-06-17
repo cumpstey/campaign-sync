@@ -7,14 +7,17 @@ using Zone.Campaign.WebServices.Security;
 using Zone.Campaign.WebServices.Services.Abstract;
 using Zone.Campaign.WebServices.Services.Responses;
 using log4net;
+using System.Text;
+using Ionic.Zip;
+using System.IO;
 
 namespace Zone.Campaign.WebServices.Services
 {
-    public class PersistService : Service, IWriteService
+    public class ZippedPersistService : ZippedService, IWriteService
     {
         #region Fields
 
-        public const string ServiceNamespace = "xtk:persist";
+        public const string ServiceNamespace = "zon:persist";
 
         private static readonly ILog Log = LogManager.GetLogger(typeof(PersistService));
 
@@ -47,10 +50,9 @@ namespace Zone.Campaign.WebServices.Services
             var requestDoc = serviceElement.OwnerDocument;
 
             // Build request for this service.
-            var domElement = serviceElement.AppendChild("urn:domDoc", serviceNs);
-
-            var itemXml = item.GetXmlForPersist(requestDoc);
-            domElement.AppendChild(itemXml);
+            var itemElement = item.GetXmlForPersist(requestDoc);
+            var encodedQuery = ZipAndEncodeQuery(itemElement, serviceName);
+            serviceElement.AppendChildWithValue("urn:input", encodedQuery);
 
             // Execute request and get response from server.
             var response = ExecuteRequest(rootUri, tokens, serviceName, ServiceNamespace, requestDoc);
@@ -80,15 +82,17 @@ namespace Zone.Campaign.WebServices.Services
             var requestDoc = serviceElement.OwnerDocument;
 
             // Build request for this service.
-            var domElement = serviceElement.AppendChild("urn:domDoc", serviceNs);
-            var collectionElement = domElement.AppendChild("collection");
+            var collectionElement = serviceElement.OwnerDocument.CreateElement("collection");
             collectionElement.AppendAttribute("xtkschema", schema);
 
             foreach (var item in items)
             {
-                var itemXml = item.GetXmlForPersist(requestDoc);
-                collectionElement.AppendChild(itemXml);
+                var itemElement = item.GetXmlForPersist(requestDoc);
+                collectionElement.AppendChild(itemElement);
             }
+
+            var encodedQuery = ZipAndEncodeQuery(collectionElement, serviceName);
+            serviceElement.AppendChildWithValue("urn:input", encodedQuery);
 
             // Execute request and get response from server.
             var response = ExecuteRequest(rootUri, tokens, serviceName, ServiceNamespace, requestDoc);

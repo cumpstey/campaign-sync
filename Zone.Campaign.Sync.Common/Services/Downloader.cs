@@ -19,14 +19,19 @@ namespace Zone.Campaign.Sync.Services
 
         private readonly IMetadataInserterFactory _metadataInserterFactory;
 
+        private readonly IQueryService _queryService;
+
         #endregion
 
         #region Constructor
 
-        public Downloader(IMappingFactory mappingFactory, IMetadataInserterFactory metadataInserterFactory)
+        public Downloader(IMappingFactory mappingFactory,
+                          IMetadataInserterFactory metadataInserterFactory,
+                          IQueryService queryService)
         {
             _mappingFactory = mappingFactory;
             _metadataInserterFactory = metadataInserterFactory;
+            _queryService = queryService;
         }
 
         #endregion
@@ -36,9 +41,7 @@ namespace Zone.Campaign.Sync.Services
         public void DoDownload(Uri rootUri, Tokens tokens, DownloadSettings settings)
         {
             // Create output dir
-            var outDir = settings.DirectoryMode == "none"
-                             ? settings.OutputDirectory
-                             : Path.Combine(settings.OutputDirectory, settings.Schema.Replace(":", "_"));
+            var outDir = Path.Combine(settings.OutputDirectory, settings.Schema.Replace(":", "_"));
 
             // Get mapping for defined schema
             var mapping = _mappingFactory.GetMapping(settings.Schema);
@@ -50,8 +53,7 @@ namespace Zone.Campaign.Sync.Services
 
             // Do query
             var queryFields = new[] { "@name", "@label" }.Union(mapping.QueryFields).Distinct();
-            var queryDefService = new QueryDefService(rootUri);
-            var response = queryDefService.ExecuteQuery(tokens, settings.Schema, queryFields, settings.Conditions);
+            var response = _queryService.ExecuteQuery(rootUri, tokens, settings.Schema, queryFields, settings.Conditions);
 
             if (!response.Success)
             {
@@ -79,7 +81,7 @@ namespace Zone.Campaign.Sync.Services
                 var metadataInserter = _metadataInserterFactory.GetInserter(template.FileExtension);
                 var code = metadataInserter.InsertMetadata(template);
 
-                var relativePath = settings.DirectoryMode == "underscore"
+                var relativePath = settings.SubdirectoryMode == SubdirectoryMode.UnderscoreDelimited
                     ? template.Metadata.Name.Name.Replace("_", @"\")
                     : template.Metadata.Name.Name;
                 var filePath = template.Metadata.Name.HasNamespace

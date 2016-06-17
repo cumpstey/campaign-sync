@@ -65,6 +65,7 @@
     <Compile Include="Services\MappingFactory.cs" />
     <Compile Include="Services\DownloadSettings.cs" />
     <Compile Include="Services\Uploader.cs" />
+    <Compile Include="SubdirectoryMode.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

@@ -9,7 +9,7 @@ namespace Zone.Campaign.Templates.Services
     {
         #region Fields
 
-        private static readonly Regex MetadataRegex = new Regex(@"\\<%--!(?<value>.*?)!--%\>\s*", RegexOptions.Compiled | RegexOptions.Singleline);
+        private static readonly Regex MetadataRegex = new Regex(@"\<%--!(?<value>.*?)!--%\>\s*", RegexOptions.Compiled | RegexOptions.Singleline);
 
         private static readonly string MetadataFormat = string.Format("<%--!{0}{{0}}{0}!--%>{0}{{1}}", Environment.NewLine);
 

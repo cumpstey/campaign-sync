@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Zone.Campaign.WebServices.Security;
 using Zone.Campaign.WebServices.Services.Responses;
 
@@ -8,7 +9,7 @@ namespace Zone.Campaign.WebServices.Services
     {
         #region Methods
 
-        Response<IEnumerable<string>> ExecuteQuery(Tokens tokens, string schema, IEnumerable<string> fields, IEnumerable<string> conditions);
+        Response<IEnumerable<string>> ExecuteQuery(Uri rootUri, Tokens tokens, string schema, IEnumerable<string> fields, IEnumerable<string> conditions);
 
         #endregion
     }
