@@ -118,6 +118,12 @@ namespace Zone.Campaign.Templates.Services
             // Pull out all relevant nodes.
             // Should be able to select nodes with particular attributes by xpath, but the xpath implementation doesn't seem to support attributes.
             var allNodes = htmlDocument.DocumentNode.SelectNodes("//*");
+            if (allNodes == null)
+            {
+                // Not properly formatted html document.
+                return input;
+            }
+
             var commentNodes = htmlDocument.DocumentNode.SelectNodes("//comment()");
 
             // Extract encode function

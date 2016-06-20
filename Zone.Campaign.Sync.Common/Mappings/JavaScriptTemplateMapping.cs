@@ -56,7 +56,7 @@ namespace Zone.Campaign.Sync.Mappings
             {
                 Code = rawCode,
                 Metadata = metadata,
-                FileExtension = FileTypes.Html,
+                FileExtension = FileTypes.Jssp,
             };
         }
 

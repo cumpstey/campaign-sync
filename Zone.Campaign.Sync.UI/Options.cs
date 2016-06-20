@@ -46,10 +46,10 @@ namespace Zone.Campaign.Sync
 
         #region Upload parameters
 
-        [OptionArray("files", HelpText = "Upload: List of filepaths or patterns of items to upload.")]
+        [OptionArray("files", HelpText = "Upload: List of paths of files to upload. Can include individual files or directories, or search patters within directories. If a directory is specified, the search is recursive.")]
         public string[] UploadFilePaths { get; set; }
 
-        [Option("uploadtest", HelpText = "Upload: Test mode - don't upload, but print list of files.")]
+        [Option("uploadtest", HelpText = "Upload: Test mode - don't upload, but print list of files which have been found.")]
         public bool UploadTestMode { get; set; }
 
         #endregion

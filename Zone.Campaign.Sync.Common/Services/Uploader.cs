@@ -52,13 +52,13 @@ namespace Zone.Campaign.Sync.Services
 
                 if (Directory.Exists(i))
                 {
-                    return Directory.GetFiles(i);
+                    return Directory.GetFiles(i, "*", SearchOption.AllDirectories);
                 }
 
                 var dir = Path.GetDirectoryName(i);
                 if (Directory.Exists(dir))
                 {
-                    return Directory.GetFiles(dir, Path.GetFileName(i));
+                    return Directory.GetFiles(dir, Path.GetFileName(i), SearchOption.AllDirectories);
                 }
 
                 Log.WarnFormat("{0} specified for upload but no matching files found.", i);
@@ -69,6 +69,11 @@ namespace Zone.Campaign.Sync.Services
             {
                 var fileExtension = Path.GetExtension(i);
                 var metadataExtractor = _metadataExtractorFactory.GetExtractor(fileExtension);
+                if(metadataExtractor == null)
+                {
+                    Log.WarnFormat("Unsupported filetype {0}.", i);
+                    return null;
+                }
 
                 var raw = File.ReadAllText(i);
                 var template = metadataExtractor.ExtractMetadata(raw);
@@ -90,7 +95,8 @@ namespace Zone.Campaign.Sync.Services
                 template.Code = templateTransformer.Transform(template.Code, workingDirectory);
 
                 return template;
-            }).Where(i => i.Metadata != null && i.Metadata.Schema != null).ToArray();
+            }).Where(i => i != null && i.Metadata != null && i.Metadata.Schema != null)
+              .ToArray();
 
             if (settings.TestMode)
             {

@@ -19,7 +19,8 @@ namespace Zone.Campaign.Templates.Services
                 case FileTypes.Xml:
                     return new XmlMetadataProcessor();
                 default:
-                    throw new InvalidOperationException("Unrecognised file extension.");
+                    return null;
+                    //throw new InvalidOperationException("Unrecognised file extension.");
             }
         }
 
@@ -36,7 +37,8 @@ namespace Zone.Campaign.Templates.Services
                 case FileTypes.Xml:
                     return new XmlMetadataProcessor();
                 default:
-                    throw new InvalidOperationException("Unrecognised file extension.");
+                    return null;
+                    //throw new InvalidOperationException("Unrecognised file extension.");
             }
         }
 
