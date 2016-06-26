@@ -69,7 +69,7 @@ namespace Zone.Campaign.Sync.Services
             {
                 var fileExtension = Path.GetExtension(i);
                 var metadataExtractor = _metadataExtractorFactory.GetExtractor(fileExtension);
-                if(metadataExtractor == null)
+                if (metadataExtractor == null)
                 {
                     Log.WarnFormat("Unsupported filetype {0}.", i);
                     return null;

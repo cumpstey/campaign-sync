@@ -63,6 +63,7 @@
     <Compile Include="Services\Abstract\ZippedService.cs" />
     <Compile Include="Services\IWriteService.cs" />
     <Compile Include="Services\IQueryService.cs" />
+    <Compile Include="Services\ZippedQueryDefService.cs" />
     <Compile Include="Services\ZippedPersistService.cs" />
     <Compile Include="Services\QueryDefService.cs" />
     <Compile Include="Services\Abstract\Service.cs" />

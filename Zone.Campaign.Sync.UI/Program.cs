@@ -2,6 +2,7 @@
 using log4net;
 using log4net.Config;
 using StructureMap;
+using StructureMap.Pipeline;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,7 +38,7 @@ namespace Zone.Campaign.Sync.UI
 
             // Logon
             var rootUri = new Uri(options.Server);
-            var sessionService = container.With(rootUri).GetInstance<IAuthenticationService>();
+            var sessionService = container.GetInstance<IAuthenticationService>();
             var logonResponse = sessionService.Logon(rootUri, options.Username, options.Password);
             if (logonResponse.Status != ResponseStatus.Success)
             {
@@ -52,7 +53,7 @@ namespace Zone.Campaign.Sync.UI
             switch (options.SyncMode)
             {
                 case SyncMode.Download:
-                    var downloader = container.GetInstance<IDownloader>();
+                    var downloader = container.GetInstance<IDownloader>(new ExplicitArguments(new Dictionary<string, object> { { "queryService", container.GetInstance<IQueryService>(options.RequestMode.ToString()) } }));
                     downloader.DoDownload(rootUri, tokens, new DownloadSettings
                     {
                         Conditions = options.DownloadConditions,
@@ -62,7 +63,7 @@ namespace Zone.Campaign.Sync.UI
                     });
                     break;
                 case SyncMode.Upload:
-                    var uploader = container.GetInstance<IUploader>();
+                    var uploader = container.GetInstance<IUploader>(new ExplicitArguments(new Dictionary<string, object> { { "writeService", container.GetInstance<IWriteService>(options.RequestMode.ToString()) } }));
                     uploader.DoUpload(rootUri, tokens, new UploadSettings
                     {
                         FilePaths = options.UploadFilePaths,
