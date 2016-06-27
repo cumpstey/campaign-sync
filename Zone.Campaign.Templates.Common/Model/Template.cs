@@ -7,7 +7,7 @@
         public string Code { get; set; }
 
         public TemplateMetadata Metadata { get; set; }
-
+        
         public string FileExtension { get; set; }
 
         #endregion

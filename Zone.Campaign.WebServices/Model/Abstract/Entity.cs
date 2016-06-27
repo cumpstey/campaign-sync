@@ -18,7 +18,7 @@ namespace Zone.Campaign.WebServices.Model.Abstract
 
         #region Methods
 
-        public XmlElement GetXmlForPersist(XmlDocument ownerDocument)
+        public virtual XmlElement GetXmlForPersist(XmlDocument ownerDocument)
         {
             var element = GetBaseXmlForPersist(ownerDocument, "@namespace, @name");
             element.AppendAttribute("namespace", Name.Namespace);
@@ -31,10 +31,15 @@ namespace Zone.Campaign.WebServices.Model.Abstract
 
             var contentDoc = new XmlDocument();
             contentDoc.LoadXml(RawXml);
+            foreach(var attribute in contentDoc.DocumentElement.Attributes.Cast<XmlAttribute>().ToArray())
+            {
+                element.AppendAttribute(attribute.Name, attribute.Value);
+            }
+
             foreach (var child in contentDoc.DocumentElement.ChildNodes.Cast<XmlNode>().ToArray())
             {
                 var importedNode = ownerDocument.ImportNode(child, true);
-                element.AppendChild(importedNode);                
+                element.AppendChild(importedNode);
             }
 
             return element;

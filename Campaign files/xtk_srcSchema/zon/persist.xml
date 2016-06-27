@@ -1,0 +1,20 @@
+<!--!
+Adobe Campaign metadata:
+Schema: xtk:srcSchema
+Name: zon:persist
+Label: Persist SOAP services
+!-->
+<srcSchema library="true">
+  <methods>
+    <method library="zon:persist.js" name="Write" static="true">
+      <parameters>
+        <param desc="Input data" inout="in" name="input" type="string" />
+      </parameters>
+    </method>
+    <method library="zon:persist.js" name="WriteCollection" static="true">
+      <parameters>
+        <param desc="Input data" inout="in" name="input" type="string" />
+      </parameters>
+    </method>
+  </methods>
+</srcSchema>

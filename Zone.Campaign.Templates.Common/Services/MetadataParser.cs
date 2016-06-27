@@ -51,13 +51,13 @@ namespace Zone.Campaign.Templates.Services
                 }
 
                 var propertyName = metadatumMatch.Groups["name"].Value;
-
+                var propertyValue = metadatumMatch.Groups["value"].Value;
                 switch (propertyName.ToLower())
                 {
                     case "schema":
                         {
                             InternalName value;
-                            if (InternalName.TryParse(metadatumMatch.Groups["value"].Value, out value))
+                            if (InternalName.TryParse(propertyValue, out value))
                             {
                                 result.Schema = value;
                             }
@@ -67,7 +67,7 @@ namespace Zone.Campaign.Templates.Services
                     case "name":
                         {
                             InternalName value;
-                            if (InternalName.TryParse(metadatumMatch.Groups["value"].Value, out value))
+                            if (InternalName.TryParse(propertyValue, out value))
                             {
                                 result.Name = value;
                             }
@@ -76,10 +76,13 @@ namespace Zone.Campaign.Templates.Services
                         break;
                     case "label":
                         {
-                            result.Label = metadatumMatch.Groups["value"].Value;
+                            result.Label = propertyValue;
                         }
 
                         break;
+                    //default:
+                    //    result.AdditionalProperties.Add(propertyName, propertyValue);
+                    //    break;
                 }
             }
 

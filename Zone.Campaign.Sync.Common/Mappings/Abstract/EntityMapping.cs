@@ -9,6 +9,7 @@ using Zone.Campaign.WebServices.Model.Abstract;
 namespace Zone.Campaign.Sync.Mappings.Abstract
 {
     public abstract class EntityMapping<T> : Mapping<T>
+        where T : Entity, new()
     {
         #region Fields
 
@@ -26,7 +27,7 @@ namespace Zone.Campaign.Sync.Mappings.Abstract
 
         public override IPersistable GetPersistableItem(Template template)
         {
-            return new Form
+            return new T
             {
                 Name = template.Metadata.Name,
                 Label = template.Metadata.Label,

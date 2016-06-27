@@ -23,6 +23,9 @@ namespace Zone.Campaign.Sync
         [Option('p', "password", Required = true, HelpText = "Server password.")]
         public string Password { get; set; }
 
+        [Option("requestmode", DefaultValue = RequestMode.Default, HelpText = "Request mode - whether to use plain xml or zipped requests. [Default, Zip]")]
+        public RequestMode RequestMode { get; set; }
+
         [Option("prompt", HelpText = "Prompt to exit.")]
         public bool PromptToExit { get; set; }
 

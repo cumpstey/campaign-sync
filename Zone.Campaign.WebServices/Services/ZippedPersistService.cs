@@ -7,9 +7,6 @@ using Zone.Campaign.WebServices.Security;
 using Zone.Campaign.WebServices.Services.Abstract;
 using Zone.Campaign.WebServices.Services.Responses;
 using log4net;
-using System.Text;
-using Ionic.Zip;
-using System.IO;
 
 namespace Zone.Campaign.WebServices.Services
 {

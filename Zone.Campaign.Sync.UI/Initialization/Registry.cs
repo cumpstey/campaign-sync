@@ -20,9 +20,10 @@ namespace Zone.Campaign.Sync.UI.Initialization
             For<IMetadataExtractorFactory>().Use<MetadataProcessorFactory>();
             For<IMetadataInserterFactory>().Use<MetadataProcessorFactory>();
             For<IAuthenticationService>().Use<SessionService>();
-            For<IQueryService>().Use<QueryDefService>();
-            //For<IWriteService>().Use<PersistService>();
-            For<IWriteService>().Use<ZippedPersistService>();
+            For<IQueryService>().Add<ZippedQueryDefService>().Named("Zip");
+            For<IQueryService>().Use<QueryDefService>().Named("Default");
+            For<IWriteService>().Add<ZippedPersistService>().Named("Zip");
+            For<IWriteService>().Use<PersistService>().Named("Default");
         }
     }
 }
