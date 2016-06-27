@@ -53,22 +53,39 @@ namespace Zone.Campaign.Sync.UI
             switch (options.SyncMode)
             {
                 case SyncMode.Download:
-                    var downloader = container.GetInstance<IDownloader>(new ExplicitArguments(new Dictionary<string, object> { { "queryService", container.GetInstance<IQueryService>(options.RequestMode.ToString()) } }));
-                    downloader.DoDownload(rootUri, tokens, new DownloadSettings
                     {
-                        Conditions = options.DownloadConditions,
-                        SubdirectoryMode = options.DownloadSubdirectoryMode,
-                        OutputDirectory = options.DownloadOutputDirectory,
-                        Schema = options.DownloadSchema,
-                    });
+                        var downloader = container.GetInstance<IDownloader>(new ExplicitArguments(new Dictionary<string, object> { { "queryService", container.GetInstance<IQueryService>(options.RequestMode.ToString()) } }));
+                        downloader.DoDownload(rootUri, tokens, new DownloadSettings
+                        {
+                            Conditions = options.DownloadConditions,
+                            SubdirectoryMode = options.DownloadSubdirectoryMode,
+                            OutputDirectory = options.DownloadOutputDirectory,
+                            Schema = options.DownloadSchema,
+                        });
+                    }
+
+                    break;
+                case SyncMode.ImageUpload:
+                    {
+                        var uploader = container.GetInstance<IUploader>(new ExplicitArguments(new Dictionary<string, object> { { "writeService", container.GetInstance<IWriteService>(options.RequestMode.ToString()) } }));
+                        uploader.DoImageUpload(rootUri, tokens, new UploadSettings
+                        {
+                            FilePaths = options.UploadFilePaths,
+                            TestMode = options.UploadTestMode,
+                        });
+                    }
+
                     break;
                 case SyncMode.Upload:
-                    var uploader = container.GetInstance<IUploader>(new ExplicitArguments(new Dictionary<string, object> { { "writeService", container.GetInstance<IWriteService>(options.RequestMode.ToString()) } }));
-                    uploader.DoUpload(rootUri, tokens, new UploadSettings
                     {
-                        FilePaths = options.UploadFilePaths,
-                        TestMode = options.UploadTestMode,
-                    });
+                        var uploader = container.GetInstance<IUploader>(new ExplicitArguments(new Dictionary<string, object> { { "writeService", container.GetInstance<IWriteService>(options.RequestMode.ToString()) } }));
+                        uploader.DoUpload(rootUri, tokens, new UploadSettings
+                        {
+                            FilePaths = options.UploadFilePaths,
+                            TestMode = options.UploadTestMode,
+                        });
+                    }
+
                     break;
             }
 
@@ -106,11 +123,11 @@ namespace Zone.Campaign.Sync.UI
                     }
 
                     break;
-                case SyncMode.Upload:
-                    break;
-                default:
-                    errors.Add(string.Format("Mode must be one of: {0}, {1}.", SyncMode.Download, SyncMode.Upload));
-                    break;
+                //case SyncMode.Upload:
+                //    break;
+                //default:
+                //    errors.Add(string.Format("Mode must be one of: {0}, {1}.", SyncMode.Download, SyncMode.Upload));
+                //    break;
             }
 
             // Print out error messages.

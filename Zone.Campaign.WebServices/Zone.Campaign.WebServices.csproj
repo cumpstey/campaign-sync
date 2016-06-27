@@ -52,7 +52,9 @@
     <Compile Include="Model\Abstract\IPersistable.cs" />
     <Compile Include="Model\Attributes\SchemaAttribute.cs" />
     <Compile Include="Model\Abstract\Persistable.cs" />
+    <Compile Include="Model\FileRes.cs" />
     <Compile Include="Model\Form.cs" />
+    <Compile Include="Model\ImageFile.cs" />
     <Compile Include="Model\IncludeView.cs" />
     <Compile Include="Model\Publishing.cs" />
     <Compile Include="Model\SrcSchema.cs" />
@@ -62,9 +64,11 @@
     <Compile Include="Security\Tokens.cs" />
     <Compile Include="Services\Abstract\ZippedService.cs" />
     <Compile Include="Services\IBuilderService.cs" />
+    <Compile Include="Services\IImageWriteService.cs" />
     <Compile Include="Services\IWriteService.cs" />
     <Compile Include="Services\IQueryService.cs" />
     <Compile Include="Services\BuilderService.cs" />
+    <Compile Include="Services\ImagePersistService.cs" />
     <Compile Include="Services\ZippedQueryDefService.cs" />
     <Compile Include="Services\ZippedPersistService.cs" />
     <Compile Include="Services\QueryDefService.cs" />

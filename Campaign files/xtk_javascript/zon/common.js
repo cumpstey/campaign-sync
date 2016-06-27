@@ -13,7 +13,7 @@ function deleteFileIfExists(filePath) {
   if (existingFile.exists) {
     existingFile.remove();
   }
-  
+
   existingFile.dispose();
 }
 
@@ -24,12 +24,12 @@ function deleteFileIfExists(filePath) {
  */
 function unzipAsXml(content, queryName) {
   var uploadDirPath = "C:\\Program Files (x86)\\Adobe\\Adobe Campaign v6\\var\\barrattv6_dev\\upload\\";
-  
+
   var filePath = uploadDirPath + queryName + ".zip";
 
   // Delete existing file if it exists
   deleteFileIfExists(filePath);
-  
+
   // Create file
   var buffer = new MemoryBuffer();
   buffer.appendBase64(content);
@@ -45,6 +45,40 @@ function unzipAsXml(content, queryName) {
 
   // Clean up
   deleteFileIfExists(filePath);
- 
-  return fileContent; 
+
+  return fileContent;
+}
+
+/**
+ * Escapes any relevant characters so a string can be used in a query.
+ */
+function escapeForQuery(value) {
+  return value.replace(/'/g, "\\'")
+              .replace(/%/g, "\\%");
+}
+
+/**
+ * Get the id of an xtk:folder with the specified name.
+ */
+function getFolderIdByName(name) {
+  var query = new XML(
+    <queryDef schema="xtk:folder" operation="getIfExists">
+      <select><node expr="@id"/></select>
+      <where><condition expr={"[@name] = '" + escapeForQuery(name) + "'"}/></where>
+    </queryDef>);
+  var queryResult = xtk.queryDef.create(query).ExecuteQuery();
+  return queryResult.@id;
+}
+
+/**
+ * Get the id of an xtk:fileRes with the specified name.
+ */
+function getFileResIdByName(name) {
+  var query = new XML(
+    <queryDef schema="xtk:fileRes" operation="getIfExists">
+      <select><node expr="@id"/></select>
+      <where><condition expr={"[@internalName] = '" + escapeForQuery(name) + "'"}/></where>
+    </queryDef>);
+  var queryResult = xtk.queryDef.create(query).ExecuteQuery();
+  return queryResult.@id;
 }

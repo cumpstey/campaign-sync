@@ -9,6 +9,8 @@ namespace Zone.Campaign.Sync.Services
 
         void DoUpload(Uri rootUri, Tokens tokens, UploadSettings settings);
 
+        void DoImageUpload(Uri rootUri, Tokens tokens, UploadSettings settings);
+
         #endregion
     }
 }

@@ -9,7 +9,7 @@ namespace Zone.Campaign.Sync
         [ParserState]
         public IParserState LastParserState { get; set; }
 
-        [Option('m', "mode", Required = true,  HelpText ="Mode. [Upload, Download]")]
+        [Option('m', "mode", Required = true,  HelpText = "Mode. [Download, ImageUpload, Upload]")]
         public SyncMode SyncMode { get; set; }
 
         #region Shared parameters

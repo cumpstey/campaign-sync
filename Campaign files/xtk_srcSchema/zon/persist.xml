@@ -16,5 +16,11 @@ Label: Persist SOAP services
         <param desc="Input data" inout="in" name="input" type="string" />
       </parameters>
     </method>
+    <method library="zon:persist.js" name="WriteImage" static="true">
+      <parameters>
+        <param desc="Input" inout="in" name="input" type="DOMDocument"/>
+        <param desc="Output" inout="out" name="output" type="DOMDocument"/>
+      </parameters>
+    </method>
   </methods>
 </srcSchema>

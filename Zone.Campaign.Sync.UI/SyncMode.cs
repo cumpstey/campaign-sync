@@ -2,7 +2,8 @@
 {
     public enum SyncMode
     {
-        Upload,
         Download,
+        ImageUpload,
+        Upload,
     }
 }

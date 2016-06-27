@@ -14,7 +14,7 @@ namespace Zone.Campaign.WebServices.Services
     {
         #region Fields
 
-        public const string ServiceNamespace = "zon:persist";
+        private const string ServiceNamespace = "zon:persist";
 
         private static readonly ILog Log = LogManager.GetLogger(typeof(PersistService));
 

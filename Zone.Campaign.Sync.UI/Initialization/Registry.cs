@@ -22,6 +22,7 @@ namespace Zone.Campaign.Sync.UI.Initialization
 
             For<IAuthenticationService>().Use<SessionService>();
             For<IBuilderService>().Use<BuilderService>();
+            For<IImageWriteService>().Use<ImagePersistService>();
             For<IQueryService>().Add<ZippedQueryDefService>().Named("Zip");
             For<IQueryService>().Use<QueryDefService>().Named("Default");
             For<IWriteService>().Add<ZippedPersistService>().Named("Zip");

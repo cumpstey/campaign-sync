@@ -10,7 +10,7 @@ namespace Zone.Campaign.WebServices.Services
     {
         #region Fields
 
-        public const string ServiceNamespace = "xtk:builder";
+        private const string ServiceNamespace = "xtk:builder";
 
         private static readonly ILog Log = LogManager.GetLogger(typeof(BuilderService));
 

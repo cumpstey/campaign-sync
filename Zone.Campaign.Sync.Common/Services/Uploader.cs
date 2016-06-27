@@ -1,7 +1,12 @@
-﻿using log4net;
+﻿using CsvHelper;
+using log4net;
 using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 using Zone.Campaign.Templates.Services;
 using Zone.Campaign.WebServices.Model;
 using Zone.Campaign.WebServices.Security;
@@ -23,6 +28,8 @@ namespace Zone.Campaign.Sync.Services
 
         private readonly IBuilderService _builderService;
 
+        private readonly IImageWriteService _imageWriteService;
+
         private readonly IWriteService _writeService;
 
         #endregion
@@ -33,12 +40,14 @@ namespace Zone.Campaign.Sync.Services
                         IMetadataExtractorFactory metadataExtractorFactory,
                         ITemplateTransformerFactory templateTransformerFactory,
                         IBuilderService builderService,
+                        IImageWriteService imageWriteService,
                         IWriteService writeService)
         {
             _mappingFactory = mappingFactory;
             _metadataExtractorFactory = metadataExtractorFactory;
             _templateTransformerFactory = templateTransformerFactory;
             _builderService = builderService;
+            _imageWriteService = imageWriteService;
             _writeService = writeService;
         }
 
@@ -151,6 +160,135 @@ namespace Zone.Campaign.Sync.Services
 
                 Log.InfoFormat("{0} schemas built.", schemaCount);
             }
+        }
+
+        public void DoImageUpload(Uri rootUri, Tokens tokens, UploadSettings settings)
+        {
+            var imageData = settings.FilePaths.SelectMany(i => GetImageData(i)).ToArray();
+
+            var imageCount = 0;
+            foreach (var imageItem in imageData)
+            {
+                var fileInfo = new FileInfo(imageItem.FilePath);
+
+                string md5Hash;
+                using (var md5 = MD5.Create())
+                {
+                    using (var stream = File.OpenRead(imageItem.FilePath))
+                    {
+                        md5Hash = BitConverter.ToString(md5.ComputeHash(stream)).Replace("-", "").ToLower();
+                    }
+                }
+
+                int width, height;
+                using (var bitmap = new Bitmap(imageItem.FilePath))
+                {
+                    width = bitmap.Width;
+                    height = bitmap.Height;
+                }
+
+                var fileContent = Convert.ToBase64String(File.ReadAllBytes(imageItem.FilePath));
+
+                var file = new ImageFile
+                {
+                    FolderName = imageItem.FolderName,
+                    FileRes = new FileRes
+                    {
+                        Name = InternalName.Parse(imageItem.InternalName),
+                        Label = imageItem.Label,
+                        Alt = imageItem.Alt,
+                        Width = width,
+                        Height = height,
+                    },
+                    FileName = fileInfo.Name,
+                    MimeType = GetMimeTypeFromExtension(Path.GetExtension(imageItem.FilePath)),
+                    Md5 = md5Hash,
+                    FileContent = fileContent,
+                };
+
+                var response = _imageWriteService.WriteImage(rootUri, tokens, file);
+                if (!response.Success)
+                {
+                    Log.WarnFormat("Upload of {0} failed: {1}", imageItem.InternalName, response.Message);
+                }
+                else
+                {
+                    imageCount++;
+                }
+            }
+
+            Log.InfoFormat("{0} images uploaded.", imageCount);
+        }
+
+        #endregion
+
+        #region Helpers
+
+        private string GetMimeTypeFromExtension (string extension)
+        {
+            switch (extension)
+            {
+                case ".gif":
+                    return "image/gif";
+                case ".jpg":
+                    return "image/jpg";
+                case ".png":
+                    return "image/png";
+                default:
+                    return null;
+            }
+        }
+
+        private IEnumerable<ImageData> GetImageData(string filePath)
+        {
+            if (!File.Exists(filePath))
+            {
+                Log.WarnFormat("File {0} does not exist.", filePath);
+                return Enumerable.Empty<ImageData>();
+            }
+
+            IEnumerable<ImageData> data;
+            using (var textReader = new StreamReader(filePath))
+            using (var csv = new CsvReader(textReader))
+            {
+                try
+                {
+                    data = csv.GetRecords<ImageData>().ToArray();
+                }
+                catch (CsvMissingFieldException ex)
+                {
+                    Log.ErrorFormat("File {0} does not appear to contain the correct data: {1}", filePath, ex.Message);
+                    return Enumerable.Empty<ImageData>();
+                }
+            }
+
+            var root = Path.GetDirectoryName(filePath);
+            foreach (var item in data)
+            {
+                if (!Path.IsPathRooted(item.FilePath))
+                {
+                    item.FilePath = Path.Combine(root, item.FilePath);
+                }
+            }
+
+            return data;
+        }
+
+        #endregion
+
+        #region Classes
+
+        private class ImageData
+        {
+            public string FilePath { get; set; }
+
+            public string FolderName { get; set; }
+
+            public string InternalName { get; set; }
+
+            public string Label { get; set; }
+
+            public string Alt { get; set; }
         }
 
         #endregion

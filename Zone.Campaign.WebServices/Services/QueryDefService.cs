@@ -13,7 +13,7 @@ namespace Zone.Campaign.WebServices.Services
     {
         #region Fields
 
-        public const string ServiceNamespace = "xtk:queryDef";
+        private const string ServiceNamespace = "xtk:queryDef";
 
         private static readonly ILog Log = LogManager.GetLogger(typeof(QueryDefService));
 
