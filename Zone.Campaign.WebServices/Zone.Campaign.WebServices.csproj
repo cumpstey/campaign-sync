@@ -61,8 +61,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Security\Tokens.cs" />
     <Compile Include="Services\Abstract\ZippedService.cs" />
+    <Compile Include="Services\IBuilderService.cs" />
     <Compile Include="Services\IWriteService.cs" />
     <Compile Include="Services\IQueryService.cs" />
+    <Compile Include="Services\BuilderService.cs" />
     <Compile Include="Services\ZippedQueryDefService.cs" />
     <Compile Include="Services\ZippedPersistService.cs" />
     <Compile Include="Services\QueryDefService.cs" />

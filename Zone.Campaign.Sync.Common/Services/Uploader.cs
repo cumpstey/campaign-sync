@@ -3,6 +3,7 @@ using System;
 using System.IO;
 using System.Linq;
 using Zone.Campaign.Templates.Services;
+using Zone.Campaign.WebServices.Model;
 using Zone.Campaign.WebServices.Security;
 using Zone.Campaign.WebServices.Services;
 
@@ -20,6 +21,8 @@ namespace Zone.Campaign.Sync.Services
 
         private readonly ITemplateTransformerFactory _templateTransformerFactory;
 
+        private readonly IBuilderService _builderService;
+
         private readonly IWriteService _writeService;
 
         #endregion
@@ -29,11 +32,13 @@ namespace Zone.Campaign.Sync.Services
         public Uploader(IMappingFactory mappingFactory,
                         IMetadataExtractorFactory metadataExtractorFactory,
                         ITemplateTransformerFactory templateTransformerFactory,
+                        IBuilderService builderService,
                         IWriteService writeService)
         {
             _mappingFactory = mappingFactory;
             _metadataExtractorFactory = metadataExtractorFactory;
             _templateTransformerFactory = templateTransformerFactory;
+            _builderService = builderService;
             _writeService = writeService;
         }
 
@@ -109,7 +114,7 @@ namespace Zone.Campaign.Sync.Services
             }
             else
             {
-                var count = 0;
+                var templateCount = 0;
                 foreach (var template in templateList)
                 {
                     // Get mapping for defined schema, and generate object for write
@@ -123,11 +128,28 @@ namespace Zone.Campaign.Sync.Services
                     }
                     else
                     {
-                        count++;
+                        templateCount++;
                     }
                 }
 
-                Log.InfoFormat("{0} files uploaded.", count);
+                Log.InfoFormat("{0} files uploaded.", templateCount);
+
+                var schemaList = templateList.Where(i => i.Metadata.Schema.ToString() == SrcSchema.Schema).ToArray();
+                var schemaCount = 0;
+                foreach (var schema in schemaList)
+                {
+                    var response = _builderService.BuildSchema(rootUri, tokens, schema.Metadata.Name);
+                    if (!response.Success)
+                    {
+                        Log.WarnFormat("Build of {0} failed: {1}", schema.Metadata.Name, response.Message);
+                    }
+                    else
+                    {
+                        schemaCount++;
+                    }
+                }
+
+                Log.InfoFormat("{0} schemas built.", schemaCount);
             }
         }
 

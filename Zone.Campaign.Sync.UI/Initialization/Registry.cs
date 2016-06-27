@@ -19,7 +19,9 @@ namespace Zone.Campaign.Sync.UI.Initialization
             // Doesn't follow convention, so requires explicit declaration
             For<IMetadataExtractorFactory>().Use<MetadataProcessorFactory>();
             For<IMetadataInserterFactory>().Use<MetadataProcessorFactory>();
+
             For<IAuthenticationService>().Use<SessionService>();
+            For<IBuilderService>().Use<BuilderService>();
             For<IQueryService>().Add<ZippedQueryDefService>().Named("Zip");
             For<IQueryService>().Use<QueryDefService>().Named("Default");
             For<IWriteService>().Add<ZippedPersistService>().Named("Zip");
