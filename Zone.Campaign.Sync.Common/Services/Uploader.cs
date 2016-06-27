@@ -88,6 +88,11 @@ namespace Zone.Campaign.Sync.Services
                     Log.WarnFormat("No schema found in {0}.", i);
                     return template;
                 }
+                else if (template.Metadata.Name == null)
+                {
+                    Log.WarnFormat("No name found in {0}.", i);
+                    return template;
+                }
 
                 // TODO: I think maybe this should be set by the mapping, not the file extension.
                 var templateTransformer = _templateTransformerFactory.GetTransformer(fileExtension);
@@ -95,7 +100,7 @@ namespace Zone.Campaign.Sync.Services
                 template.Code = templateTransformer.Transform(template.Code, workingDirectory);
 
                 return template;
-            }).Where(i => i != null && i.Metadata != null && i.Metadata.Schema != null)
+            }).Where(i => i != null && i.Metadata != null && i.Metadata.Schema != null && i.Metadata.Name != null)
               .ToArray();
 
             if (settings.TestMode)
