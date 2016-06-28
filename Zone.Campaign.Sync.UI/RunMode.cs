@@ -1,8 +1,9 @@
 ﻿namespace Zone.Campaign.Sync
 {
-    public enum SyncMode
+    public enum RunMode
     {
         Download,
+        GenerateImageData,
         ImageUpload,
         Upload,
     }

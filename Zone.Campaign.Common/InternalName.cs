@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 namespace Zone.Campaign
 {
     [Serializable]
-    public class InternalName
+    public sealed class InternalName
     {
         #region Fields
 

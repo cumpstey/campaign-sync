@@ -10,17 +10,17 @@ namespace Zone.Campaign.Sync
         public IParserState LastParserState { get; set; }
 
         [Option('m', "mode", Required = true,  HelpText = "Mode. [Download, ImageUpload, Upload]")]
-        public SyncMode SyncMode { get; set; }
+        public RunMode RunMode { get; set; }
 
         #region Shared parameters
 
-        [Option('s', "server", Required = true, HelpText = "Server root url, eg. https://neolane.com/.")]
+        [Option('s', "server", HelpText = "Server root url, eg. https://neolane.com/.")]
         public string Server { get; set; }
 
-        [Option('u', "username", Required = true, HelpText = "Server username.")]
+        [Option('u', "username", HelpText = "Server username.")]
         public string Username { get; set; }
 
-        [Option('p', "password", Required = true, HelpText = "Server password.")]
+        [Option('p', "password", HelpText = "Server password.")]
         public string Password { get; set; }
 
         [Option("requestmode", DefaultValue = RequestMode.Default, HelpText = "Request mode - whether to use plain xml or zipped requests. [Default, Zip]")]
@@ -54,6 +54,16 @@ namespace Zone.Campaign.Sync
 
         [Option("uploadtest", HelpText = "Upload: Test mode - don't upload, but print list of files which have been found.")]
         public bool UploadTestMode { get; set; }
+
+        #endregion
+
+        #region Generate image data parameters
+
+        [OptionArray("dirs", HelpText = "GenerateImageData: List of paths of directories in which to generate/update data file.")]
+        public string[] GenerateDirectoryPaths { get; set; }
+
+        [Option("recursive", HelpText = "GenerateImageData: Generate/update data file recursively in all subdirectories.")]
+        public bool GenerateRecursive { get; set; }
 
         #endregion
 

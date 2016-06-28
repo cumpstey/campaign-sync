@@ -20,6 +20,8 @@ namespace Zone.Campaign.Sync.UI.Initialization
             For<IMetadataExtractorFactory>().Use<MetadataProcessorFactory>();
             For<IMetadataInserterFactory>().Use<MetadataProcessorFactory>();
 
+            For<IImageDataProvider>().Use<CsvImageDataProvider>();
+
             For<IAuthenticationService>().Use<SessionService>();
             For<IBuilderService>().Use<BuilderService>();
             For<IImageWriteService>().Use<ImagePersistService>();

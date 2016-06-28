@@ -11,14 +11,17 @@ using Zone.Campaign.Templates.Services;
 using Zone.Campaign.WebServices.Model;
 using Zone.Campaign.WebServices.Security;
 using Zone.Campaign.WebServices.Services;
+using Zone.Campaign.Sync.Data;
 
 namespace Zone.Campaign.Sync.Services
 {
     public class Uploader : IUploader
     {
         #region Fields
-
+        
         private static readonly ILog Log = LogManager.GetLogger(typeof(Uploader));
+
+        private readonly IImageDataProvider _imageDataProvider;
 
         private readonly IMappingFactory _mappingFactory;
 
@@ -36,13 +39,15 @@ namespace Zone.Campaign.Sync.Services
 
         #region Constructor
 
-        public Uploader(IMappingFactory mappingFactory,
+        public Uploader(IImageDataProvider imageDataProvider,
+                        IMappingFactory mappingFactory,
                         IMetadataExtractorFactory metadataExtractorFactory,
                         ITemplateTransformerFactory templateTransformerFactory,
                         IBuilderService builderService,
                         IImageWriteService imageWriteService,
                         IWriteService writeService)
         {
+            _imageDataProvider = imageDataProvider;
             _mappingFactory = mappingFactory;
             _metadataExtractorFactory = metadataExtractorFactory;
             _templateTransformerFactory = templateTransformerFactory;
@@ -164,20 +169,37 @@ namespace Zone.Campaign.Sync.Services
 
         public void DoImageUpload(Uri rootUri, Tokens tokens, UploadSettings settings)
         {
-            var imageData = settings.FilePaths.SelectMany(i => GetImageData(i)).ToArray();
+            var imageData = settings.FilePaths.SelectMany(i => _imageDataProvider.GetData(i)).ToArray();
 
             var imageCount = 0;
             foreach (var imageItem in imageData)
             {
+                var mimeType = ImageHelper.GetMimeType(Path.GetExtension(imageItem.FilePath));
+                if (mimeType == null)
+                {
+                    Log.WarnFormat("Unsupported file type: {0}", imageItem.FilePath);
+                    continue;
+                }
+
                 var fileInfo = new FileInfo(imageItem.FilePath);
+                if (!fileInfo.Exists)
+                {
+                    Log.WarnFormat("File does not exist: {0}", imageItem.FilePath);
+                    continue;
+                }
+
+                InternalName internalName;
+                if (!InternalName.TryParse(imageItem.InternalName, out internalName))
+                {
+                    Log.WarnFormat("Failed to parse internal name: {0}", imageItem.InternalName);
+                    continue;
+                }
 
                 string md5Hash;
                 using (var md5 = MD5.Create())
+                using (var stream = File.OpenRead(imageItem.FilePath))
                 {
-                    using (var stream = File.OpenRead(imageItem.FilePath))
-                    {
-                        md5Hash = BitConverter.ToString(md5.ComputeHash(stream)).Replace("-", "").ToLower();
-                    }
+                    md5Hash = BitConverter.ToString(md5.ComputeHash(stream)).Replace("-", "").ToLower();
                 }
 
                 int width, height;
@@ -194,14 +216,14 @@ namespace Zone.Campaign.Sync.Services
                     FolderName = imageItem.FolderName,
                     FileRes = new FileRes
                     {
-                        Name = InternalName.Parse(imageItem.InternalName),
+                        Name = internalName,
                         Label = imageItem.Label,
                         Alt = imageItem.Alt,
                         Width = width,
                         Height = height,
                     },
                     FileName = fileInfo.Name,
-                    MimeType = GetMimeTypeFromExtension(Path.GetExtension(imageItem.FilePath)),
+                    MimeType = mimeType,
                     Md5 = md5Hash,
                     FileContent = fileContent,
                 };
@@ -218,77 +240,6 @@ namespace Zone.Campaign.Sync.Services
             }
 
             Log.InfoFormat("{0} images uploaded.", imageCount);
-        }
-
-        #endregion
-
-        #region Helpers
-
-        private string GetMimeTypeFromExtension (string extension)
-        {
-            switch (extension)
-            {
-                case ".gif":
-                    return "image/gif";
-                case ".jpg":
-                    return "image/jpg";
-                case ".png":
-                    return "image/png";
-                default:
-                    return null;
-            }
-        }
-
-        private IEnumerable<ImageData> GetImageData(string filePath)
-        {
-            if (!File.Exists(filePath))
-            {
-                Log.WarnFormat("File {0} does not exist.", filePath);
-                return Enumerable.Empty<ImageData>();
-            }
-
-            IEnumerable<ImageData> data;
-            using (var textReader = new StreamReader(filePath))
-            using (var csv = new CsvReader(textReader))
-            {
-                try
-                {
-                    data = csv.GetRecords<ImageData>().ToArray();
-                }
-                catch (CsvMissingFieldException ex)
-                {
-                    Log.ErrorFormat("File {0} does not appear to contain the correct data: {1}", filePath, ex.Message);
-                    return Enumerable.Empty<ImageData>();
-                }
-            }
-
-            var root = Path.GetDirectoryName(filePath);
-            foreach (var item in data)
-            {
-                if (!Path.IsPathRooted(item.FilePath))
-                {
-                    item.FilePath = Path.Combine(root, item.FilePath);
-                }
-            }
-
-            return data;
-        }
-
-        #endregion
-
-        #region Classes
-
-        private class ImageData
-        {
-            public string FilePath { get; set; }
-
-            public string FolderName { get; set; }
-
-            public string InternalName { get; set; }
-
-            public string Label { get; set; }
-
-            public string Alt { get; set; }
         }
 
         #endregion

@@ -17,7 +17,7 @@ namespace Zone.Campaign.Sync.UI
         #region Fields
 
         private static readonly ILog Log = LogManager.GetLogger(typeof(Program));
-        
+
         #endregion
 
         private static void Main(string[] args)
@@ -36,57 +36,76 @@ namespace Zone.Campaign.Sync.UI
             // Set up IoC container
             var container = Container.For<Initialization.Registry>();
 
-            // Logon
-            var rootUri = new Uri(options.Server);
-            var sessionService = container.GetInstance<IAuthenticationService>();
-            var logonResponse = sessionService.Logon(rootUri, options.Username, options.Password);
-            if (logonResponse.Status != ResponseStatus.Success)
+            if (RequiresServerAuthentication(options.RunMode))
             {
-                // Logon failed - take no further action.
-                Log.WarnFormat("Logon failed: {0}, {1}", logonResponse.Status, logonResponse.Message);
-                return;
+                // Logon
+                var rootUri = new Uri(options.Server);
+                var sessionService = container.GetInstance<IAuthenticationService>();
+                var logonResponse = sessionService.Logon(rootUri, options.Username, options.Password);
+                if (logonResponse.Status != ResponseStatus.Success)
+                {
+                    // Logon failed - take no further action.
+                    Log.WarnFormat("Logon failed: {0}, {1}", logonResponse.Status, logonResponse.Message);
+                    return;
+                }
+
+                var tokens = logonResponse.Data;
+
+                // Do download or upload as specified.
+                switch (options.RunMode)
+                {
+                    case RunMode.Download:
+                        {
+                            var downloader = container.GetInstance<IDownloader>(new ExplicitArguments(new Dictionary<string, object> { { "queryService", container.GetInstance<IQueryService>(options.RequestMode.ToString()) } }));
+                            downloader.DoDownload(rootUri, tokens, new DownloadSettings
+                            {
+                                Conditions = options.DownloadConditions,
+                                SubdirectoryMode = options.DownloadSubdirectoryMode,
+                                OutputDirectory = options.DownloadOutputDirectory,
+                                Schema = options.DownloadSchema,
+                            });
+                        }
+
+                        break;
+                    case RunMode.ImageUpload:
+                        {
+                            var uploader = container.GetInstance<IUploader>(new ExplicitArguments(new Dictionary<string, object> { { "writeService", container.GetInstance<IWriteService>(options.RequestMode.ToString()) } }));
+                            uploader.DoImageUpload(rootUri, tokens, new UploadSettings
+                            {
+                                FilePaths = options.UploadFilePaths,
+                                TestMode = options.UploadTestMode,
+                            });
+                        }
+
+                        break;
+                    case RunMode.Upload:
+                        {
+                            var uploader = container.GetInstance<IUploader>(new ExplicitArguments(new Dictionary<string, object> { { "writeService", container.GetInstance<IWriteService>(options.RequestMode.ToString()) } }));
+                            uploader.DoUpload(rootUri, tokens, new UploadSettings
+                            {
+                                FilePaths = options.UploadFilePaths,
+                                TestMode = options.UploadTestMode,
+                            });
+                        }
+
+                        break;
+                }
             }
-
-            var tokens = logonResponse.Data;
-
-            // Do download or upload as specified.
-            switch (options.SyncMode)
+            else
             {
-                case SyncMode.Download:
-                    {
-                        var downloader = container.GetInstance<IDownloader>(new ExplicitArguments(new Dictionary<string, object> { { "queryService", container.GetInstance<IQueryService>(options.RequestMode.ToString()) } }));
-                        downloader.DoDownload(rootUri, tokens, new DownloadSettings
+                switch (options.RunMode)
+                {
+                    case RunMode.GenerateImageData:
                         {
-                            Conditions = options.DownloadConditions,
-                            SubdirectoryMode = options.DownloadSubdirectoryMode,
-                            OutputDirectory = options.DownloadOutputDirectory,
-                            Schema = options.DownloadSchema,
-                        });
-                    }
+                            var imageDataProvider = container.GetInstance<IImageDataProvider>();
+                            foreach (var directory in options.GenerateDirectoryPaths)
+                            {
+                                imageDataProvider.GenerateDataFile(directory, options.GenerateRecursive, ImageHelper.PermittedExtensions);
+                            }
+                        }
 
-                    break;
-                case SyncMode.ImageUpload:
-                    {
-                        var uploader = container.GetInstance<IUploader>(new ExplicitArguments(new Dictionary<string, object> { { "writeService", container.GetInstance<IWriteService>(options.RequestMode.ToString()) } }));
-                        uploader.DoImageUpload(rootUri, tokens, new UploadSettings
-                        {
-                            FilePaths = options.UploadFilePaths,
-                            TestMode = options.UploadTestMode,
-                        });
-                    }
-
-                    break;
-                case SyncMode.Upload:
-                    {
-                        var uploader = container.GetInstance<IUploader>(new ExplicitArguments(new Dictionary<string, object> { { "writeService", container.GetInstance<IWriteService>(options.RequestMode.ToString()) } }));
-                        uploader.DoUpload(rootUri, tokens, new UploadSettings
-                        {
-                            FilePaths = options.UploadFilePaths,
-                            TestMode = options.UploadTestMode,
-                        });
-                    }
-
-                    break;
+                        break;
+                }
             }
 
             if (options.PromptToExit)
@@ -98,6 +117,13 @@ namespace Zone.Campaign.Sync.UI
 
         #region Helpers
 
+        private static bool RequiresServerAuthentication(RunMode runMode)
+        {
+            return runMode == RunMode.Download
+                || runMode == RunMode.ImageUpload
+                || runMode == RunMode.Upload;
+        }
+
         private static bool ValidateArguments(string[] args, Options options)
         {
             if (!Parser.Default.ParseArguments(args, options))
@@ -108,9 +134,27 @@ namespace Zone.Campaign.Sync.UI
 
             var errors = new List<string>();
 
-            switch (options.SyncMode)
+            if (RequiresServerAuthentication(options.RunMode))
             {
-                case SyncMode.Download:
+                if (string.IsNullOrEmpty(options.Server))
+                {
+                    errors.Add("Server is required.");
+                }
+
+                if (string.IsNullOrEmpty(options.Username))
+                {
+                    errors.Add("Username is required.");
+                }
+
+                if (string.IsNullOrEmpty(options.Password))
+                {
+                    errors.Add("Password is required.");
+                }
+            }
+
+            switch (options.RunMode)
+            {
+                case RunMode.Download:
                     // TODO: we do need something like this.
                     //if (!KnownSchemas.ContainsKey(options.Schema))
                     //{
@@ -123,11 +167,6 @@ namespace Zone.Campaign.Sync.UI
                     }
 
                     break;
-                //case SyncMode.Upload:
-                //    break;
-                //default:
-                //    errors.Add(string.Format("Mode must be one of: {0}, {1}.", SyncMode.Download, SyncMode.Upload));
-                //    break;
             }
 
             // Print out error messages.
@@ -138,7 +177,7 @@ namespace Zone.Campaign.Sync.UI
 
             return !errors.Any();
         }
-        
+
         #endregion
     }
 }

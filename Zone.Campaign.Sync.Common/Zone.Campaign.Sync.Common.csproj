@@ -52,6 +52,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Data\ImageData.cs" />
+    <Compile Include="ImageHelper.cs" />
     <Compile Include="Mappings\Abstract\EntityMapping.cs" />
     <Compile Include="Mappings\Abstract\IMapping.cs" />
     <Compile Include="Mappings\Abstract\Mapping.cs" />
@@ -64,6 +66,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\IDownloader.cs" />
     <Compile Include="Services\Downloader.cs" />
+    <Compile Include="Services\CsvImageDataProvider.cs" />
+    <Compile Include="Services\IImageDataProvider.cs" />
     <Compile Include="Services\IUploader.cs" />
     <Compile Include="Services\UploadSettings.cs" />
     <Compile Include="Services\IMappingFactory.cs" />
