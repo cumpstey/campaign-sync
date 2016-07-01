@@ -167,6 +167,14 @@ namespace Zone.Campaign.Sync.UI
                     }
 
                     break;
+                case RunMode.ImageUpload:
+                case RunMode.Upload:
+                    if (options.UploadFilePaths == null || !options.UploadFilePaths.Any())
+                    {
+                        errors.Add("Files is required");
+                    }
+
+                    break;
             }
 
             // Print out error messages.

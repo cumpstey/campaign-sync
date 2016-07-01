@@ -13,7 +13,7 @@ namespace Zone.Campaign.WebServices.Services
     {
         #region Fields
 
-        private const string ServiceNamespace = "bar:queryDef";
+        private const string ServiceNamespace = "zon:queryDef";
 
         private static readonly ILog Log = LogManager.GetLogger(typeof(ZippedQueryDefService));
 
@@ -23,7 +23,7 @@ namespace Zone.Campaign.WebServices.Services
 
         public Response<IEnumerable<string>>  ExecuteQuery(Uri rootUri, Tokens tokens, string schema, IEnumerable<string> fields, IEnumerable<string> conditions)
         {
-            const string serviceName = "ExecuteQuery";
+            const string serviceName = "ExecuteQueryZip";
             var serviceNs = string.Concat("urn:", ServiceNamespace);
 
             // Create common elements of SOAP request.
@@ -31,9 +31,10 @@ namespace Zone.Campaign.WebServices.Services
             var requestDoc = serviceElement.OwnerDocument;
 
             // Build request for this service.
-            //var entityElement = serviceElement.AppendChild("urn:entity", serviceNs);
-            var entityElement = requestDoc.CreateElement("urn:entity");
-            var queryDefElement = entityElement.AppendChild("queryDef");
+            ////var entityElement = serviceElement.AppendChild("urn:entity", serviceNs);
+            //var entityElement = requestDoc.CreateElement("urn:entity");
+            //var queryDefElement = entityElement.AppendChild("queryDef");
+            var queryDefElement = requestDoc.CreateElement("queryDef");
             queryDefElement.AppendAttribute("operation", "select");
             queryDefElement.AppendAttribute("schema", schema);
             var selectElement = queryDefElement.AppendChild("select");
@@ -54,7 +55,7 @@ namespace Zone.Campaign.WebServices.Services
                 }
             }
 
-            var encodedQuery = ZipAndEncodeQuery(entityElement, serviceName);
+            var encodedQuery = ZipAndEncodeQuery(queryDefElement, serviceName);
             serviceElement.AppendChildWithValue("urn:input", encodedQuery);
 
             // Execute request and get response from server.

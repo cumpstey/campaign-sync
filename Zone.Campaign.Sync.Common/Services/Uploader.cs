@@ -149,21 +149,24 @@ namespace Zone.Campaign.Sync.Services
                 Log.InfoFormat("{0} files uploaded.", templateCount);
 
                 var schemaList = templateList.Where(i => i.Metadata.Schema.ToString() == SrcSchema.Schema).ToArray();
-                var schemaCount = 0;
-                foreach (var schema in schemaList)
+                if (schemaList.Any())
                 {
-                    var response = _builderService.BuildSchema(rootUri, tokens, schema.Metadata.Name);
-                    if (!response.Success)
+                    var schemaCount = 0;
+                    foreach (var schema in schemaList)
                     {
-                        Log.WarnFormat("Build of {0} failed: {1}", schema.Metadata.Name, response.Message);
+                        var response = _builderService.BuildSchema(rootUri, tokens, schema.Metadata.Name);
+                        if (!response.Success)
+                        {
+                            Log.WarnFormat("Build of {0} failed: {1}", schema.Metadata.Name, response.Message);
+                        }
+                        else
+                        {
+                            schemaCount++;
+                        }
                     }
-                    else
-                    {
-                        schemaCount++;
-                    }
-                }
 
-                Log.InfoFormat("{0} schemas built.", schemaCount);
+                    Log.InfoFormat("{0} schemas built.", schemaCount);
+                }
             }
         }
 

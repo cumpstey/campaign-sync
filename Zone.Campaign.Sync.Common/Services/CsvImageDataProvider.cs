@@ -43,22 +43,26 @@ namespace Zone.Campaign.Sync.Services
         {
             var filePath = Path.Combine(directoryPath, DataFileName);
 
-            if (!File.Exists(filePath))
+            var data = Enumerable.Empty<ImageData>();
+            if (File.Exists(filePath))
             {
-                Log.WarnFormat("File {0} does not exist.", filePath);
-                return Enumerable.Empty<ImageData>();
+                data = ReadDataFromFile(filePath);
+
+                // Change the relative path to absolute path for each file.
+                var root = Path.GetDirectoryName(filePath);
+                foreach (var item in data)
+                {
+                    if (!Path.IsPathRooted(item.FilePath))
+                    {
+                        item.FilePath = Path.Combine(root, item.FilePath);
+                    }
+                }
             }
 
-            var data = ReadDataFromFile(filePath);
-
-            // Change the relative path to absolute path for each file.
-            var root = Path.GetDirectoryName(filePath);
-            foreach (var item in data)
+            var subdirectories = Directory.GetDirectories(directoryPath);
+            foreach (var subdirectory in subdirectories)
             {
-                if (!Path.IsPathRooted(item.FilePath))
-                {
-                    item.FilePath = Path.Combine(root, item.FilePath);
-                }
+                data = data.Union(GetData(subdirectory));
             }
 
             return data;

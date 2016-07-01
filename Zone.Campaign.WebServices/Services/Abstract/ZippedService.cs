@@ -15,7 +15,7 @@ namespace Zone.Campaign.WebServices.Services.Abstract
             using (var stream = new MemoryStream())
             using (var zip = new ZipFile())
             {
-                zip.AddEntry("Write.xml", queryElement.OuterXml);
+                zip.AddEntry(queryName + ".xml", queryElement.OuterXml);
                 zip.Save(stream);
                 zippedQuery = stream.ToArray();
             }
