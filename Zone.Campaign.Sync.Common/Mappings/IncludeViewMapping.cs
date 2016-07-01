@@ -12,7 +12,7 @@ namespace Zone.Campaign.Sync.Mappings
     {
         #region Fields
 
-        private readonly string[] _queryFields = { "source/text", "source/html" };
+        private readonly string[] _queryFields = { "@visible", "source/text", "source/html" };
 
         #endregion
 
@@ -26,12 +26,21 @@ namespace Zone.Campaign.Sync.Mappings
 
         public override IPersistable GetPersistableItem(Template template)
         {
-            return new IncludeView
+            var item = new IncludeView
             {
                 Name = template.Metadata.Name,
                 Label = template.Metadata.Label,
                 TextCode = template.Code,
             };
+
+            bool visible;
+            if (template.Metadata.AdditionalProperties.ContainsKey("Visible")
+                && bool.TryParse(template.Metadata.AdditionalProperties["Visible"], out visible))
+            {
+                item.Visible = visible;
+            }
+
+            return item;
         }
 
         public override Template ParseQueryResponse(string rawQueryResponse)
@@ -41,10 +50,16 @@ namespace Zone.Campaign.Sync.Mappings
 
             var metadata = new TemplateMetadata
             {
-                Schema = InternalName.Parse(JavaScriptTemplate.Schema),
+                Schema = InternalName.Parse(IncludeView.Schema),
                 Name = new InternalName(null, doc.DocumentElement.Attributes["name"].InnerText),
                 Label = doc.DocumentElement.Attributes["label"].InnerText,
             };
+
+            var visibleAttribute = doc.DocumentElement.Attributes["visible"];
+            if (visibleAttribute != null)
+            {
+                metadata.AdditionalProperties.Add("Visible", (visibleAttribute.InnerText == "1").ToString());
+            }
 
             var codeNode = doc.DocumentElement.SelectSingleNode("source/text");
             var rawCode = codeNode == null

@@ -21,6 +21,8 @@ namespace Zone.Campaign.Sync.Mappings.Abstract
 
         public override IEnumerable<string> QueryFields { get { return _queryFields; } }
 
+        public virtual IEnumerable<string> AttributesToKeep { get { return new string[0]; } }
+
         #endregion
 
         #region Methods
@@ -46,6 +48,10 @@ namespace Zone.Campaign.Sync.Mappings.Abstract
                 Name = new InternalName(doc.DocumentElement.Attributes["namespace"].InnerText, doc.DocumentElement.Attributes["name"].InnerText),
                 Label = doc.DocumentElement.Attributes["label"].InnerText,
             };
+
+            doc.DocumentElement.RemoveAllAttributesExcept(AttributesToKeep);
+            doc.DocumentElement.RemoveChild("createdBy");
+            doc.DocumentElement.RemoveChild("modifiedBy");
 
             var rawCode = doc.OuterXml;
             return new Template

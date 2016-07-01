@@ -21,6 +21,8 @@ namespace Zone.Campaign.WebServices.Model
 
         public string TextCode { get; set; }
 
+        public bool? Visible { get; set; }
+
         #endregion
 
         #region Methods
@@ -38,9 +40,14 @@ namespace Zone.Campaign.WebServices.Model
             if (TextCode != null)
             {
                 var sourceElement = element.AppendChild("source");
-                var textElement = element.AppendChild("text");
+                var textElement = sourceElement.AppendChild("text");
                 var textCData = ownerDocument.CreateCDataSection(TextCode);
                 textElement.AppendChild(textCData);
+            }
+
+            if (Visible != null)
+            {
+                element.AppendAttribute("visible", Visible.Value.ToString().ToLower());
             }
 
             return element;

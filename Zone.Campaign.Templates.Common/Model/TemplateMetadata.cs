@@ -8,10 +8,10 @@ namespace Zone.Campaign.Templates.Model
     {
         #region Constructor
 
-        //public TemplateMetadata()
-        //{
-        //    AdditionalProperties = new Dictionary<string, string>();
-        //}
+        public TemplateMetadata()
+        {
+            AdditionalProperties = new Dictionary<string, string>();
+        }
 
         #endregion
 
@@ -23,7 +23,7 @@ namespace Zone.Campaign.Templates.Model
 
         public string Label { get; set; }
 
-        //public IDictionary<string, string> AdditionalProperties { get; private set; }
+        public IDictionary<string, string> AdditionalProperties { get; private set; }
 
         #endregion
     }

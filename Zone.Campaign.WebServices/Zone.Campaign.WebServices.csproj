@@ -79,7 +79,6 @@
     <Compile Include="Services\Responses\Response.cs" />
     <Compile Include="Services\IAuthenticationService.cs" />
     <Compile Include="Services\SessionService.cs" />
-    <Compile Include="XmlNodeExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Zone.Campaign.Common\Zone.Campaign.Common.csproj">
