@@ -6,9 +6,10 @@ Label: Query def SOAP services
 !-->
 <srcSchema library="true">
   <methods>
-    <method library="zon:queryDef.js" name="ExecuteQuery" static="true">
+    <method library="zon:queryDef.js" name="ExecuteQueryZip" static="true">
       <parameters>
         <param desc="Input data" inout="in" name="input" type="string" />
+        <param desc="Output" inout="out" name="pdomOutput" type="DOMDocument"/>
       </parameters>
     </method>
   </methods>

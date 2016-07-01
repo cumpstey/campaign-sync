@@ -30,7 +30,7 @@ namespace Zone.Campaign.WebServices.Services
                 throw new ArgumentNullException("item");
             }
 
-            const string serviceName = "Write";
+            const string serviceName = "WriteZip";
             var serviceNs = string.Concat("urn:", ServiceNamespace);
 
             // Get schema from attribute on the class
@@ -62,7 +62,7 @@ namespace Zone.Campaign.WebServices.Services
         public Response WriteCollection<T>(Uri rootUri, Tokens tokens, IEnumerable<T> items)
             where T : IPersistable
         {
-            const string serviceName = "WriteCollection";
+            const string serviceName = "WriteCollectionZip";
             var serviceNs = string.Concat("urn:", ServiceNamespace);
 
             // Get schema from attribute on the class.

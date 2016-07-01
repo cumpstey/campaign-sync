@@ -10,6 +10,8 @@ loadLibrary('zon:common.js');
  * Wrapper for the xtk:queryDef#ExecuteQuery endpoint, which unencodes submitted data
  */
 function zon_queryDef_ExecuteQueryZip(input) {
-  var queryXml = unzipAsXml(input, "ExecuteQuery");
-  xtk.queryDef.ExecuteQuery(queryXml);
+  var queryXml = unzipAsXml(input, "ExecuteQueryZip");
+  var query = xtk.queryDef.create(queryXml);
+  var result = query.ExecuteQuery();
+  return result;
 }
