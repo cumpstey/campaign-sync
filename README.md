@@ -36,7 +36,7 @@ More will be added as and when we need them.
 
 Example commands for the various usages are below. Descriptions of the available parameters can be found by running:
 
-```
+```dos
 > CampaignSync.exe --help
 ```
 
@@ -44,7 +44,7 @@ Example commands for the various usages are below. Descriptions of the available
 
 To download all JavaScript templates with namespace 'cus' and name starting with 'myTemplate' into the folder 'C:\Campaign files\xtk_jst\cus':
 
-```
+```dos
 > CampaignSync.exe -m Download -s http://neolane.net -u myuser -p mypassword --dir "C:\Campaign files" --schema xtk:jst --conditions "@namespace='cus'" "@name like 'myTemplate%'"
 ```
 
@@ -52,7 +52,7 @@ To download all JavaScript templates with namespace 'cus' and name starting with
 
 To upload all files which have metadata specified in the appropriate syntax from: `C:\Campaign files\xtk_javascript\cus\myscript.js`; any file with the .jssp extension within `C:\Campaign files\xtk_jst` and chid folders; and any file within `C:\Campaign files\xtk_form` or child folders:
 
-```
+```dos
 > CampaignSync.exe -m Dpload -s http://neolane.net -u myuser -p mypassword --files "C:\Campaign files\xtk_javascript\cus\myscript.js" "C:\Campaign files\xtk_jst\*.jssp" "C:\Campaign files\xtk_form"
 ```
 
@@ -60,13 +60,13 @@ To upload all files which have metadata specified in the appropriate syntax from
 
 Images must have an associated `imageData.csv` metadata file, which covers all images in a folder, containing: name of the folder to which the image should be uploaded; internal name; label; alt. These files can be generated, listing all images in each directory, for a directory tree by the following command; you then need to fill in the metadata before uploading.
 
-```
+```dos
 > CampaignSync.exe -m GenerateImageData --dirs "C:\Campaign files\images" --recursive
 ```
 
 The images can then be uploaded by:
 
-```
+```dos
 > CampaignSync.exe -m ImageUpload -s http://neolane.net -u myuser -p mypassword --files "C:\Campaign files\images"
 ```
 
@@ -109,7 +109,7 @@ The Campaign metadata which identifies which entity in Campaign a file correspon
 
 We use the `.jssp` (ie. JavaScript Server Page) file extension for JavaScript templates. No code editor I've found has properly decent support for this. Notepad++ HTML syntax highlighting works fairly well, but misses things; and JSP isn't satisfactory for those cases where JS syntax differs from Java syntax. Atom does well with its JavaServer Pages grammar. Sublime does slightly less well with its Java Server Page (JSP) syntax, and although I've not done it it looks like you can probably set a default for a file extension. There's no built-in language in VS Code which does a good job. To set JavaServer Pages as the default grammer for `.jssp` in Atom, add this to the config:
 
-```coffee
+```coffeescript
 core:
   customFileTypes: {
     "text.html.jsp": ["jssp"]
