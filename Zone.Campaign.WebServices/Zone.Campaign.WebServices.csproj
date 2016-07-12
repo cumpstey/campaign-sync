@@ -57,6 +57,7 @@
     <Compile Include="Model\ImageFile.cs" />
     <Compile Include="Model\IncludeView.cs" />
     <Compile Include="Model\Publishing.cs" />
+    <Compile Include="Model\Option.cs" />
     <Compile Include="Model\SrcSchema.cs" />
     <Compile Include="Model\JavaScriptCode.cs" />
     <Compile Include="Model\JavaScriptTemplate.cs" />

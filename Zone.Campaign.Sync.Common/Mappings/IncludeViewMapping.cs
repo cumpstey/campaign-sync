@@ -12,7 +12,7 @@ namespace Zone.Campaign.Sync.Mappings
     {
         #region Fields
 
-        private readonly string[] _queryFields = { "@visible", "source/text", "source/html" };
+        private readonly string[] _queryFields = { "@name", "@label", "@visible", "source/text", "source/html" };
 
         #endregion
 

@@ -13,7 +13,7 @@ namespace Zone.Campaign.Sync.Mappings.Abstract
     {
         #region Fields
 
-        private readonly string[] _queryFields = { "data" };
+        private readonly string[] _queryFields = { "@name", "@label", "data" };
 
         #endregion
 

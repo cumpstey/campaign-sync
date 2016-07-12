@@ -1,0 +1,7 @@
+<%--!
+Adobe Campaign metadata:
+Schema: xtk:option
+Name: zon_UploadDirectory
+DataType: String
+!--%>
+C:\Program Files (x86)\Adobe\Adobe Campaign v6\var\barrattv6_dev\upload\

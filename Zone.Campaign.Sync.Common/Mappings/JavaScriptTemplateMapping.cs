@@ -12,7 +12,7 @@ namespace Zone.Campaign.Sync.Mappings
     {
         #region Fields
 
-        private readonly string[] _queryFields = { "@entitySchema", "code" };
+        private readonly string[] _queryFields = { "@name", "@label", "@entitySchema", "code" };
 
         #endregion
 
@@ -30,7 +30,7 @@ namespace Zone.Campaign.Sync.Mappings
             {
                 Name = template.Metadata.Name,
                 Label = template.Metadata.Label,
-                Code = template.Code,
+                Code = template.Code.Trim(),
             };
         }
 
@@ -51,7 +51,6 @@ namespace Zone.Campaign.Sync.Mappings
                           ? string.Empty
                           : codeNode.InnerText;
 
-            // TODO somehow deal with text versions of these templates.
             return new Template
             {
                 Code = rawCode,
