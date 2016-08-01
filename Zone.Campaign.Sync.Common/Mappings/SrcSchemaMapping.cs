@@ -9,7 +9,7 @@ namespace Zone.Campaign.Sync.Mappings
     {
         #region Fields
 
-        private readonly IEnumerable<string> _attributesToKeep = new[] { "implements", "library", "mappingType", "view" };
+        private readonly IEnumerable<string> _attributesToKeep = new[] { "extendedSchema", "implements", "library", "mappingType", "view" };
 
         #endregion
 
