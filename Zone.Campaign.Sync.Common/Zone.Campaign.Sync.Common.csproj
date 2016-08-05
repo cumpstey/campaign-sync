@@ -59,6 +59,7 @@
     <Compile Include="Mappings\Abstract\Mapping.cs" />
     <Compile Include="Mappings\FormMapping.cs" />
     <Compile Include="Mappings\IncludeViewMapping.cs" />
+    <Compile Include="Mappings\QueryFilterMapping.cs" />
     <Compile Include="Mappings\OptionMapping.cs" />
     <Compile Include="Mappings\JavaScriptCodeMapping.cs" />
     <Compile Include="Mappings\JavaScriptTemplateMapping.cs" />

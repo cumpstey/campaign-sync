@@ -5,7 +5,7 @@ using Zone.Campaign.WebServices.Model.Abstract;
 namespace Zone.Campaign.WebServices.Model
 {
     [Schema(Schema)]
-    public class Option : Entity
+    public class Option : Persistable, IPersistable
     {
         #region Fields
 
@@ -14,6 +14,10 @@ namespace Zone.Campaign.WebServices.Model
         #endregion
 
         #region Properties
+
+        public InternalName Name { get; set; }
+
+        public string Label { get; set; }
 
         public DataType DataType { get; set; }
 
@@ -74,7 +78,7 @@ namespace Zone.Campaign.WebServices.Model
             }
         }
 
-        public override XmlElement GetXmlForPersist(XmlDocument ownerDocument)
+        public virtual XmlElement GetXmlForPersist(XmlDocument ownerDocument)
         {
             var element = GetBaseXmlForPersist(ownerDocument, "@name");
             element.AppendAttribute("name", Name.Name);
