@@ -56,6 +56,12 @@ To upload all files which have metadata specified in the appropriate syntax from
 > CampaignSync.exe -m Dpload -s http://neolane.net -u myuser -p mypassword --files "C:\Campaign files\xtk_javascript\cus\myscript.js" "C:\Campaign files\xtk_jst\*.jssp" "C:\Campaign files\xtk_form"
 ```
 
+Text in the files can be replaced with alternative text on upload. We use this as we have a secondary database which Campaign connects to, which has a different name on each environment.
+
+```dos
+> CampaignSync.exe -m Dpload -s http://neolane.net -u myuser -p mypassword --files "C:\Campaign files\xtk_srcSchema\cus\*.xml"  --replacements "DevDB=>ProdDB" "DevSetting=>LivSetting"
+```
+
 ### Image upload
 
 Images must have an associated `imageData.csv` metadata file, which covers all images in a folder, containing: name of the folder to which the image should be uploaded; internal name; label; alt. These files can be generated, listing all images in each directory, for a directory tree by the following command; you then need to fill in the metadata before uploading.
