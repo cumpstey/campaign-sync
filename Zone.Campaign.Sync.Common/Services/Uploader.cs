@@ -116,8 +116,17 @@ namespace Zone.Campaign.Sync.Services
                 // TODO: I think maybe this should be set by the mapping, not the file extension.
                 var templateTransformer = _templateTransformerFactory.GetTransformer(fileExtension);
                 var workingDirectory = Path.GetDirectoryName(i);
-                template.Code = templateTransformer.Transform(template.Code, workingDirectory);
+                var code = templateTransformer.Transform(template.Code, workingDirectory);
 
+                if (code != null && settings.Replacements != null)
+                {
+                    foreach (var replacement in settings.Replacements)
+                    {
+                        code = code.Replace(replacement.Item1, replacement.Item2);
+                    }
+                }
+
+                template.Code = code;
                 return template;
             }).Where(i => i != null && i.Metadata != null && i.Metadata.Schema != null && i.Metadata.Name != null)
               .ToArray();

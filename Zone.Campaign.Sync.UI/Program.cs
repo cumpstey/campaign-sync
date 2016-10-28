@@ -84,6 +84,11 @@ namespace Zone.Campaign.Sync.UI
                             uploader.DoUpload(rootUri, tokens, new UploadSettings
                             {
                                 FilePaths = options.UploadFilePaths,
+                                Replacements = options.Replacements.Select(i =>
+                                {
+                                    var parts = i.Split(new[] { "=>" }, 2, StringSplitOptions.None);
+                                    return new Tuple<string, string>(parts[0], parts.Length == 2 ? parts[1] : string.Empty);
+                                }).ToList(),
                                 TestMode = options.UploadTestMode,
                             });
                         }

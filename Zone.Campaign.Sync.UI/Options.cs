@@ -55,6 +55,9 @@ namespace Zone.Campaign.Sync
         [Option("uploadtest", HelpText = "Upload: Test mode - don't upload, but print list of files which have been found.")]
         public bool UploadTestMode { get; set; }
 
+        [OptionArray("replacements", HelpText = @"Upload: String replacements to be applied, eg. ""DEVDB=>LIVDB"".")]
+        public string[] Replacements { get; set; }
+
         #endregion
 
         #region Generate image data parameters
