@@ -1,17 +1,13 @@
-﻿using CsvHelper;
-using log4net;
-using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System;
 using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
+using log4net;
 using Zone.Campaign.Templates.Services;
 using Zone.Campaign.WebServices.Model;
 using Zone.Campaign.WebServices.Security;
 using Zone.Campaign.WebServices.Services;
-using Zone.Campaign.Sync.Data;
 
 namespace Zone.Campaign.Sync.Services
 {
