@@ -59,7 +59,7 @@ To upload all files which have metadata specified in the appropriate syntax from
 Text in the files can be replaced with alternative text on upload. We use this as we have a secondary database which Campaign connects to, which has a different name on each environment.
 
 ```dos
-> CampaignSync.exe -m Dpload -s http://neolane.net -u myuser -p mypassword --files "C:\Campaign files\xtk_srcSchema\cus\*.xml"  --replacements "DevDB=>ProdDB" "DevSetting=>LivSetting"
+> CampaignSync.exe -m Upload -s http://neolane.net -u myuser -p mypassword --files "C:\Campaign files\xtk_srcSchema\cus\*.xml"  --replacements "DevDB=>ProdDB" "DevSetting=>LivSetting"
 ```
 
 ### Image upload
