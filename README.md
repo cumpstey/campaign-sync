@@ -6,7 +6,7 @@
 
 Having worked on our client's web project for a while, we took over their CRM project at a time when they were upgrading from Neolane v5 to Adobe Campaign v6.1.
 
-I'm a web developer, used to decent development tools, and was somewhat depressed at the state of the development tools available in Campaign - no automated backups; no intellisense; even the sytax highlighting doesn't work properly. It was all made worse by the fact that the only way to access it was on a remote desktop only available through the client's vpn, with Notepad as the only text editor, and the only way to transfer files being to email them. The prospect was not good.
+I'm a web developer, used to decent development tools, and was somewhat depressed at the state of the development tools available in Campaign - no automated backups; no intellisense; even the syntax highlighting doesn't work properly. It was all made worse by the fact that the only way to access it was on a remote desktop only available through the client's vpn, with Notepad as the only text editor, and the only way to transfer files being to email them. The prospect was not good.
 
 In addition, it proved to be impossible to transfer images from one instance of Campaign to another - `xtk:fileRes` records yes, in a package, but absolutely not the associated files. This led us to just accepting for a long time that we had no images in the Dev environment, and so couldn't properly test anything. 
 
@@ -22,8 +22,8 @@ This whole project is built entirely on my own ideas as to how Campaign developm
 
 The app allows the download and upload of the following entities:
 
-- `nms:includeView` - Personalisation block (text part only; and tested down only).
-- `nms:publishing` - Publishing model (tested down only).
+- `nms:includeView` - Personalisation block (text part only).
+- `nms:publishing` - Publishing model.
 - `xtk:form` - Input form.
 - `xtk:javascript` - JavaScript code.
 - `xtk:jst` - JavaScript template.
@@ -53,7 +53,7 @@ To download all JavaScript templates with namespace 'cus' and name starting with
 To upload all files which have metadata specified in the appropriate syntax from: `C:\Campaign files\xtk_javascript\cus\myscript.js`; any file with the .jssp extension within `C:\Campaign files\xtk_jst` and chid folders; and any file within `C:\Campaign files\xtk_form` or child folders:
 
 ```dos
-> CampaignSync.exe -m Dpload -s http://neolane.net -u myuser -p mypassword --files "C:\Campaign files\xtk_javascript\cus\myscript.js" "C:\Campaign files\xtk_jst\*.jssp" "C:\Campaign files\xtk_form"
+> CampaignSync.exe -m Upload -s http://neolane.net -u myuser -p mypassword --files "C:\Campaign files\xtk_javascript\cus\myscript.js" "C:\Campaign files\xtk_jst\*.jssp" "C:\Campaign files\xtk_form"
 ```
 
 ### Image upload
