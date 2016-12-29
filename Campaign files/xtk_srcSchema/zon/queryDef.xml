@@ -4,7 +4,7 @@ Schema: xtk:srcSchema
 Name: zon:queryDef
 Label: Query def SOAP services
 !-->
-<srcSchema library="true">
+<srcSchema library="true" implements="xtk:persist">
   <methods>
     <method library="zon:queryDef.js" name="ExecuteQueryZip" static="true">
       <parameters>

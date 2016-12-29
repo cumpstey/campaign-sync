@@ -9,9 +9,10 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Zone.Campaign.WebServices</RootNamespace>
     <AssemblyName>Zone.Campaign.WebServices</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -31,12 +32,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Ionic.Zip, Version=1.10.0.0, Culture=neutral, PublicKeyToken=6583c7c814667745, processorArchitecture=MSIL">
-      <HintPath>..\packages\DotNetZip.1.10.0\lib\net20\Ionic.Zip.dll</HintPath>
+    <Reference Include="DotNetZip, Version=1.10.1.0, Culture=neutral, PublicKeyToken=6583c7c814667745, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetZip.1.10.1\lib\net20\DotNetZip.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="log4net, Version=1.2.15.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
-      <HintPath>..\packages\log4net.2.0.5\lib\net45-full\log4net.dll</HintPath>
+      <HintPath>..\packages\log4net.2.0.5\lib\net40-full\log4net.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -56,7 +57,9 @@
     <Compile Include="Model\Form.cs" />
     <Compile Include="Model\ImageFile.cs" />
     <Compile Include="Model\IncludeView.cs" />
+    <Compile Include="Model\QueryFilter.cs" />
     <Compile Include="Model\Publishing.cs" />
+    <Compile Include="Model\Option.cs" />
     <Compile Include="Model\SrcSchema.cs" />
     <Compile Include="Model\JavaScriptCode.cs" />
     <Compile Include="Model\JavaScriptTemplate.cs" />
@@ -79,7 +82,6 @@
     <Compile Include="Services\Responses\Response.cs" />
     <Compile Include="Services\IAuthenticationService.cs" />
     <Compile Include="Services\SessionService.cs" />
-    <Compile Include="XmlNodeExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Zone.Campaign.Common\Zone.Campaign.Common.csproj">

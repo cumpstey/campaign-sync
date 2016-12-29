@@ -1,8 +1,9 @@
 ﻿using System;
-using System.Diagnostics.CodeAnalysis;
+using System.Collections.Generic;
+using System.Linq;
 using System.Xml;
 
-namespace Zone.Campaign.WebServices
+namespace Zone.Campaign
 {
     public static class XmlNodeExtensions
     {
@@ -36,9 +37,9 @@ namespace Zone.Campaign.WebServices
 
         public static XmlElement AppendChild(this XmlNode node, string qualifiedName, string namespaceUri)
         {
-            return node.AppendChildWithValue(qualifiedName, namespaceUri, null);            
+            return node.AppendChildWithValue(qualifiedName, namespaceUri, null);
         }
-        
+
         public static XmlElement AppendChildWithValue(this XmlNode node, string qualifiedName, string namespaceUri, string value)
         {
             var ownerDocument = node.OwnerDocument;
@@ -55,6 +56,26 @@ namespace Zone.Campaign.WebServices
             }
 
             return child;
+        }
+
+        public static void RemoveChild(this XmlElement element, string name)
+        {
+            var child = element.ChildNodes.Cast<XmlNode>().FirstOrDefault(i => i.LocalName == name);
+            if (child == null)
+            {
+                return;
+            }
+
+            element.RemoveChild(child);
+        }
+
+        public static void RemoveAllAttributesExcept(this XmlElement element, IEnumerable<string> attributesToKeep)
+        {
+            var attributesToDiscard = element.Attributes.Cast<XmlAttribute>().Where(i => !attributesToKeep.Contains(i.LocalName)).Select(i => i.LocalName).ToArray();
+            foreach (var attribute in attributesToDiscard)
+            {
+                element.RemoveAttribute(attribute);
+            }
         }
     }
 }

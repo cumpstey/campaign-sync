@@ -8,11 +8,13 @@ using Zone.Campaign.WebServices.Model.Abstract;
 
 namespace Zone.Campaign.Sync.Mappings
 {
-    public class IncludeViewMapping : Mapping<IncludeView>
+    public class QueryFilterMapping : Mapping<QueryFilter>
     {
         #region Fields
 
-        private readonly string[] _queryFields = { "@name", "@label", "@visible", "source/text", "source/html" };
+        private readonly string[] _queryFields = { "@name", "@label", "@schema", "data" };
+
+        private readonly IEnumerable<string> _attributesToKeep = new[] { "schema" };
 
         #endregion
 
@@ -26,21 +28,12 @@ namespace Zone.Campaign.Sync.Mappings
 
         public override IPersistable GetPersistableItem(Template template)
         {
-            var item = new IncludeView
+            return new QueryFilter
             {
                 Name = template.Metadata.Name,
                 Label = template.Metadata.Label,
-                TextCode = template.Code,
+                Data = template.Code,
             };
-
-            bool visible;
-            if (template.Metadata.AdditionalProperties.ContainsKey("Visible")
-                && bool.TryParse(template.Metadata.AdditionalProperties["Visible"], out visible))
-            {
-                item.Visible = visible;
-            }
-
-            return item;
         }
 
         public override Template ParseQueryResponse(string rawQueryResponse)
@@ -50,27 +43,18 @@ namespace Zone.Campaign.Sync.Mappings
 
             var metadata = new TemplateMetadata
             {
-                Schema = InternalName.Parse(IncludeView.Schema),
+                Schema = InternalName.Parse(Schema),
                 Name = new InternalName(null, doc.DocumentElement.Attributes["name"].InnerText),
                 Label = doc.DocumentElement.Attributes["label"].InnerText,
             };
 
-            var visibleAttribute = doc.DocumentElement.Attributes["visible"];
-            if (visibleAttribute != null)
-            {
-                metadata.AdditionalProperties.Add("Visible", (visibleAttribute.InnerText == "1").ToString());
-            }
-
-            var codeNode = doc.DocumentElement.SelectSingleNode("source/text");
-            var rawCode = codeNode == null
-                          ? string.Empty
-                          : codeNode.InnerText;
+            doc.DocumentElement.RemoveAllAttributesExcept(_attributesToKeep);
 
             return new Template
             {
-                Code = rawCode,
+                Code = doc.DocumentElement.OuterXml,
                 Metadata = metadata,
-                FileExtension = FileTypes.Jssp,
+                FileExtension = FileTypes.Xml,
             };
         }
 

@@ -22,8 +22,12 @@ namespace Zone.Campaign.Sync.Services
                     return new JavaScriptCodeMapping();
                 case JavaScriptTemplate.Schema:
                     return new JavaScriptTemplateMapping();
+                case Option.Schema:
+                    return new OptionMapping();
                 case Publishing.Schema:
                     return new PublishingMapping();
+                case QueryFilter.Schema:
+                    return new QueryFilterMapping();
                 case SrcSchema.Schema:
                     return new SrcSchemaMapping();
                 default:

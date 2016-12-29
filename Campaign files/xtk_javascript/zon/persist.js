@@ -27,14 +27,9 @@ function zon_persist_WriteCollectionZip(input) {
  */
 function zon_persist_WriteImage(input) {
 
-  // TODO: stick these in the options
   // Global parameters
-  // Dev
-  var uploadDirPath = "C:\\Program Files (x86)\\Adobe\\Adobe Campaign v6\\var\\barrattv6_dev\\upload\\";
-  var publishDirPath = "C:\\Program Files (x86)\\Adobe\\Adobe Campaign v6\\bin\\..\\var\\res\\barrattv6_dev\\";
-  // Prod
-  //var uploadDirPath = "C:\\Program Files (x86)\\Adobe\\Adobe Campaign v6\\var\\barrattv611_prod\\upload\\";
-  //var publishDirPath = "C:\\Program Files (x86)\\Adobe\\Adobe Campaign v6\\bin\\..\\var\\res\\barrattv611_prod\\";
+  var uploadDirPath = getOption("zon_UploadDirectory");
+  var publishDirPath = getOption("zon_FileResPublishDirectory");
 
   // Check folder exists
   var folderId = getFolderIdByName(input["@folderName"]);

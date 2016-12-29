@@ -52,8 +52,7 @@ namespace Zone.Campaign.Sync.Services
             }
 
             // Do query
-            var queryFields = new[] { "@name", "@label" }.Union(mapping.QueryFields).Distinct();
-            var response = _queryService.ExecuteQuery(rootUri, tokens, settings.Schema, queryFields, settings.Conditions);
+            var response = _queryService.ExecuteQuery(rootUri, tokens, settings.Schema, mapping.QueryFields, settings.Conditions);
 
             if (!response.Success)
             {

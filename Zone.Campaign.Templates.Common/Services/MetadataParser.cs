@@ -20,18 +20,18 @@ namespace Zone.Campaign.Templates.Services
                 { "Schema", metadata.Schema.ToString()},
                 { "Name", metadata.Name.ToString() },
             };
+
             if (!string.IsNullOrEmpty(metadata.Label))
             {
                 items.Add("Label", metadata.Label);
             }
 
-            return string.Format("Adobe Campaign metadata:{0}{1}", Environment.NewLine, string.Join(Environment.NewLine, items.Select(i => string.Format("{0}: {1}", i.Key, i.Value))));
+            foreach (var item in metadata.AdditionalProperties.Where(i => !items.ContainsKey(i.Key)))
+            {
+                items.Add(item.Key, item.Value);
+            }
 
-            //var builder = new StringBuilder();
-            //builder.Append("Adobe Campaign metadata").AppendLine()
-            //       .AppendFormat("Schema: {0}", metadata.Schema).AppendLine()
-            //       .AppendFormat("Name: {0}", metadata.Name);
-            //return builder.ToString();
+            return string.Format("Adobe Campaign metadata:{0}{1}", Environment.NewLine, string.Join(Environment.NewLine, items.Select(i => string.Format("{0}: {1}", i.Key, i.Value))));
         }
 
         public TemplateMetadata Parse(string input)
@@ -80,9 +80,9 @@ namespace Zone.Campaign.Templates.Services
                         }
 
                         break;
-                    //default:
-                    //    result.AdditionalProperties.Add(propertyName, propertyValue);
-                    //    break;
+                    default:
+                        result.AdditionalProperties.Add(propertyName, propertyValue);
+                        break;
                 }
             }
 

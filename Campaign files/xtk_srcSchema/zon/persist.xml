@@ -4,7 +4,7 @@ Schema: xtk:srcSchema
 Name: zon:persist
 Label: Persist SOAP services
 !-->
-<srcSchema library="true">
+<srcSchema library="true" implements="xtk:persist">
   <methods>
     <method library="zon:persist.js" name="WriteZip" static="true">
       <parameters>
