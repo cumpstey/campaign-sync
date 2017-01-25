@@ -82,6 +82,7 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+    <None Include="Zone.Campaign.Sync.Common.nuspec" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Zone.Campaign.Common\Zone.Campaign.Common.csproj">
@@ -96,8 +97,19 @@
       <Project>{dd56eb62-b74e-4d2b-a7f6-6821d3938779}</Project>
       <Name>Zone.Campaign.WebServices</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Zone.ProgressBar\Zone.ProgressBar.csproj">
+      <Project>{45b9c9f7-2c3a-4a99-a295-b853e6d82eda}</Project>
+      <Name>Zone.ProgressBar</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>xcopy /Q /Y "$(TargetDir)$(TargetFileName)" "$(ProjectDir)packagecontents\lib\net40\"
+xcopy /Q /Y "$(TargetDir)Zone.Campaign.Common.dll" "$(ProjectDir)packagecontents\lib\net40\"
+xcopy /Q /Y "$(TargetDir)Zone.Campaign.Templates.Common.dll" "$(ProjectDir)packagecontents\lib\net40\"
+xcopy /Q /Y "$(TargetDir)Zone.Progress.dll" "$(ProjectDir)packagecontents\lib\net40\"
+</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

@@ -17,11 +17,27 @@ namespace Zone.Campaign.WebServices.Services
 
         private static readonly ILog Log = LogManager.GetLogger(typeof(ZippedQueryDefService));
 
+        private readonly ISoapRequestHandler _requestHandler;
+
+        #endregion
+
+        #region Constructor
+
+        public ZippedQueryDefService(ISoapRequestHandler requestHandler)
+        {
+            if (requestHandler == null)
+            {
+                throw new ArgumentNullException(nameof(requestHandler));
+            }
+
+            _requestHandler = requestHandler;
+        }
+
         #endregion
 
         #region Methods
 
-        public Response<IEnumerable<string>>  ExecuteQuery(Uri rootUri, Tokens tokens, string schema, IEnumerable<string> fields, IEnumerable<string> conditions)
+        public Response<IEnumerable<string>> ExecuteQuery(Uri uri, IEnumerable<string> customHeaders, Tokens tokens, string schema, IEnumerable<string> fields, IEnumerable<string> conditions)
         {
             const string serviceName = "ExecuteQueryZip";
             var serviceNs = string.Concat("urn:", ServiceNamespace);
@@ -31,9 +47,6 @@ namespace Zone.Campaign.WebServices.Services
             var requestDoc = serviceElement.OwnerDocument;
 
             // Build request for this service.
-            ////var entityElement = serviceElement.AppendChild("urn:entity", serviceNs);
-            //var entityElement = requestDoc.CreateElement("urn:entity");
-            //var queryDefElement = entityElement.AppendChild("queryDef");
             var queryDefElement = requestDoc.CreateElement("queryDef");
             queryDefElement.AppendAttribute("operation", "select");
             queryDefElement.AppendAttribute("schema", schema);
@@ -59,7 +72,7 @@ namespace Zone.Campaign.WebServices.Services
             serviceElement.AppendChildWithValue("urn:input", encodedQuery);
 
             // Execute request and get response from server.
-            var response = ExecuteRequest(rootUri, tokens, serviceName, ServiceNamespace, requestDoc);
+            var response = _requestHandler.ExecuteRequest(uri, customHeaders, tokens, serviceName, ServiceNamespace, requestDoc);
             if (!response.Success)
             {
                 return new Response<IEnumerable<string>>(response.Status, response.Message, response.Exception);

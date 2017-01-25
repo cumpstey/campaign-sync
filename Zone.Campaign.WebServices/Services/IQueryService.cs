@@ -9,7 +9,7 @@ namespace Zone.Campaign.WebServices.Services
     {
         #region Methods
 
-        Response<IEnumerable<string>> ExecuteQuery(Uri rootUri, Tokens tokens, string schema, IEnumerable<string> fields, IEnumerable<string> conditions);
+        Response<IEnumerable<string>> ExecuteQuery(Uri uri, IEnumerable<string> customHeaders, Tokens tokens, string schema, IEnumerable<string> fields, IEnumerable<string> conditions);
 
         #endregion
     }

@@ -10,10 +10,10 @@ namespace Zone.Campaign.WebServices.Services
     {
         #region Methods
 
-        Response Write<T>(Uri rootUri, Tokens tokens, T item)
+        Response Write<T>(Uri uri, IEnumerable<string> customHeaders, Tokens tokens, T item)
             where T : IPersistable;
 
-        Response WriteCollection<T>(Uri rootUri, Tokens tokens, IEnumerable<T> items)
+        Response WriteCollection<T>(Uri uri, IEnumerable<string> customHeaders, Tokens tokens, IEnumerable<T> items)
             where T : IPersistable;
         
         #endregion

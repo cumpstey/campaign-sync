@@ -7,7 +7,7 @@ namespace Zone.Campaign.Sync.Services
     {
         #region Methods
 
-        void DoDownload(Uri rootUri, Tokens tokens, DownloadSettings settings);
+        void DoDownload(Uri uri, Tokens tokens, DownloadSettings settings);
 
         #endregion
     }

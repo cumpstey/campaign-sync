@@ -3,6 +3,7 @@ using Zone.Campaign.WebServices.Security;
 using Zone.Campaign.WebServices.Services.Abstract;
 using Zone.Campaign.WebServices.Services.Responses;
 using log4net;
+using System.Collections.Generic;
 
 namespace Zone.Campaign.WebServices.Services
 {
@@ -14,6 +15,22 @@ namespace Zone.Campaign.WebServices.Services
 
         private static readonly ILog Log = LogManager.GetLogger(typeof(BuilderService));
 
+        private readonly ISoapRequestHandler _requestHandler;
+
+        #endregion
+
+        #region Constructor
+
+        public BuilderService(ISoapRequestHandler requestHandler)
+        {
+            if (requestHandler == null)
+            {
+                throw new ArgumentNullException(nameof(requestHandler));
+            }
+
+            _requestHandler = requestHandler;
+        }
+
         #endregion
 
         #region Methods
@@ -23,7 +40,7 @@ namespace Zone.Campaign.WebServices.Services
         /// </summary>
         /// <param name="schamaName">Name of the schema to build</param>
         /// <returns>Security and session tokens</returns>
-        public Response BuildSchema(Uri rootUri, Tokens tokens, InternalName schemaName)
+        public Response BuildSchema(Uri uri, IEnumerable<string> customHeaders, Tokens tokens, InternalName schemaName)
         {
             const string serviceName = "BuildSchemaFromId";
             var serviceNs = string.Concat("urn:", ServiceNamespace);
@@ -36,7 +53,7 @@ namespace Zone.Campaign.WebServices.Services
             serviceElement.AppendChildWithValue("urn:schemaId", serviceNs, schemaName.ToString());
 
             // Execute request and get response from server.
-            var response = ExecuteRequest(rootUri, tokens, serviceName, ServiceNamespace, requestDoc);
+            var response = _requestHandler.ExecuteRequest(uri, customHeaders, tokens, serviceName, ServiceNamespace, requestDoc);
 
             Log.DebugFormat("Response to {0} received: {1}", serviceName, response.Status);
 

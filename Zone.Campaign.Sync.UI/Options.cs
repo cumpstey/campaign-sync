@@ -14,7 +14,7 @@ namespace Zone.Campaign.Sync
 
         #region Shared parameters
 
-        [Option('s', "server", HelpText = "Server root url, eg. https://neolane.com/.")]
+        [Option('s', "server", HelpText = "Server SOAP url, eg. https://neolane.com/nl/jsp/soaprouter.jsp.")]
         public string Server { get; set; }
 
         [Option('u', "username", HelpText = "Server username.")]
@@ -28,6 +28,9 @@ namespace Zone.Campaign.Sync
 
         [Option("prompt", HelpText = "Prompt to exit.")]
         public bool PromptToExit { get; set; }
+
+        [OptionArray("headers", HelpText = @"Additional headers to be included in any http request, eg. ""X-Custom: my-value"".")]
+        public string[] CustomHeaders { get; set; }
 
         #endregion
 

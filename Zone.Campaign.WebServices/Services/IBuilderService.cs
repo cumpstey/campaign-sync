@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Zone.Campaign.WebServices.Security;
 using Zone.Campaign.WebServices.Services.Responses;
 
@@ -8,7 +9,7 @@ namespace Zone.Campaign.WebServices.Services
     {
         #region Methods
 
-        Response BuildSchema(Uri rootUri, Tokens tokens, InternalName schemaName);
+        Response BuildSchema(Uri uri, IEnumerable<string> customHeaders, Tokens tokens, InternalName schemaName);
 
         #endregion
     }

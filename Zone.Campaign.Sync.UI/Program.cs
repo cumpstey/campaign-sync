@@ -9,6 +9,7 @@ using System.Linq;
 using Zone.Campaign.Sync.Services;
 using Zone.Campaign.WebServices.Services;
 using Zone.Campaign.WebServices.Services.Responses;
+using Zone.Progress;
 
 namespace Zone.Campaign.Sync.UI
 {
@@ -39,9 +40,9 @@ namespace Zone.Campaign.Sync.UI
             if (RequiresServerAuthentication(options.RunMode))
             {
                 // Logon
-                var rootUri = new Uri(options.Server);
+                var uri = new Uri(options.Server);
                 var sessionService = container.GetInstance<IAuthenticationService>();
-                var logonResponse = sessionService.Logon(rootUri, options.Username, options.Password);
+                var logonResponse = sessionService.Logon(uri, options.CustomHeaders, options.Username, options.Password);
                 if (logonResponse.Status != ResponseStatus.Success)
                 {
                     // Logon failed - take no further action.
@@ -57,12 +58,13 @@ namespace Zone.Campaign.Sync.UI
                     case RunMode.Download:
                         {
                             var downloader = container.GetInstance<IDownloader>(new ExplicitArguments(new Dictionary<string, object> { { "queryService", container.GetInstance<IQueryService>(options.RequestMode.ToString()) } }));
-                            downloader.DoDownload(rootUri, tokens, new DownloadSettings
+                            downloader.DoDownload(uri, tokens, new DownloadSettings
                             {
                                 Conditions = options.DownloadConditions,
                                 SubdirectoryMode = options.DownloadSubdirectoryMode,
                                 OutputDirectory = options.DownloadOutputDirectory,
                                 Schema = options.DownloadSchema,
+                                CustomHeaders = options.CustomHeaders,
                             });
                         }
 
@@ -70,27 +72,35 @@ namespace Zone.Campaign.Sync.UI
                     case RunMode.ImageUpload:
                         {
                             var uploader = container.GetInstance<IUploader>(new ExplicitArguments(new Dictionary<string, object> { { "writeService", container.GetInstance<IWriteService>(options.RequestMode.ToString()) } }));
-                            uploader.DoImageUpload(rootUri, tokens, new UploadSettings
+                            using (var progress = new ProgressBar())
                             {
-                                FilePaths = options.UploadFilePaths,
-                                TestMode = options.UploadTestMode,
-                            });
+                                uploader.DoImageUpload(uri, tokens, new UploadSettings
+                                {
+                                    FilePaths = options.UploadFilePaths,
+                                    TestMode = options.UploadTestMode,
+                                    CustomHeaders = options.CustomHeaders,
+                                }, progress);
+                            }
                         }
 
                         break;
                     case RunMode.Upload:
                         {
                             var uploader = container.GetInstance<IUploader>(new ExplicitArguments(new Dictionary<string, object> { { "writeService", container.GetInstance<IWriteService>(options.RequestMode.ToString()) } }));
-                            uploader.DoUpload(rootUri, tokens, new UploadSettings
+                            using (var progress = new ProgressBar())
                             {
-                                FilePaths = options.UploadFilePaths,
-                                Replacements = options.Replacements?.Select(i =>
+                                uploader.DoUpload(uri, tokens, new UploadSettings
                                 {
-                                    var parts = i.Split(new[] { "=>" }, 2, StringSplitOptions.None);
-                                    return new Tuple<string, string>(parts[0], parts.Length == 2 ? parts[1] : string.Empty);
-                                }).ToList(),
-                                TestMode = options.UploadTestMode,
-                            });
+                                    FilePaths = options.UploadFilePaths,
+                                    Replacements = options.Replacements?.Select(i =>
+                                    {
+                                        var parts = i.Split(new[] { "=>" }, 2, StringSplitOptions.None);
+                                        return new Tuple<string, string>(parts[0], parts.Length == 2 ? parts[1] : string.Empty);
+                                    }).ToList(),
+                                    TestMode = options.UploadTestMode,
+                                    CustomHeaders = options.CustomHeaders,
+                                }, progress);
+                            }
                         }
 
                         break;

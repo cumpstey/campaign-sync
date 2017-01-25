@@ -38,7 +38,7 @@ namespace Zone.Campaign.Sync.Services
 
         #region Methods
 
-        public void DoDownload(Uri rootUri, Tokens tokens, DownloadSettings settings)
+        public void DoDownload(Uri uri, Tokens tokens, DownloadSettings settings)
         {
             // Create output dir
             var outDir = Path.Combine(settings.OutputDirectory, settings.Schema.Replace(":", "_"));
@@ -52,7 +52,7 @@ namespace Zone.Campaign.Sync.Services
             }
 
             // Do query
-            var response = _queryService.ExecuteQuery(rootUri, tokens, settings.Schema, mapping.QueryFields, settings.Conditions);
+            var response = _queryService.ExecuteQuery(uri, settings.CustomHeaders, tokens, settings.Schema, mapping.QueryFields, settings.Conditions);
 
             if (!response.Success)
             {

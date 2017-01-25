@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Zone.Campaign.WebServices.Model;
 using Zone.Campaign.WebServices.Security;
 using Zone.Campaign.WebServices.Services.Responses;
@@ -9,7 +10,7 @@ namespace Zone.Campaign.WebServices.Services
     {
         #region Methods
 
-        Response WriteImage(Uri rootUri, Tokens tokens, ImageFile item);
+        Response WriteImage(Uri uri, IEnumerable<string> customHeaders, Tokens tokens, ImageFile item);
         
         #endregion
     }

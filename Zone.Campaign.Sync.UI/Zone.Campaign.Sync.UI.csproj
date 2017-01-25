@@ -100,9 +100,17 @@
       <Project>{9a86f4f9-af68-40b0-bbd3-3315851fb35d}</Project>
       <Name>Zone.Campaign.Templates.Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Zone.Campaign.WebServices.Zipped\Zone.Campaign.WebServices.Zipped.csproj">
+      <Project>{29b3992c-e3a8-41b1-85b4-fc449d7f3b67}</Project>
+      <Name>Zone.Campaign.WebServices.Zipped</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Zone.Campaign.WebServices\Zone.Campaign.WebServices.csproj">
       <Project>{dd56eb62-b74e-4d2b-a7f6-6821d3938779}</Project>
       <Name>Zone.Campaign.WebServices</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Zone.ProgressBar\Zone.ProgressBar.csproj">
+      <Project>{45b9c9f7-2c3a-4a99-a295-b853e6d82eda}</Project>
+      <Name>Zone.ProgressBar</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -3,6 +3,7 @@ using Zone.Campaign.WebServices.Security;
 using Zone.Campaign.WebServices.Services.Abstract;
 using Zone.Campaign.WebServices.Services.Responses;
 using log4net;
+using System.Collections.Generic;
 
 namespace Zone.Campaign.WebServices.Services
 {
@@ -14,6 +15,22 @@ namespace Zone.Campaign.WebServices.Services
 
         private static readonly ILog Log = LogManager.GetLogger(typeof(SessionService));
 
+        private readonly ISoapRequestHandler _requestHandler;
+
+        #endregion
+
+        #region Constructor
+
+        public SessionService(ISoapRequestHandler requestHandler)
+        {
+            if (requestHandler == null)
+            {
+                throw new ArgumentNullException(nameof(requestHandler));
+            }
+
+            _requestHandler = requestHandler;
+        }
+
         #endregion
 
         #region Methods
@@ -24,7 +41,7 @@ namespace Zone.Campaign.WebServices.Services
         /// <param name="username">Username</param>
         /// <param name="password">Password</param>
         /// <returns>Security and session tokens</returns>
-        public Response<Tokens> Logon(Uri rootUri, string username, string password)
+        public Response<Tokens> Logon(Uri uri, IEnumerable<string> customHeaders, string username, string password)
         {
             const string serviceName = "Logon";
             var serviceNs = string.Concat("urn:", ServiceNamespace);
@@ -39,7 +56,7 @@ namespace Zone.Campaign.WebServices.Services
             serviceElement.AppendChild("urn:elemParameters", serviceNs);
 
             // Execute request and get response from server.
-            var response = ExecuteRequest(rootUri, null, serviceName, ServiceNamespace, requestDoc);
+            var response = _requestHandler.ExecuteRequest(uri, customHeaders, null, serviceName, ServiceNamespace, requestDoc);
 
             Log.DebugFormat("Response to {0} received: {1}", serviceName, response.Status);
 

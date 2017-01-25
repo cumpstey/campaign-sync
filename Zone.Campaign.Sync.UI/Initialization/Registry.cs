@@ -29,6 +29,8 @@ namespace Zone.Campaign.Sync.UI.Initialization
             For<IQueryService>().Use<QueryDefService>().Named("Default");
             For<IWriteService>().Add<ZippedPersistService>().Named("Zip");
             For<IWriteService>().Use<PersistService>().Named("Default");
+
+            For<ISoapRequestHandler>().Use<HttpSoapRequestHandler>();
         }
     }
 }

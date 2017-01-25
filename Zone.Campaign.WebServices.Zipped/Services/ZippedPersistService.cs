@@ -18,11 +18,27 @@ namespace Zone.Campaign.WebServices.Services
 
         private static readonly ILog Log = LogManager.GetLogger(typeof(PersistService));
 
+        private readonly ISoapRequestHandler _requestHandler;
+
+        #endregion
+
+        #region Constructor
+
+        public ZippedPersistService(ISoapRequestHandler requestHandler)
+        {
+            if (requestHandler == null)
+            {
+                throw new ArgumentNullException(nameof(requestHandler));
+            }
+
+            _requestHandler = requestHandler;
+        }
+
         #endregion
 
         #region Methods
 
-        public Response Write<T>(Uri rootUri, Tokens tokens, T item)
+        public Response Write<T>(Uri uri, IEnumerable<string> customHeaders, Tokens tokens, T item)
             where T : IPersistable
         {
             if (item == null)
@@ -52,14 +68,14 @@ namespace Zone.Campaign.WebServices.Services
             serviceElement.AppendChildWithValue("urn:input", encodedQuery);
 
             // Execute request and get response from server.
-            var response = ExecuteRequest(rootUri, tokens, serviceName, ServiceNamespace, requestDoc);
+            var response = _requestHandler.ExecuteRequest(uri, customHeaders, tokens, serviceName, ServiceNamespace, requestDoc);
 
             Log.DebugFormat("Response to {0} {1} received: {2}", serviceName, schema, response.Status);
 
             return response;
         }
 
-        public Response WriteCollection<T>(Uri rootUri, Tokens tokens, IEnumerable<T> items)
+        public Response WriteCollection<T>(Uri uri, IEnumerable<string> customHeaders, Tokens tokens, IEnumerable<T> items)
             where T : IPersistable
         {
             const string serviceName = "WriteCollectionZip";
@@ -92,7 +108,7 @@ namespace Zone.Campaign.WebServices.Services
             serviceElement.AppendChildWithValue("urn:input", encodedQuery);
 
             // Execute request and get response from server.
-            var response = ExecuteRequest(rootUri, tokens, serviceName, ServiceNamespace, requestDoc);
+            var response = _requestHandler.ExecuteRequest(uri, customHeaders, tokens, serviceName, ServiceNamespace, requestDoc);
 
             Log.DebugFormat("Response to {0} {1} received: {2}", serviceName, schema, response.Status);
 

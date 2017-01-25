@@ -8,6 +8,7 @@ using Zone.Campaign.Templates.Services;
 using Zone.Campaign.WebServices.Model;
 using Zone.Campaign.WebServices.Security;
 using Zone.Campaign.WebServices.Services;
+using Zone.Progress;
 
 namespace Zone.Campaign.Sync.Services
 {
@@ -56,7 +57,7 @@ namespace Zone.Campaign.Sync.Services
 
         #region Methods
 
-        public void DoUpload(Uri rootUri, Tokens tokens, UploadSettings settings)
+        public void DoUpload(Uri uri, Tokens tokens, UploadSettings settings, IProgress<double> progress)
         {
             var pathList = settings.FilePaths.SelectMany(i =>
             {
@@ -133,55 +134,70 @@ namespace Zone.Campaign.Sync.Services
             }
             else
             {
-                var templateCount = 0;
+                var templateTotalCount = templateList.Length;
+                var templateProcessedCount = 0;
+                var templateSuccessCount = 0;
                 foreach (var template in templateList)
                 {
+                    templateProcessedCount++;
+                    progress.Report((double)templateProcessedCount / templateTotalCount);
+
                     // Get mapping for defined schema, and generate object for write
                     var mapping = _mappingFactory.GetMapping(template.Metadata.Schema.ToString());
                     var persistable = mapping.GetPersistableItem(template);
 
-                    var response = _writeService.Write(rootUri, tokens, persistable);
+                    var response = _writeService.Write(uri, settings.CustomHeaders, tokens, persistable);
                     if (!response.Success)
                     {
                         Log.WarnFormat("Upload of {0} failed: {1}", template.Metadata.Name, response.Message);
                     }
                     else
                     {
-                        templateCount++;
+                        templateSuccessCount++;
                     }
                 }
 
-                Log.InfoFormat("{0} files uploaded.", templateCount);
+                Log.InfoFormat("{0} files uploaded.", templateSuccessCount);
 
                 var schemaList = templateList.Where(i => i.Metadata.Schema.ToString() == SrcSchema.Schema).ToArray();
                 if (schemaList.Any())
                 {
-                    var schemaCount = 0;
+                    var schemaTotalCount = schemaList.Length;
+                    var schemaProcessedCount = 0;
+                    var schemaSuccessCount = 0;
                     foreach (var schema in schemaList)
                     {
-                        var response = _builderService.BuildSchema(rootUri, tokens, schema.Metadata.Name);
+                        schemaProcessedCount++;
+                        progress.Report((double)schemaProcessedCount / schemaTotalCount);
+
+                        var response = _builderService.BuildSchema(uri, settings.CustomHeaders, tokens, schema.Metadata.Name);
                         if (!response.Success)
                         {
                             Log.WarnFormat("Build of {0} failed: {1}", schema.Metadata.Name, response.Message);
                         }
                         else
                         {
-                            schemaCount++;
+                            schemaSuccessCount++;
                         }
                     }
 
-                    Log.InfoFormat("{0} schemas built.", schemaCount);
+                    Log.InfoFormat("{0} schemas built.", schemaSuccessCount);
                 }
             }
         }
 
-        public void DoImageUpload(Uri rootUri, Tokens tokens, UploadSettings settings)
+        public void DoImageUpload(Uri uri, Tokens tokens, UploadSettings settings, IProgress<double> progress)
         {
             var imageData = settings.FilePaths.SelectMany(i => _imageDataProvider.GetData(i)).ToArray();
 
-            var imageCount = 0;
+            var totalCount = imageData.Length;
+            var processedCount = 0;
+            var successCount = 0;
             foreach (var imageItem in imageData)
             {
+                processedCount++;
+                progress.Report((double)processedCount / totalCount);
+
                 var mimeType = ImageHelper.GetMimeType(Path.GetExtension(imageItem.FilePath));
                 if (mimeType == null)
                 {
@@ -236,18 +252,18 @@ namespace Zone.Campaign.Sync.Services
                     FileContent = fileContent,
                 };
 
-                var response = _imageWriteService.WriteImage(rootUri, tokens, file);
+                var response = _imageWriteService.WriteImage(uri, settings.CustomHeaders, tokens, file);
                 if (!response.Success)
                 {
                     Log.WarnFormat("Upload of {0} failed: {1}", imageItem.InternalName, response.Message);
                 }
                 else
                 {
-                    imageCount++;
+                    successCount++;
                 }
             }
 
-            Log.InfoFormat("{0} images uploaded.", imageCount);
+            Log.InfoFormat("{0} images uploaded.", successCount);
         }
 
         #endregion

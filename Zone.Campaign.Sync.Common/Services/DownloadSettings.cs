@@ -11,5 +11,7 @@ namespace Zone.Campaign.Sync.Services
         public string Schema { get; set; }
 
         public string[] Conditions { get; set; }
+
+        public string[] CustomHeaders { get; set; }
     }
 }

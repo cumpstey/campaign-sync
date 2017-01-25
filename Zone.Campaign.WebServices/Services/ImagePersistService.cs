@@ -18,11 +18,27 @@ namespace Zone.Campaign.WebServices.Services
 
         private static readonly ILog Log = LogManager.GetLogger(typeof(ImagePersistService));
 
+        private readonly ISoapRequestHandler _requestHandler;
+
+        #endregion
+
+        #region Constructor
+
+        public ImagePersistService(ISoapRequestHandler requestHandler)
+        {
+            if (requestHandler == null)
+            {
+                throw new ArgumentNullException(nameof(requestHandler));
+            }
+
+            _requestHandler = requestHandler;
+        }
+
         #endregion
 
         #region Methods
 
-        public Response WriteImage(Uri rootUri, Tokens tokens, ImageFile item)
+        public Response WriteImage(Uri uri, IEnumerable<string> customHeaders, Tokens tokens, ImageFile item)
         {
             if (item == null)
             {
@@ -43,7 +59,7 @@ namespace Zone.Campaign.WebServices.Services
             domElement.AppendChild(itemXml);
 
             // Execute request and get response from server.
-            var response = ExecuteRequest(rootUri, tokens, serviceName, ServiceNamespace, requestDoc);
+            var response = _requestHandler.ExecuteRequest(uri, customHeaders, tokens, serviceName, ServiceNamespace, requestDoc);
             Log.DebugFormat("Response to {0} received: {1}", serviceName, response.Status);
             if (!response.Success)
             {

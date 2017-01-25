@@ -10,5 +10,7 @@ namespace Zone.Campaign.Sync.Services
         public IList<Tuple<string, string>> Replacements { get; set; }
 
         public bool TestMode { get; set; }
+
+        public string[] CustomHeaders { get; set; }
     }
 }
