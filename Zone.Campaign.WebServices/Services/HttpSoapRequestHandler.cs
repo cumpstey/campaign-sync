@@ -11,25 +11,75 @@ using Zone.Campaign.WebServices.Services.Responses;
 
 namespace Zone.Campaign.WebServices.Services
 {
+    /// <summary>
+    /// Handler to make SOAP requests over http.
+    /// </summary>
     public class HttpSoapRequestHandler : ISoapRequestHandler
     {
-        #region Methods
+        #region Constructor
 
-        public Response<XmlNode> ExecuteRequest(Uri uri, IEnumerable<string> customHeaders, Tokens tokens, string serviceName, string serviceNamespace, XmlDocument requestDoc)
+        /// <summary>
+        /// Creates a new instance of <see cref="HttpSoapRequestHandler"/>
+        /// </summary>
+        /// <param name="uri">Uri of the SOAP handler</param>
+        /// <param name="customHeaders">Headers to include in every request</param>
+        public HttpSoapRequestHandler(Uri uri, IEnumerable<string> customHeaders)
         {
-            return ExecuteRequest(uri, customHeaders, tokens, serviceName, serviceNamespace, requestDoc.InnerXml);
+            if (uri == null)
+            {
+                throw new ArgumentNullException(nameof(uri));
+            }
+
+            Uri = uri;
+            CustomHeaders = customHeaders ?? new string[0];
         }
 
-        public Response<XmlNode> ExecuteRequest(Uri uri, IEnumerable<string> customHeaders, Tokens tokens, string serviceName, string serviceNamespace, string requestBody)
+        #endregion
+
+        #region Properties
+
+        public Uri Uri { get; private set; }
+
+        public IEnumerable<string> CustomHeaders { get; private set; }
+
+        ////public Tokens AuthenticationTokens { get; set; }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// Execute a request by making an http SOAP request.
+        /// </summary>
+        /// <param name="tokens">Authentication tokens</param>
+        /// <param name="serviceNamespace">Namespace of the SOAP service</param>
+        /// <param name="serviceName">Name of the SOAP service</param>
+        /// <param name="requestDoc">SOAP content as XML document</param>
+        /// <returns>Response status and content</returns>
+        public Response<XmlNode> ExecuteRequest(Tokens tokens, string serviceNamespace, string serviceName, XmlDocument requestDoc)
+        {
+            return ExecuteRequest(tokens, serviceNamespace, serviceName, requestDoc.InnerXml);
+        }
+
+        /// <summary>
+        /// Execute a request by making an http SOAP request.
+        /// </summary>
+        /// <param name="tokens">Authentication tokens</param>
+        /// <param name="serviceNamespace">Namespace of the SOAP service</param>
+        /// <param name="serviceName">Name of the SOAP service</param>
+        /// <param name="requestBody">SOAP content as string</param>
+        /// <returns>Response status and content</returns>
+        public Response<XmlNode> ExecuteRequest(Tokens tokens, string serviceNamespace, string serviceName, string requestBody)
         {
             // Execute request and get response from server.
             string responseFromServer;
             try
             {
-                responseFromServer = PerformHttpRequest(uri, customHeaders, tokens, serviceName, serviceNamespace, requestBody);
+                responseFromServer = PerformHttpRequest(tokens, serviceNamespace, serviceName, requestBody);
             }
             catch (WebException ex)
             {
+                // Some errors we can translate into useful information.
                 var httpResponse = ex.Response as HttpWebResponse;
                 if (httpResponse == null)
                 {
@@ -38,6 +88,8 @@ namespace Zone.Campaign.WebServices.Services
 
                 switch (httpResponse.StatusCode)
                 {
+                    case HttpStatusCode.NotFound:
+                        return new Response<XmlNode>(ResponseStatus.NotFound, ex.Message, ex);
                     case HttpStatusCode.Forbidden:
                         return new Response<XmlNode>(ResponseStatus.Unauthorised, ex.Message, ex);
                     default:
@@ -46,6 +98,7 @@ namespace Zone.Campaign.WebServices.Services
             }
             catch (Exception ex)
             {
+                // Any other error, we translate as 'unknown'.
                 return new Response<XmlNode>(ResponseStatus.UnknownError, ex.Message);
             }
 
@@ -57,7 +110,8 @@ namespace Zone.Campaign.WebServices.Services
             }
             catch (Exception ex)
             {
-                return new Response<XmlNode>(ResponseStatus.WebServiceError, string.Concat("Invalid xml returned: ", ex.Message), ex);
+                // This is an unknown error because the server should always return valid xml.
+                return new Response<XmlNode>(ResponseStatus.UnknownError, string.Concat("Invalid xml returned: ", ex.Message), ex);
             }
 
             var nsmgr = new XmlNamespaceManager(responseDoc.NameTable);
@@ -74,7 +128,7 @@ namespace Zone.Campaign.WebServices.Services
                 var message = messageNode != null
                     ? messageNode.InnerText
                     : "No error message returned";
-                return new Response<XmlNode>(ResponseStatus.WebServiceError, message);
+                return new Response<XmlNode>(ResponseStatus.ProcessingError, message);
             }
             else
             {
@@ -86,10 +140,13 @@ namespace Zone.Campaign.WebServices.Services
 
         #region Helpers
 
-        private string PerformHttpRequest(Uri uri, IEnumerable<string> customHeaders, Tokens tokens, string serviceName, string serviceNamespace, string requestBody)
+        /// <summary>
+        /// Make the http request. This method does not handle any exceptions thrown by making the http request.
+        /// </summary>
+        private string PerformHttpRequest(Tokens tokens, string serviceNamespace, string serviceName, string requestBody)
         {
             // We have done the login now we can actually do a query on Neolane
-            var reqData = (HttpWebRequest)WebRequest.Create(uri);
+            var reqData = (HttpWebRequest)WebRequest.Create(Uri);
             reqData.Method = "POST";
             reqData.ContentType = "text/xml; charset=utf-8";
 
@@ -107,12 +164,9 @@ namespace Zone.Campaign.WebServices.Services
                 reqData.Headers.Add("cookie", "__sessiontoken=" + tokens.SessionToken);
             }
 
-            if (customHeaders != null)
+            foreach (var header in CustomHeaders.Where(i => Regex.IsMatch(i, @"^[a-z_-]+:", RegexOptions.Compiled | RegexOptions.IgnoreCase)))
             {
-                foreach (var header in customHeaders.Where(i => Regex.IsMatch(i, @"^[a-z_-]:", RegexOptions.Compiled | RegexOptions.IgnoreCase)))
-                {
-                    reqData.Headers.Add(header);
-                }
+                reqData.Headers.Add(header);
             }
 
             // Write the body to a byteArray to be passed with the Request Stream

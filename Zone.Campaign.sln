@@ -17,8 +17,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zone.Campaign.Sync.UI", "Zo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zone.Campaign.Sync.Common", "Zone.Campaign.Sync.Common\Zone.Campaign.Sync.Common.csproj", "{0EDFF7E4-7C8C-4C4C-9BA2-BACF622519F5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zone.ProgressBar", "Zone.ProgressBar\Zone.ProgressBar.csproj", "{45B9C9F7-2C3A-4A99-A295-B853E6D82EDA}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zone.Campaign.WebServices.Zipped", "Zone.Campaign.WebServices.Zipped\Zone.Campaign.WebServices.Zipped.csproj", "{29B3992C-E3A8-41B1-85B4-FC449D7F3B67}"
 EndProject
 Global
@@ -51,10 +49,6 @@ Global
 		{0EDFF7E4-7C8C-4C4C-9BA2-BACF622519F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0EDFF7E4-7C8C-4C4C-9BA2-BACF622519F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0EDFF7E4-7C8C-4C4C-9BA2-BACF622519F5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{45B9C9F7-2C3A-4A99-A295-B853E6D82EDA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{45B9C9F7-2C3A-4A99-A295-B853E6D82EDA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{45B9C9F7-2C3A-4A99-A295-B853E6D82EDA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{45B9C9F7-2C3A-4A99-A295-B853E6D82EDA}.Release|Any CPU.Build.0 = Release|Any CPU
 		{29B3992C-E3A8-41B1-85B4-FC449D7F3B67}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{29B3992C-E3A8-41B1-85B4-FC449D7F3B67}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{29B3992C-E3A8-41B1-85B4-FC449D7F3B67}.Release|Any CPU.ActiveCfg = Release|Any CPU

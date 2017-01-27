@@ -9,7 +9,6 @@ using System.Linq;
 using Zone.Campaign.Sync.Services;
 using Zone.Campaign.WebServices.Services;
 using Zone.Campaign.WebServices.Services.Responses;
-using Zone.Progress;
 
 namespace Zone.Campaign.Sync.UI
 {
@@ -35,18 +34,21 @@ namespace Zone.Campaign.Sync.UI
             XmlConfigurator.Configure();
 
             // Set up IoC container
+            Initialization.Registry.SetOptions(options);
             var container = Container.For<Initialization.Registry>();
+
+            var soapRequestHandler = new HttpSoapRequestHandler(new Uri(options.Server), options.CustomHeaders);
 
             if (RequiresServerAuthentication(options.RunMode))
             {
                 // Logon
                 var uri = new Uri(options.Server);
                 var sessionService = container.GetInstance<IAuthenticationService>();
-                var logonResponse = sessionService.Logon(uri, options.CustomHeaders, options.Username, options.Password);
+                var logonResponse = sessionService.Logon(options.Username, options.Password);
                 if (logonResponse.Status != ResponseStatus.Success)
                 {
                     // Logon failed - take no further action.
-                    Log.WarnFormat("Logon failed: {0}, {1}", logonResponse.Status, logonResponse.Message);
+                    Log.Warn($"Logon failed: {logonResponse.Status}, {logonResponse.Message}");
                     return;
                 }
 
@@ -58,49 +60,40 @@ namespace Zone.Campaign.Sync.UI
                     case RunMode.Download:
                         {
                             var downloader = container.GetInstance<IDownloader>(new ExplicitArguments(new Dictionary<string, object> { { "queryService", container.GetInstance<IQueryService>(options.RequestMode.ToString()) } }));
-                            downloader.DoDownload(uri, tokens, new DownloadSettings
+                            downloader.DoDownload(tokens, new DownloadSettings
                             {
                                 Conditions = options.DownloadConditions,
                                 SubdirectoryMode = options.DownloadSubdirectoryMode,
                                 OutputDirectory = options.DownloadOutputDirectory,
                                 Schema = options.DownloadSchema,
-                                CustomHeaders = options.CustomHeaders,
                             });
                         }
 
                         break;
                     case RunMode.ImageUpload:
                         {
-                            var uploader = container.GetInstance<IUploader>(new ExplicitArguments(new Dictionary<string, object> { { "writeService", container.GetInstance<IWriteService>(options.RequestMode.ToString()) } }));
-                            using (var progress = new ProgressBar())
+                            var uploader = container.GetInstance<IUploader>();
+                            uploader.DoImageUpload(tokens, new UploadSettings
                             {
-                                uploader.DoImageUpload(uri, tokens, new UploadSettings
-                                {
-                                    FilePaths = options.UploadFilePaths,
-                                    TestMode = options.UploadTestMode,
-                                    CustomHeaders = options.CustomHeaders,
-                                }, progress);
-                            }
+                                FilePaths = options.UploadFilePaths,
+                                TestMode = options.UploadTestMode,
+                            });
                         }
 
                         break;
                     case RunMode.Upload:
                         {
-                            var uploader = container.GetInstance<IUploader>(new ExplicitArguments(new Dictionary<string, object> { { "writeService", container.GetInstance<IWriteService>(options.RequestMode.ToString()) } }));
-                            using (var progress = new ProgressBar())
+                            var uploader = container.GetInstance<IUploader>();
+                            uploader.DoUpload(tokens, new UploadSettings
                             {
-                                uploader.DoUpload(uri, tokens, new UploadSettings
+                                FilePaths = options.UploadFilePaths,
+                                Replacements = options.Replacements?.Select(i =>
                                 {
-                                    FilePaths = options.UploadFilePaths,
-                                    Replacements = options.Replacements?.Select(i =>
-                                    {
-                                        var parts = i.Split(new[] { "=>" }, 2, StringSplitOptions.None);
-                                        return new Tuple<string, string>(parts[0], parts.Length == 2 ? parts[1] : string.Empty);
-                                    }).ToList(),
-                                    TestMode = options.UploadTestMode,
-                                    CustomHeaders = options.CustomHeaders,
-                                }, progress);
-                            }
+                                    var parts = i.Split(new[] { "=>" }, 2, StringSplitOptions.None);
+                                    return new Tuple<string, string>(parts[0], parts.Length == 2 ? parts[1] : string.Empty);
+                                }).ToList(),
+                                TestMode = options.UploadTestMode,
+                            });
                         }
 
                         break;
@@ -178,7 +171,7 @@ namespace Zone.Campaign.Sync.UI
 
                     if (options.DownloadSubdirectoryMode != SubdirectoryMode.Default && options.DownloadSubdirectoryMode != SubdirectoryMode.UnderscoreDelimited)
                     {
-                        errors.Add(string.Format("Subdirectory mode must be one of: {0}, {1}.", SubdirectoryMode.Default, SubdirectoryMode.UnderscoreDelimited));
+                        errors.Add($"Subdirectory mode must be one of: {SubdirectoryMode.Default}, {SubdirectoryMode.UnderscoreDelimited}.");
                     }
 
                     break;

@@ -5,10 +5,18 @@ using Zone.Campaign.WebServices.Model;
 
 namespace Zone.Campaign.Sync.Services
 {
+    /// <summary>
+    /// Contains a function to return a mapping class for a given schema.
+    /// </summary>
     public class MappingFactory : IMappingFactory
     {
         #region Methods
 
+        /// <summary>
+        /// Returns a mapping class for a given schema.
+        /// </summary>
+        /// <param name="schema">Schema</param>
+        /// <returns>Mapping class</returns>
         public IMapping GetMapping(string schema)
         {
             // TODO: Make this better: compile a dictionary at runtime, or use an IoC container.

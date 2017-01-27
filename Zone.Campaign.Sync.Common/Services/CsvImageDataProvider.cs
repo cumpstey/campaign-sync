@@ -9,6 +9,9 @@ using Zone.Campaign.Sync.Data;
 
 namespace Zone.Campaign.Sync.Services
 {
+    /// <summary>
+    /// Contains functions for reading and generating image data files.
+    /// </summary>
     public class CsvImageDataProvider : IImageDataProvider
     {
         #region Fields
@@ -21,24 +24,34 @@ namespace Zone.Campaign.Sync.Services
 
         #region Constructor
 
+        /// <summary>
+        /// Creates a new instance of <see cref="CsvImageDataProvider"/>
+        /// </summary>
         public CsvImageDataProvider()
         {
             DataFileName = "imageData.csv";
 
             Configuration = new CsvConfiguration();
-            ////Configuration.RegisterClassMap<ImageDataMap>();
         }
 
         #endregion
 
         #region Properties
 
+        /// <summary>
+        /// File name of the image data files.
+        /// </summary>
         public string DataFileName { get; set; }
 
         #endregion
 
         #region Methods
 
+        /// <summary>
+        /// Read all the image data recursively from the image data files in a directory tree.
+        /// </summary>
+        /// <param name="directoryPath">Root directory path</param>
+        /// <returns>Colelction of image data</returns>
         public IEnumerable<ImageData> GetData(string directoryPath)
         {
             var filePath = Path.Combine(directoryPath, DataFileName);
@@ -68,6 +81,13 @@ namespace Zone.Campaign.Sync.Services
             return data;
         }
 
+        /// <summary>
+        /// Generate image data files, containing stub data for all images in a folder.
+        /// Updates any existing incomplete files with rows for any new images found.
+        /// </summary>
+        /// <param name="directoryPath">Root directory path</param>
+        /// <param name="recursive">Whether to generate files recursively in descendent directories</param>
+        /// <param name="extensions">List of file extensions recognised as image files</param>
         public void GenerateDataFile(string directoryPath, bool recursive, IEnumerable<string> extensions)
         {
             if (extensions == null)

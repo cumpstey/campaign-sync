@@ -1,10 +1,12 @@
 ﻿using System;
-using System.Linq;
 using System.Text.RegularExpressions;
 using Zone.Campaign.Templates.Model;
 
 namespace Zone.Campaign.Templates.Services
 {
+    /// <summary>
+    /// Provides functions for processing JavaScript files.
+    /// </summary>
     public class JavaScriptMetadataProcessor : IMetadataExtractor, IMetadataInserter
     {
         #region Fields
@@ -21,16 +23,24 @@ namespace Zone.Campaign.Templates.Services
 
         #region Constructor
 
+        /// <summary>
+        /// Creates a new instance of <see cref="JavaScriptMetadataProcessor"/>
+        /// </summary>
         public JavaScriptMetadataProcessor()
         {
-            _metadataParser = new MetadataParser();
-            _metadataFormatter = new MetadataParser();
+            _metadataParser = new MetadataProcessor();
+            _metadataFormatter = new MetadataProcessor();
         }
 
         #endregion
 
         #region Methods
 
+        /// <summary>
+        /// Extract the code and metadata from raw JavaScript file content.
+        /// </summary>
+        /// <param name="input">Raw JavaScript file content</param>
+        /// <returns>Class containing code content and metadata.</returns>
         public Template ExtractMetadata(string input)
         {
             if (input == null)
@@ -50,13 +60,6 @@ namespace Zone.Campaign.Templates.Services
                     output = output.Remove(fullCapture.Index, fullCapture.Length);
                     metadata = _metadataParser.Parse(match.Groups["value"].Captures[i].Value);
                 }
-
-                //// Remove all metadata comments, and use the value from the first one in the file.
-                //foreach (var capture in match.Groups["value"].Captures.Cast<Capture>().Reverse())
-                //{
-                //    output = output.Remove(capture.Index, capture.Length);
-                //    metadata = _metadataParser.Parse(capture.Value);
-                //}
             }
 
             return new Template
@@ -66,6 +69,11 @@ namespace Zone.Campaign.Templates.Services
             };
         }
 
+        /// <summary>
+        /// Converts metadata and code into raw JavaScript file content which can be written to disk.
+        /// </summary>
+        /// <param name="input">Metadata and code</param>
+        /// <returns>Raw JavaScript file content</returns>
         public string InsertMetadata(Template input)
         {
             if (input == null)

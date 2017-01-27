@@ -1,10 +1,12 @@
 ﻿using System;
-using System.Linq;
 using System.Text.RegularExpressions;
 using Zone.Campaign.Templates.Model;
 
 namespace Zone.Campaign.Templates.Services
 {
+    /// <summary>
+    /// Provides functions for processing JavaScript Server Pages files.
+    /// </summary>
     public class JsspMetadataProcessor : IMetadataExtractor, IMetadataInserter
     {
         #region Fields
@@ -21,16 +23,24 @@ namespace Zone.Campaign.Templates.Services
 
         #region Constructor
 
+        /// <summary>
+        /// Creates a new instance of <see cref="JsspMetadataProcessor"/>
+        /// </summary>
         public JsspMetadataProcessor()
         {
-            _metadataParser = new MetadataParser();
-            _metadataFormatter = new MetadataParser();
+            _metadataParser = new MetadataProcessor();
+            _metadataFormatter = new MetadataProcessor();
         }
 
         #endregion
 
         #region Methods
 
+        /// <summary>
+        /// Extract the code and metadata from raw JavaScript Server Pages file content.
+        /// </summary>
+        /// <param name="input">Raw JavaScript Server Pages file content</param>
+        /// <returns>Class containing code content and metadata.</returns>
         public Template ExtractMetadata(string input)
         {
             if (input == null)
@@ -59,6 +69,11 @@ namespace Zone.Campaign.Templates.Services
             };
         }
 
+        /// <summary>
+        /// Converts metadata and code into raw JavaScript Server Pages file content which can be written to disk.
+        /// </summary>
+        /// <param name="input">Metadata and code</param>
+        /// <returns>Raw JavaScript Server Pages file content</returns>
         public string InsertMetadata(Template input)
         {
             if (input == null)

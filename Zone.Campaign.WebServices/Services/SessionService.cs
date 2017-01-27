@@ -3,10 +3,12 @@ using Zone.Campaign.WebServices.Security;
 using Zone.Campaign.WebServices.Services.Abstract;
 using Zone.Campaign.WebServices.Services.Responses;
 using log4net;
-using System.Collections.Generic;
 
 namespace Zone.Campaign.WebServices.Services
 {
+    /// <summary>
+    /// Wrapper for the xtk:session SOAP services.
+    /// </summary>
     public class SessionService : Service, IAuthenticationService
     {
         #region Fields
@@ -21,6 +23,10 @@ namespace Zone.Campaign.WebServices.Services
 
         #region Constructor
 
+        /// <summary>
+        /// Creates a new instance of <see cref="SessionService"/>
+        /// </summary>
+        /// <param name="requestHandler">Handler for the SOAP requests</param>
         public SessionService(ISoapRequestHandler requestHandler)
         {
             if (requestHandler == null)
@@ -41,7 +47,7 @@ namespace Zone.Campaign.WebServices.Services
         /// <param name="username">Username</param>
         /// <param name="password">Password</param>
         /// <returns>Security and session tokens</returns>
-        public Response<Tokens> Logon(Uri uri, IEnumerable<string> customHeaders, string username, string password)
+        public Response<Tokens> Logon(string username, string password)
         {
             const string serviceName = "Logon";
             var serviceNs = string.Concat("urn:", ServiceNamespace);
@@ -56,9 +62,9 @@ namespace Zone.Campaign.WebServices.Services
             serviceElement.AppendChild("urn:elemParameters", serviceNs);
 
             // Execute request and get response from server.
-            var response = _requestHandler.ExecuteRequest(uri, customHeaders, null, serviceName, ServiceNamespace, requestDoc);
+            var response = _requestHandler.ExecuteRequest(null, ServiceNamespace, serviceName, requestDoc);
 
-            Log.DebugFormat("Response to {0} received: {1}", serviceName, response.Status);
+                        Log.Debug($"Response to {serviceName} received: {response.Status}");
 
             if (!response.Success)
             {

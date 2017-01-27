@@ -3,6 +3,9 @@ using System.Text.RegularExpressions;
 
 namespace Zone.Campaign
 {
+    /// <summary>
+    /// Class representing Campaign's internal name identifier.
+    /// </summary>
     [Serializable]
     public sealed class InternalName
     {
@@ -14,10 +17,18 @@ namespace Zone.Campaign
 
         #region Constructor
 
+        /// <summary>
+        /// Creates a new instance of <see cref="InternalName"/>
+        /// </summary>
         public InternalName()
         {
         }
 
+        /// <summary>
+        /// Creates a new instance of <see cref="InternalName"/>
+        /// </summary>
+        /// <param name="namespace">Namespace - this can be null</param>
+        /// <param name="name">Name</param>
         public InternalName(string @namespace, string name)
         {
             Namespace = @namespace;
@@ -28,10 +39,19 @@ namespace Zone.Campaign
 
         #region Properties
 
+        /// <summary>
+        /// Namespace.
+        /// </summary>
         public string Namespace { get; set; }
 
+        /// <summary>
+        /// Name.
+        /// </summary>
         public string Name { get; set; }
 
+        /// <summary>
+        /// Whether a namespace is specified.
+        /// </summary>
         public bool HasNamespace
         {
             get { return !string.IsNullOrEmpty(Namespace); }
@@ -41,6 +61,11 @@ namespace Zone.Campaign
 
         #region Methods
 
+        /// <summary>
+        /// Parse an internal name string containing an optional namespace part and a name part.
+        /// </summary>
+        /// <param name="input">Interal name string</param>
+        /// <returns>Parsed internal name</returns>
         public static InternalName Parse(string input)
         {
             var match = ParseRegex.Match(input);
@@ -49,6 +74,12 @@ namespace Zone.Campaign
                 : new InternalName(match.Groups["namespace"].Value, match.Groups["name"].Value);
         }
 
+        /// <summary>
+        /// Parse an internal name string containing an optional namespace part and a name part.
+        /// </summary>
+        /// <param name="input">Internal name string</param>
+        /// <param name="result">Parsed internal name</param>
+        /// <returns>Whether the parse succeeded</returns>
         public static bool TryParse(string input, out InternalName result)
         {
             var match = ParseRegex.Match(input);
@@ -62,6 +93,10 @@ namespace Zone.Campaign
             return true;
         }
 
+        /// <summary>
+        /// Generates a formatted internal name string.
+        /// </summary>
+        /// <returns>Internal name string</returns>
         public override string ToString()
         {
             return string.IsNullOrEmpty(Namespace)

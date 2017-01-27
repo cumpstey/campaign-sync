@@ -10,6 +10,9 @@ using log4net;
 
 namespace Zone.Campaign.WebServices.Services
 {
+    /// <summary>
+    /// Wrapper for the xtk:persist SOAP services.
+    /// </summary>
     public class PersistService : Service, IWriteService
     {
         #region Fields
@@ -24,6 +27,10 @@ namespace Zone.Campaign.WebServices.Services
 
         #region Constructor
 
+        /// <summary>
+        /// Creates a new instance of <see cref="PersistService"/>
+        /// </summary>
+        /// <param name="requestHandler">Handler for the SOAP requests</param>
         public PersistService(ISoapRequestHandler requestHandler)
         {
             if (requestHandler == null)
@@ -38,7 +45,14 @@ namespace Zone.Campaign.WebServices.Services
 
         #region Methods
 
-        public Response Write<T>(Uri uri, IEnumerable<string> customHeaders, Tokens tokens, T item)
+        /// <summary>
+        /// Create/update an item.
+        /// </summary>
+        /// <typeparam name="T">Type of the item</typeparam>
+        /// <param name="tokens">Authentication tokens</param>
+        /// <param name="item">Item to create/update</param>
+        /// <returns>Response</returns>
+        public Response Write<T>(Tokens tokens, T item)
             where T : IPersistable
         {
             if (item == null)
@@ -69,14 +83,21 @@ namespace Zone.Campaign.WebServices.Services
             domElement.AppendChild(itemXml);
 
             // Execute request and get response from server.
-            var response = _requestHandler.ExecuteRequest(uri, customHeaders, tokens, serviceName, ServiceNamespace, requestDoc);
+            var response = _requestHandler.ExecuteRequest(tokens, ServiceNamespace, serviceName, requestDoc);
 
-            Log.DebugFormat("Response to {0} {1} received: {2}", serviceName, schema, response.Status);
+            Log.Debug($"Response to {serviceName} {schema} received: {response.Status}");
 
             return response;
         }
 
-        public Response WriteCollection<T>(Uri uri, IEnumerable<string> customHeaders, Tokens tokens, IEnumerable<T> items)
+        /// <summary>
+        /// Create/update a collection of items.
+        /// </summary>
+        /// <typeparam name="T">Type of the item</typeparam>
+        /// <param name="tokens">Authentication tokens</param>
+        /// <param name="items">Items to create/update</param>
+        /// <returns>Response</returns>
+        public Response WriteCollection<T>(Tokens tokens, IEnumerable<T> items)
             where T : IPersistable
         {
             const string serviceName = "WriteCollection";
@@ -107,9 +128,9 @@ namespace Zone.Campaign.WebServices.Services
             }
 
             // Execute request and get response from server.
-            var response = _requestHandler.ExecuteRequest(uri, customHeaders, tokens, serviceName, ServiceNamespace, requestDoc);
+            var response = _requestHandler.ExecuteRequest(tokens, ServiceNamespace, serviceName, requestDoc);
 
-            Log.DebugFormat("Response to {0} {1} received: {2}", serviceName, schema, response.Status);
+            Log.Debug($"Response to {serviceName} {schema} received: {response.Status}");
 
             return response;
         }

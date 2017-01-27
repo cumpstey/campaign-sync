@@ -6,11 +6,20 @@ using Zone.Campaign.WebServices.Services.Responses;
 
 namespace Zone.Campaign.WebServices.Services
 {
+    /// <summary>
+    /// Contains image upload functions.
+    /// </summary>
     public interface IImageWriteService
     {
         #region Methods
 
-        Response WriteImage(Uri uri, IEnumerable<string> customHeaders, Tokens tokens, ImageFile item);
+        /// <summary>
+        /// Upload an image and create/update an xtk:fileRes record.
+        /// </summary>
+        /// <param name="tokens">Authenication tokens</param>
+        /// <param name="item">Image file and metadata</param>
+        /// <returns>Response</returns>
+        Response WriteImage(Tokens tokens, ImageFile item);
         
         #endregion
     }

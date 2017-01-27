@@ -8,6 +8,9 @@ using Zone.Campaign.Templates.Model;
 
 namespace Zone.Campaign.Templates.Services
 {
+    /// <summary>
+    /// Provides functions for processing XML files.
+    /// </summary>
     public class XmlMetadataProcessor : IMetadataExtractor, IMetadataInserter
     {
         #region Fields
@@ -24,16 +27,24 @@ namespace Zone.Campaign.Templates.Services
 
         #region Constructor
 
+        /// <summary>
+        /// Creates a new instance of <see cref="XmlMetadataProcessor"/>
+        /// </summary>
         public XmlMetadataProcessor()
         {
-            _metadataParser = new MetadataParser();
-            _metadataFormatter = new MetadataParser();
+            _metadataParser = new MetadataProcessor();
+            _metadataFormatter = new MetadataProcessor();
         }
 
         #endregion
 
         #region Methods
 
+        /// <summary>
+        /// Extract the code and metadata from raw XML file content.
+        /// </summary>
+        /// <param name="input">Raw XML file content</param>
+        /// <returns>Class containing code content and metadata.</returns>
         public Template ExtractMetadata(string input)
         {
             if (input == null)
@@ -73,6 +84,11 @@ namespace Zone.Campaign.Templates.Services
             };
         }
 
+        /// <summary>
+        /// Converts metadata and code into raw XML file content which can be written to disk.
+        /// </summary>
+        /// <param name="input">Metadata and code</param>
+        /// <returns>Raw XML file content</returns>
         public string InsertMetadata(Template input)
         {
             if (input == null)

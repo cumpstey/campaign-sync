@@ -9,6 +9,9 @@ using log4net;
 
 namespace Zone.Campaign.WebServices.Services
 {
+    /// <summary>
+    /// Wrapper for the xtk:queryDef SOAP services.
+    /// </summary>
     public class QueryDefService : Service, IQueryService
     {
         #region Fields
@@ -23,6 +26,10 @@ namespace Zone.Campaign.WebServices.Services
 
         #region Constructor
 
+        /// <summary>
+        /// Creates a new instance of <see cref="QueryDefService"/>
+        /// </summary>
+        /// <param name="requestHandler">Handler for the SOAP requests</param>
         public QueryDefService(ISoapRequestHandler requestHandler)
         {
             if (requestHandler == null)
@@ -37,7 +44,15 @@ namespace Zone.Campaign.WebServices.Services
 
         #region Methods
 
-        public Response<IEnumerable<string>> ExecuteQuery(Uri uri, IEnumerable<string> customHeaders, Tokens tokens, string schema, IEnumerable<string> fields, IEnumerable<string> conditions)
+        /// <summary>
+        /// Query the data based on a set of conditions.
+        /// </summary>
+        /// <param name="tokens">Authentication tokens</param>
+        /// <param name="schema">Schema of the data to query</param>
+        /// <param name="fields">Fields to return</param>
+        /// <param name="conditions">Conditions</param>
+        /// <returns>Response containing collection of matching items</returns>
+        public Response<IEnumerable<string>> ExecuteQuery(Tokens tokens, string schema, IEnumerable<string> fields, IEnumerable<string> conditions)
         {
             const string serviceName = "ExecuteQuery";
             var serviceNs = string.Concat("urn:", ServiceNamespace);
@@ -70,7 +85,7 @@ namespace Zone.Campaign.WebServices.Services
             }
 
             // Execute request and get response from server.
-            var response = _requestHandler.ExecuteRequest(uri, customHeaders, tokens, serviceName, ServiceNamespace, requestDoc);
+            var response = _requestHandler.ExecuteRequest(tokens, ServiceNamespace, serviceName, requestDoc);
             if (!response.Success)
             {
                 return new Response<IEnumerable<string>>(response.Status, response.Message, response.Exception);

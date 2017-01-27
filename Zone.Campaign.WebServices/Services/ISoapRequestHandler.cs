@@ -1,16 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Xml;
+﻿using System.Xml;
 using Zone.Campaign.WebServices.Security;
 using Zone.Campaign.WebServices.Services.Responses;
 
 namespace Zone.Campaign.WebServices.Services
 {
+    /// <summary>
+    /// Handler to make SOAP requests.
+    /// </summary>
     public interface ISoapRequestHandler
     {
-        Response<XmlNode> ExecuteRequest(Uri uri, IEnumerable<string> customHeaders, Tokens tokens, string serviceName, string serviceNamespace, XmlDocument requestDoc);
-
+        /// <summary>
+        /// Execute a request.
+        /// </summary>
+        /// <param name="tokens">Authentication tokens</param>
+        /// <param name="serviceNamespace">Namespace of the SOAP service</param>
+        /// <param name="serviceName">Name of the SOAP service</param>
+        /// <param name="requestDoc">SOAP content as XML document</param>
+        /// <returns>Response status and content</returns>
+        Response<XmlNode> ExecuteRequest(Tokens tokens, string serviceNamespace, string serviceName, XmlDocument requestDoc);
     }
 }

@@ -10,6 +10,9 @@ using log4net;
 
 namespace Zone.Campaign.WebServices.Services
 {
+    /// <summary>
+    /// Wrapper for the zon:persist SOAP services.
+    /// </summary>
     public class ImagePersistService : Service, IImageWriteService
     {
         #region Fields
@@ -24,6 +27,10 @@ namespace Zone.Campaign.WebServices.Services
 
         #region Constructor
 
+        /// <summary>
+        /// Creates a new instance of <see cref="ImagePersistService"/>
+        /// </summary>
+        /// <param name="requestHandler">Handler for the SOAP requests</param>
         public ImagePersistService(ISoapRequestHandler requestHandler)
         {
             if (requestHandler == null)
@@ -38,7 +45,13 @@ namespace Zone.Campaign.WebServices.Services
 
         #region Methods
 
-        public Response WriteImage(Uri uri, IEnumerable<string> customHeaders, Tokens tokens, ImageFile item)
+        /// <summary>
+        /// Upload an image and create/update an xtk:fileRes record.
+        /// </summary>
+        /// <param name="tokens">Authenication tokens</param>
+        /// <param name="item">Image file and metadata</param>
+        /// <returns>Response</returns>
+        public Response WriteImage(Tokens tokens, ImageFile item)
         {
             if (item == null)
             {
@@ -59,8 +72,8 @@ namespace Zone.Campaign.WebServices.Services
             domElement.AppendChild(itemXml);
 
             // Execute request and get response from server.
-            var response = _requestHandler.ExecuteRequest(uri, customHeaders, tokens, serviceName, ServiceNamespace, requestDoc);
-            Log.DebugFormat("Response to {0} received: {1}", serviceName, response.Status);
+            var response = _requestHandler.ExecuteRequest(tokens, ServiceNamespace, serviceName, requestDoc);
+            Log.Debug($"Response to {serviceName} received: {response.Status}");
             if (!response.Success)
             {
                 return new Response<string>(response.Status, response.Message, response.Exception);
