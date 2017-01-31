@@ -22,6 +22,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\Zone.Campaign.WebServices.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -64,7 +65,8 @@
     <Compile Include="Services\IBuilderService.cs" />
     <Compile Include="Services\IImageWriteService.cs" />
     <Compile Include="Services\HttpSoapRequestHandler.cs" />
-    <Compile Include="Services\ISoapRequestHandler.cs" />
+    <Compile Include="Services\IAuthenticatedRequestHandler.cs" />
+    <Compile Include="Services\IRequestHandler.cs" />
     <Compile Include="Services\IWriteService.cs" />
     <Compile Include="Services\IQueryService.cs" />
     <Compile Include="Services\BuilderService.cs" />
@@ -92,7 +94,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>xcopy /Q /Y "$(TargetDir)$(TargetFileName)" "$(ProjectDir)packagecontents\lib\net40\"
-xcopy /Q /Y "$(TargetDir)Zone.Campaign.Common.dll" "$(ProjectDir)packagecontents\lib\net40\"
+xcopy /Q /Y "$(TargetDir)$(TargetName).xml" "$(ProjectDir)packagecontents\lib\net40\"
 </PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

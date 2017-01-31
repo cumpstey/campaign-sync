@@ -4,16 +4,20 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
+using log4net;
+using Zone.Campaign.Templates.Exceptions;
 using Zone.Campaign.Templates.Model;
 
-namespace Zone.Campaign.Templates.Services
+namespace Zone.Campaign.Templates.Services.Metadata
 {
     /// <summary>
     /// Provides functions for processing XML files.
     /// </summary>
-    public class XmlMetadataProcessor : IMetadataExtractor, IMetadataInserter
+    public class XmlMetadataProcessor : IXmlMetadataExtractor, IMetadataInserter
     {
         #region Fields
+
+        private static readonly ILog Log = LogManager.GetLogger(typeof(XmlMetadataProcessor));
 
         private static readonly Regex MetadataCommentRegex = new Regex("^!(?<value>.*)!$", RegexOptions.Compiled | RegexOptions.Singleline);
 
@@ -45,6 +49,7 @@ namespace Zone.Campaign.Templates.Services
         /// </summary>
         /// <param name="input">Raw XML file content</param>
         /// <returns>Class containing code content and metadata.</returns>
+        /// <exception cref="MetadataException" />
         public Template ExtractMetadata(string input)
         {
             if (input == null)
@@ -54,7 +59,14 @@ namespace Zone.Campaign.Templates.Services
 
             // Parse xml.
             var xmlDocument = new XmlDocument();
-            xmlDocument.LoadXml(input);
+            try
+            {
+                xmlDocument.LoadXml(input);
+            }
+            catch(XmlException ex)
+            {
+                throw new MetadataException(ex);
+            }
 
             // Read metadata from first correctly formatted comment.
             var metadata = default(TemplateMetadata);

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Zone.Campaign.WebServices.Model;
-using Zone.Campaign.WebServices.Security;
+﻿using Zone.Campaign.WebServices.Model;
 using Zone.Campaign.WebServices.Services.Responses;
 
 namespace Zone.Campaign.WebServices.Services
@@ -16,10 +13,10 @@ namespace Zone.Campaign.WebServices.Services
         /// <summary>
         /// Upload an image and create/update an xtk:fileRes record.
         /// </summary>
-        /// <param name="tokens">Authenication tokens</param>
+        /// <param name="requestHandler">Request handler</param>
         /// <param name="item">Image file and metadata</param>
         /// <returns>Response</returns>
-        Response WriteImage(Tokens tokens, ImageFile item);
+        Response WriteImage(IRequestHandler requestHandler, ImageFile item);
         
         #endregion
     }

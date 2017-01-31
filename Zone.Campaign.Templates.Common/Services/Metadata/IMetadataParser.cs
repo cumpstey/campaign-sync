@@ -1,6 +1,6 @@
 ﻿using Zone.Campaign.Templates.Model;
 
-namespace Zone.Campaign.Templates.Services
+namespace Zone.Campaign.Templates.Services.Metadata
 {
     /// <summary>
     /// Provides a function for parsing metadata stored in files into a form which can be sent to Campaign.

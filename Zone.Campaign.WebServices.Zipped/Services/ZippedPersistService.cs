@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using log4net;
 using Zone.Campaign.WebServices.Model;
 using Zone.Campaign.WebServices.Model.Abstract;
-using Zone.Campaign.WebServices.Security;
 using Zone.Campaign.WebServices.Services.Abstract;
 using Zone.Campaign.WebServices.Services.Responses;
-using log4net;
 
 namespace Zone.Campaign.WebServices.Services
 {
@@ -20,39 +19,19 @@ namespace Zone.Campaign.WebServices.Services
         private const string ServiceNamespace = "zon:persist";
 
         private static readonly ILog Log = LogManager.GetLogger(typeof(PersistService));
-
-        private readonly ISoapRequestHandler _requestHandler;
-
+        
         #endregion
-
-        #region Constructor
-
-        /// <summary>
-        /// Creates a new instance of <see cref="ZippedPersistService"/>
-        /// </summary>
-        /// <param name="requestHandler">Handler for the SOAP requests</param>
-        public ZippedPersistService(ISoapRequestHandler requestHandler)
-        {
-            if (requestHandler == null)
-            {
-                throw new ArgumentNullException(nameof(requestHandler));
-            }
-
-            _requestHandler = requestHandler;
-        }
-
-        #endregion
-
+        
         #region Methods
 
         /// <summary>
         /// Create/update an item.
         /// </summary>
         /// <typeparam name="T">Type of the item</typeparam>
-        /// <param name="tokens">Authentication tokens</param>
+        /// <param name="requestHandler">Request handler</param>
         /// <param name="item">Item to create/update</param>
         /// <returns>Response</returns>
-        public Response Write<T>(Tokens tokens, T item)
+        public Response Write<T>(IRequestHandler requestHandler, T item)
             where T : IPersistable
         {
             if (item == null)
@@ -73,7 +52,7 @@ namespace Zone.Campaign.WebServices.Services
             var schema = schemaAttribute.Name;
 
             // Create common elements of SOAP request.
-            var serviceElement = CreateServiceRequest(serviceName, serviceNs, tokens);
+            var serviceElement = CreateServiceRequest(serviceName, serviceNs);
             var requestDoc = serviceElement.OwnerDocument;
 
             // Build request for this service.
@@ -82,7 +61,7 @@ namespace Zone.Campaign.WebServices.Services
             serviceElement.AppendChildWithValue("urn:input", encodedQuery);
 
             // Execute request and get response from server.
-            var response = _requestHandler.ExecuteRequest(tokens, ServiceNamespace, serviceName, requestDoc);
+            var response = requestHandler.ExecuteRequest(new ServiceName(ServiceNamespace, serviceName), requestDoc);
 
             Log.DebugFormat("Response to {0} {1} received: {2}", serviceName, schema, response.Status);
 
@@ -93,10 +72,10 @@ namespace Zone.Campaign.WebServices.Services
         /// Create/update a collection of items.
         /// </summary>
         /// <typeparam name="T">Type of the item</typeparam>
-        /// <param name="tokens">Authentication tokens</param>
+        /// <param name="requestHandler">Request handler</param>
         /// <param name="items">Items to create/update</param>
         /// <returns>Response</returns>
-        public Response WriteCollection<T>(Tokens tokens, IEnumerable<T> items)
+        public Response WriteCollection<T>(IRequestHandler requestHandler, IEnumerable<T> items)
             where T : IPersistable
         {
             const string serviceName = "WriteCollectionZip";
@@ -112,7 +91,7 @@ namespace Zone.Campaign.WebServices.Services
             var schema = schemaAttribute.Name;
 
             // Create common elements of SOAP request
-            var serviceElement = CreateServiceRequest(serviceName, serviceNs, tokens);
+            var serviceElement = CreateServiceRequest(serviceName, serviceNs);
             var requestDoc = serviceElement.OwnerDocument;
 
             // Build request for this service.
@@ -129,7 +108,7 @@ namespace Zone.Campaign.WebServices.Services
             serviceElement.AppendChildWithValue("urn:input", encodedQuery);
 
             // Execute request and get response from server.
-            var response = _requestHandler.ExecuteRequest(tokens, ServiceNamespace, serviceName, requestDoc);
+            var response = requestHandler.ExecuteRequest(new ServiceName(ServiceNamespace, serviceName), requestDoc);
 
             Log.DebugFormat("Response to {0} {1} received: {2}", serviceName, schema, response.Status);
 

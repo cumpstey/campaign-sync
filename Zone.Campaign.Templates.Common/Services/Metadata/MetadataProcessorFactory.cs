@@ -1,4 +1,4 @@
-﻿namespace Zone.Campaign.Templates.Services
+﻿namespace Zone.Campaign.Templates.Services.Metadata
 {
     /// <summary>
     /// Contains functions to return metadata extractor and metadata inserter classes for given file types.

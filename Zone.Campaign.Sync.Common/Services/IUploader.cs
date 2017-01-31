@@ -1,4 +1,4 @@
-﻿using Zone.Campaign.WebServices.Security;
+﻿using Zone.Campaign.WebServices.Services;
 
 namespace Zone.Campaign.Sync.Services
 {
@@ -12,16 +12,16 @@ namespace Zone.Campaign.Sync.Services
         /// <summary>
         /// Upload a set of files defined by the settings.
         /// </summary>
-        /// <param name="tokens">Authentication tokens</param>
+        /// <param name="requestHandler">Request handler</param>
         /// <param name="settings">Upload settings</param>
-        void DoUpload(Tokens tokens, UploadSettings settings);
+        void DoUpload(IRequestHandler requestHandler, UploadSettings settings);
 
         /// <summary>
         /// Upload a set of images defined by the settings.
         /// </summary>
-        /// <param name="tokens">Authentication tokens</param>
+        /// <param name="requestHandler">Request handler</param>
         /// <param name="settings">Upload settings</param>
-        void DoImageUpload(Tokens tokens, UploadSettings settings);
+        void DoImageUpload(IRequestHandler requestHandler, UploadSettings settings);
 
         #endregion
     }

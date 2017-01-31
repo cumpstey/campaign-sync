@@ -1,5 +1,4 @@
 ﻿using System.Xml;
-using Zone.Campaign.WebServices.Security;
 
 namespace Zone.Campaign.WebServices.Services.Abstract
 {
@@ -7,7 +6,7 @@ namespace Zone.Campaign.WebServices.Services.Abstract
     {
         #region Helpers
 
-        protected XmlNode CreateServiceRequest(string serviceName, string serviceNs, Tokens tokens)
+        protected XmlNode CreateServiceRequest(string serviceName, string serviceNs)
         {
             var doc = new XmlDocument();
             doc.LoadXml(string.Format(@"<soapenv:Envelope xmlns:soapenv=""{0}""/>", Soap.XmlNamespace));

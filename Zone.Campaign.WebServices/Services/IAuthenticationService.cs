@@ -13,10 +13,11 @@ namespace Zone.Campaign.WebServices.Services
         /// <summary>
         /// Authorise user using provided credentials and retrieve security and session tokens.
         /// </summary>
+        /// <param name="requestHandler">Request handler</param>
         /// <param name="username">Username</param>
         /// <param name="password">Password</param>
         /// <returns>Security and session tokens</returns>
-        Response<Tokens> Logon(string username, string password);
+        Response<Tokens> Logon(IRequestHandler requestHandler, string username, string password);
         
         #endregion
     }

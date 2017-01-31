@@ -14,7 +14,7 @@ namespace Zone.Campaign.WebServices.Services
     /// <summary>
     /// Handler to make SOAP requests over http.
     /// </summary>
-    public class HttpSoapRequestHandler : ISoapRequestHandler
+    public class HttpSoapRequestHandler : IAuthenticatedRequestHandler
     {
         #region Constructor
 
@@ -38,11 +38,20 @@ namespace Zone.Campaign.WebServices.Services
 
         #region Properties
 
+        /// <summary>
+        /// Uri of the SOAP handler.
+        /// </summary>
         public Uri Uri { get; private set; }
 
+        /// <summary>
+        /// Collection of custom headers to send with each request, as "key: value".
+        /// </summary>
         public IEnumerable<string> CustomHeaders { get; private set; }
 
-        ////public Tokens AuthenticationTokens { get; set; }
+        /// <summary>
+        /// Authentication tokens.
+        /// </summary>
+        public Tokens AuthenticationTokens { get; set; }
 
         #endregion
 
@@ -51,31 +60,27 @@ namespace Zone.Campaign.WebServices.Services
         /// <summary>
         /// Execute a request by making an http SOAP request.
         /// </summary>
-        /// <param name="tokens">Authentication tokens</param>
-        /// <param name="serviceNamespace">Namespace of the SOAP service</param>
         /// <param name="serviceName">Name of the SOAP service</param>
         /// <param name="requestDoc">SOAP content as XML document</param>
         /// <returns>Response status and content</returns>
-        public Response<XmlNode> ExecuteRequest(Tokens tokens, string serviceNamespace, string serviceName, XmlDocument requestDoc)
+        public Response<XmlNode> ExecuteRequest(ServiceName serviceName, XmlDocument requestDoc)
         {
-            return ExecuteRequest(tokens, serviceNamespace, serviceName, requestDoc.InnerXml);
+            return ExecuteRequest(serviceName, requestDoc.InnerXml);
         }
 
         /// <summary>
         /// Execute a request by making an http SOAP request.
         /// </summary>
-        /// <param name="tokens">Authentication tokens</param>
-        /// <param name="serviceNamespace">Namespace of the SOAP service</param>
         /// <param name="serviceName">Name of the SOAP service</param>
         /// <param name="requestBody">SOAP content as string</param>
         /// <returns>Response status and content</returns>
-        public Response<XmlNode> ExecuteRequest(Tokens tokens, string serviceNamespace, string serviceName, string requestBody)
+        public Response<XmlNode> ExecuteRequest(ServiceName serviceName, string requestBody)
         {
             // Execute request and get response from server.
             string responseFromServer;
             try
             {
-                responseFromServer = PerformHttpRequest(tokens, serviceNamespace, serviceName, requestBody);
+                responseFromServer = PerformHttpRequest(serviceName, requestBody);
             }
             catch (WebException ex)
             {
@@ -143,7 +148,7 @@ namespace Zone.Campaign.WebServices.Services
         /// <summary>
         /// Make the http request. This method does not handle any exceptions thrown by making the http request.
         /// </summary>
-        private string PerformHttpRequest(Tokens tokens, string serviceNamespace, string serviceName, string requestBody)
+        private string PerformHttpRequest(ServiceName serviceName, string requestBody)
         {
             // We have done the login now we can actually do a query on Neolane
             var reqData = (HttpWebRequest)WebRequest.Create(Uri);
@@ -151,17 +156,17 @@ namespace Zone.Campaign.WebServices.Services
             reqData.ContentType = "text/xml; charset=utf-8";
 
             // Add to the headers the requested service action that we want to call
-            reqData.Headers.Add("SOAPAction", string.Format("{0}#{1}", serviceNamespace, serviceName));
+            reqData.Headers.Add("SOAPAction", serviceName.ToString());
 
             // Add to the headers the security and session token
             // Tokens should be provided except for the login request
-            if (tokens != null)
+            if (AuthenticationTokens != null)
             {
-                reqData.Headers.Add("X-Security-Token", tokens.SecurityToken);
+                reqData.Headers.Add("X-Security-Token", AuthenticationTokens.SecurityToken);
 
                 // The session token can be added either in the request body or in header as a cookie.
                 // We add it as a header, to make it easier to deal with queuing requests for later processing.
-                reqData.Headers.Add("cookie", "__sessiontoken=" + tokens.SessionToken);
+                reqData.Headers.Add("cookie", $"__sessiontoken={AuthenticationTokens.SessionToken}");
             }
 
             foreach (var header in CustomHeaders.Where(i => Regex.IsMatch(i, @"^[a-z_-]+:", RegexOptions.Compiled | RegexOptions.IgnoreCase)))

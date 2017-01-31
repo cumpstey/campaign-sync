@@ -21,26 +21,6 @@ namespace Zone.Campaign.WebServices.Services
 
         private static readonly ILog Log = LogManager.GetLogger(typeof(ImagePersistService));
 
-        private readonly ISoapRequestHandler _requestHandler;
-
-        #endregion
-
-        #region Constructor
-
-        /// <summary>
-        /// Creates a new instance of <see cref="ImagePersistService"/>
-        /// </summary>
-        /// <param name="requestHandler">Handler for the SOAP requests</param>
-        public ImagePersistService(ISoapRequestHandler requestHandler)
-        {
-            if (requestHandler == null)
-            {
-                throw new ArgumentNullException(nameof(requestHandler));
-            }
-
-            _requestHandler = requestHandler;
-        }
-
         #endregion
 
         #region Methods
@@ -48,10 +28,10 @@ namespace Zone.Campaign.WebServices.Services
         /// <summary>
         /// Upload an image and create/update an xtk:fileRes record.
         /// </summary>
-        /// <param name="tokens">Authenication tokens</param>
+        /// <param name="requestHandler">Request handler</param>
         /// <param name="item">Image file and metadata</param>
         /// <returns>Response</returns>
-        public Response WriteImage(Tokens tokens, ImageFile item)
+        public Response WriteImage(IRequestHandler requestHandler, ImageFile item)
         {
             if (item == null)
             {
@@ -62,7 +42,7 @@ namespace Zone.Campaign.WebServices.Services
             var serviceNs = string.Concat("urn:", ServiceNamespace);
 
             // Create common elements of SOAP request.
-            var serviceElement = CreateServiceRequest(serviceName, serviceNs, tokens);
+            var serviceElement = CreateServiceRequest(serviceName, serviceNs);
             var requestDoc = serviceElement.OwnerDocument;
 
             // Build request for this service.
@@ -72,7 +52,7 @@ namespace Zone.Campaign.WebServices.Services
             domElement.AppendChild(itemXml);
 
             // Execute request and get response from server.
-            var response = _requestHandler.ExecuteRequest(tokens, ServiceNamespace, serviceName, requestDoc);
+            var response = requestHandler.ExecuteRequest(new ServiceName(ServiceNamespace, serviceName), requestDoc);
             Log.Debug($"Response to {serviceName} received: {response.Status}");
             if (!response.Success)
             {

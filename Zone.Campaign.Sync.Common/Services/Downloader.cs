@@ -6,6 +6,7 @@ using Zone.Campaign.Templates.Model;
 using Zone.Campaign.Templates.Services;
 using Zone.Campaign.WebServices.Security;
 using Zone.Campaign.WebServices.Services;
+using Zone.Campaign.Templates.Services.Metadata;
 
 namespace Zone.Campaign.Sync.Services
 {
@@ -52,7 +53,7 @@ namespace Zone.Campaign.Sync.Services
         /// </summary>
         /// <param name="tokens">Authentication tokens</param>
         /// <param name="settings">Download settings</param>
-        public void DoDownload(Tokens tokens, DownloadSettings settings)
+        public void DoDownload(IRequestHandler requestHandler, DownloadSettings settings)
         {
             // Create output dir
             var outDir = Path.Combine(settings.OutputDirectory, settings.Schema.Replace(":", "_"));
@@ -66,7 +67,7 @@ namespace Zone.Campaign.Sync.Services
             }
 
             // Do query
-            var response = _queryService.ExecuteQuery(tokens, settings.Schema, mapping.QueryFields, settings.Conditions);
+            var response = _queryService.ExecuteQuery(requestHandler, settings.Schema, mapping.QueryFields, settings.Conditions);
 
             if (!response.Success)
             {

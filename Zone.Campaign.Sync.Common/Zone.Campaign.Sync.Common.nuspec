@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>Zone.Campaign.Sync.Common</id>
-    <version>1.0.2</version>
+    <version>1.0.11</version>
     <title>Adobe Campaign: Sync common</title>
     <authors>Neil Cumpstey</authors>
     <owners>Neil Cumpstey</owners>
@@ -11,7 +11,8 @@
     <copyright>Copyright 2017</copyright>
     <tags>adobe campaign</tags>
     <dependencies>
-      <dependency id="Zone.Campaign.WebServices" version="1.0.2" />
+      <dependency id="Zone.Campaign.Common" version="1.0.1" />
+      <dependency id="Zone.Campaign.WebServices" version="1.0.13" />
       <dependency id="CsvHelper" version="2.16.3" />
       <dependency id="log4net" version="2.0.5" />
     </dependencies>

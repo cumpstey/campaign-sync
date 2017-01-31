@@ -23,6 +23,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\Zone.Campaign.Sync.Common.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -70,6 +71,8 @@
     <Compile Include="Services\Downloader.cs" />
     <Compile Include="Services\CsvImageDataProvider.cs" />
     <Compile Include="Services\IImageDataProvider.cs" />
+    <Compile Include="Services\RawRequestProcessor.cs" />
+    <Compile Include="Services\IRawRequestProcessor.cs" />
     <Compile Include="Services\IUploader.cs" />
     <Compile Include="Services\UploadSettings.cs" />
     <Compile Include="Services\IMappingFactory.cs" />
@@ -101,8 +104,9 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>xcopy /Q /Y "$(TargetDir)$(TargetFileName)" "$(ProjectDir)packagecontents\lib\net40\"
-xcopy /Q /Y "$(TargetDir)Zone.Campaign.Common.dll" "$(ProjectDir)packagecontents\lib\net40\"
+xcopy /Q /Y "$(TargetDir)$(TargetName).xml" "$(ProjectDir)packagecontents\lib\net40\"
 xcopy /Q /Y "$(TargetDir)Zone.Campaign.Templates.Common.dll" "$(ProjectDir)packagecontents\lib\net40\"
+xcopy /Q /Y "$(TargetDir)Zone.Campaign.Templates.Common.xml" "$(ProjectDir)packagecontents\lib\net40\"
 
 </PostBuildEvent>
   </PropertyGroup>

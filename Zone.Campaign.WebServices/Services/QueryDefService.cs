@@ -20,26 +20,6 @@ namespace Zone.Campaign.WebServices.Services
 
         private static readonly ILog Log = LogManager.GetLogger(typeof(QueryDefService));
 
-        private readonly ISoapRequestHandler _requestHandler;
-
-        #endregion
-
-        #region Constructor
-
-        /// <summary>
-        /// Creates a new instance of <see cref="QueryDefService"/>
-        /// </summary>
-        /// <param name="requestHandler">Handler for the SOAP requests</param>
-        public QueryDefService(ISoapRequestHandler requestHandler)
-        {
-            if (requestHandler == null)
-            {
-                throw new ArgumentNullException(nameof(requestHandler));
-            }
-
-            _requestHandler = requestHandler;
-        }
-
         #endregion
 
         #region Methods
@@ -47,18 +27,18 @@ namespace Zone.Campaign.WebServices.Services
         /// <summary>
         /// Query the data based on a set of conditions.
         /// </summary>
-        /// <param name="tokens">Authentication tokens</param>
+        /// <param name="requestHandler">Request handler</param>
         /// <param name="schema">Schema of the data to query</param>
         /// <param name="fields">Fields to return</param>
         /// <param name="conditions">Conditions</param>
         /// <returns>Response containing collection of matching items</returns>
-        public Response<IEnumerable<string>> ExecuteQuery(Tokens tokens, string schema, IEnumerable<string> fields, IEnumerable<string> conditions)
+        public Response<IEnumerable<string>> ExecuteQuery(IRequestHandler requestHandler, string schema, IEnumerable<string> fields, IEnumerable<string> conditions)
         {
             const string serviceName = "ExecuteQuery";
             var serviceNs = string.Concat("urn:", ServiceNamespace);
 
             // Create common elements of SOAP request.
-            var serviceElement = CreateServiceRequest(serviceName, serviceNs, tokens);
+            var serviceElement = CreateServiceRequest(serviceName, serviceNs);
             var requestDoc = serviceElement.OwnerDocument;
 
             // Build request for this service.
@@ -85,7 +65,7 @@ namespace Zone.Campaign.WebServices.Services
             }
 
             // Execute request and get response from server.
-            var response = _requestHandler.ExecuteRequest(tokens, ServiceNamespace, serviceName, requestDoc);
+            var response = requestHandler.ExecuteRequest(new ServiceName(ServiceNamespace, serviceName), requestDoc);
             if (!response.Success)
             {
                 return new Response<IEnumerable<string>>(response.Status, response.Message, response.Exception);

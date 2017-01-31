@@ -1,6 +1,6 @@
 ﻿using Zone.Campaign.Templates.Model;
 
-namespace Zone.Campaign.Templates.Services
+namespace Zone.Campaign.Templates.Services.Metadata
 {
     /// <summary>
     /// Provides a function for transforming metadata sent from Campaign into a format in which it can be stored locally.

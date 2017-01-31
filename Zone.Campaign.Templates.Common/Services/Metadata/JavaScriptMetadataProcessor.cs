@@ -2,7 +2,7 @@
 using System.Text.RegularExpressions;
 using Zone.Campaign.Templates.Model;
 
-namespace Zone.Campaign.Templates.Services
+namespace Zone.Campaign.Templates.Services.Metadata
 {
     /// <summary>
     /// Provides functions for processing JavaScript files.

@@ -1,5 +1,4 @@
-﻿using Zone.Campaign.WebServices.Security;
-using Zone.Campaign.WebServices.Services.Responses;
+﻿using Zone.Campaign.WebServices.Services.Responses;
 
 namespace Zone.Campaign.WebServices.Services
 {
@@ -13,10 +12,10 @@ namespace Zone.Campaign.WebServices.Services
         /// <summary>
         /// Trigger a build of the schema from the srcSchema
         /// </summary>
-        /// <param name="tokens">Authentication tokens</param>
+        /// <param name="requestHandler">Request handler</param>
         /// <param name="schemaName">Name of the schema to build</param>
         /// <returns>Response</returns>
-        Response BuildSchema(Tokens tokens, InternalName schemaName);
+        Response BuildSchema(IRequestHandler requestHandler, InternalName schemaName);
 
         #endregion
     }

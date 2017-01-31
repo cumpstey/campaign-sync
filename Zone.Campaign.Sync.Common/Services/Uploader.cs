@@ -5,6 +5,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using log4net;
 using Zone.Campaign.Templates.Services;
+using Zone.Campaign.Templates.Services.Metadata;
 using Zone.Campaign.WebServices.Model;
 using Zone.Campaign.WebServices.Security;
 using Zone.Campaign.WebServices.Services;
@@ -72,9 +73,9 @@ namespace Zone.Campaign.Sync.Services
         /// <summary>
         /// Upload a set of files defined by the settings.
         /// </summary>
-        /// <param name="tokens">Authentication tokens</param>
+        /// <param name="requestHandler">Request handler</param>
         /// <param name="settings">Upload settings</param>
-        public void DoUpload(Tokens tokens, UploadSettings settings)
+        public void DoUpload(IRequestHandler requestHandler, UploadSettings settings)
         {
             var pathList = settings.FilePaths.SelectMany(i =>
             {
@@ -162,7 +163,7 @@ namespace Zone.Campaign.Sync.Services
                     var mapping = _mappingFactory.GetMapping(template.Metadata.Schema.ToString());
                     var persistable = mapping.GetPersistableItem(template);
 
-                    var response = _writeService.Write(tokens, persistable);
+                    var response = _writeService.Write(requestHandler, persistable);
                     if (!response.Success)
                     {
                         Log.Warn($"Upload of {template.Metadata.Name} failed: {response.Message}");
@@ -185,7 +186,7 @@ namespace Zone.Campaign.Sync.Services
                     {
                         schemaProcessedCount++;
 
-                        var response = _builderService.BuildSchema(tokens, schema.Metadata.Name);
+                        var response = _builderService.BuildSchema(requestHandler, schema.Metadata.Name);
                         if (!response.Success)
                         {
                             Log.Warn($"Build of {schema.Metadata.Name} failed: {response.Message}");
@@ -204,9 +205,9 @@ namespace Zone.Campaign.Sync.Services
         /// <summary>
         /// Upload a set of images defined by the settings.
         /// </summary>
-        /// <param name="tokens">Authentication tokens</param>
+        /// <param name="requestHandler">Request handler</param>
         /// <param name="settings">Upload settings</param>
-        public void DoImageUpload(Tokens tokens, UploadSettings settings)
+        public void DoImageUpload(IRequestHandler requestHandler, UploadSettings settings)
         {
             var imageData = settings.FilePaths.SelectMany(i => _imageDataProvider.GetData(i)).ToArray();
 
@@ -271,7 +272,7 @@ namespace Zone.Campaign.Sync.Services
                     FileContent = fileContent,
                 };
 
-                var response = _imageWriteService.WriteImage(tokens, file);
+                var response = _imageWriteService.WriteImage(requestHandler, file);
                 if (!response.Success)
                 {
                     Log.Warn($"Upload of {imageItem.InternalName} failed: {response.Message}");

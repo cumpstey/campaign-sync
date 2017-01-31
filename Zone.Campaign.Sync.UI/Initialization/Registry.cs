@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Zone.Campaign.Sync.Services;
 using Zone.Campaign.Templates.Services;
+using Zone.Campaign.Templates.Services.Metadata;
 using Zone.Campaign.WebServices.Services;
 
 namespace Zone.Campaign.Sync.UI.Initialization
@@ -29,6 +30,8 @@ namespace Zone.Campaign.Sync.UI.Initialization
             For<IMetadataExtractorFactory>().Use<MetadataProcessorFactory>();
             For<IMetadataInserterFactory>().Use<MetadataProcessorFactory>();
 
+            For<IXmlMetadataExtractor>().Use<XmlMetadataProcessor>();
+
             For<IImageDataProvider>().Use<CsvImageDataProvider>();
 
             For<IAuthenticationService>().Use<SessionService>();
@@ -46,7 +49,7 @@ namespace Zone.Campaign.Sync.UI.Initialization
                 For<IWriteService>().Use<PersistService>().Named("Default");
             }
 
-            For<ISoapRequestHandler>().Use<HttpSoapRequestHandler>()
+            For<IAuthenticatedRequestHandler>().Use<HttpSoapRequestHandler>()
                 .Ctor<Uri>("uri").Is(new Uri(Options.Server))
                 .Ctor<IEnumerable<string>>("customHeaders").Is(Options.CustomHeaders);
         }

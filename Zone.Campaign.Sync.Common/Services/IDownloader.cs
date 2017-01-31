@@ -1,5 +1,4 @@
-﻿using System;
-using Zone.Campaign.WebServices.Security;
+﻿using Zone.Campaign.WebServices.Services;
 
 namespace Zone.Campaign.Sync.Services
 {
@@ -13,9 +12,9 @@ namespace Zone.Campaign.Sync.Services
         /// <summary>
         /// Download files based on parameters defined in the settings.
         /// </summary>
-        /// <param name="tokens">Authentication tokens</param>
+        /// <param name="requestHandler">Request handler</param>
         /// <param name="settings">Download settings</param>
-        void DoDownload(Tokens tokens, DownloadSettings settings);
+        void DoDownload(IRequestHandler requestHandler, DownloadSettings settings);
 
         #endregion
     }
