@@ -30,7 +30,7 @@ namespace Zone.Campaign.Sync.Services
         #region Constructor
 
         /// <summary>
-        /// Creates a new instance of <see cref="Downloader"/>
+        /// Initializes a new instance of <see cref="Downloader"/>
         /// </summary>
         /// <param name="mappingFactory">Mapping factory</param>
         /// <param name="metadataInserterFactory">Metadata inserter factory</param>

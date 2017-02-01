@@ -19,7 +19,7 @@ namespace Zone.Campaign.WebServices.Services
         #region Constructor
 
         /// <summary>
-        /// Creates a new instance of <see cref="HttpSoapRequestHandler"/>
+        /// Initializes a new instance of <see cref="HttpSoapRequestHandler"/>
         /// </summary>
         /// <param name="uri">Uri of the SOAP handler</param>
         /// <param name="customHeaders">Headers to include in every request</param>

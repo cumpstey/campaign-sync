@@ -29,6 +29,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\Zone.Campaign.WebServices.Zipped.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="DotNetZip, Version=1.10.1.0, Culture=neutral, PublicKeyToken=6583c7c814667745, processorArchitecture=MSIL">
@@ -70,7 +71,8 @@
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>xcopy /Q /Y "$(TargetDir)$(TargetFileName)" "$(ProjectDir)packagecontents\lib\net40\"
+    <PostBuildEvent>rmdir /s /q "$(ProjectDir)packagecontents\lib"
+xcopy /Q /Y "$(TargetDir)$(TargetFileName)" "$(ProjectDir)packagecontents\lib\net40\"
 xcopy /Q /Y "$(TargetDir)$(TargetName).xml" "$(ProjectDir)packagecontents\lib\net40\"
 </PostBuildEvent>
   </PropertyGroup>

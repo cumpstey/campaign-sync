@@ -31,7 +31,7 @@ namespace Zone.Campaign.WebServices.Services
             var serviceNs = string.Concat("urn:", ServiceNamespace);
 
             // Create common elements of SOAP request.
-            var serviceElement = CreateServiceRequest("BuildSchemaFromId", serviceNs);
+            var serviceElement = CreateServiceRequest(serviceName, serviceNs);
             var requestDoc = serviceElement.OwnerDocument;
 
             // Build request for this service.

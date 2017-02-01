@@ -24,7 +24,7 @@ namespace Zone.Campaign.Templates.Services.Metadata
         #region Constructor
 
         /// <summary>
-        /// Creates a new instance of <see cref="JavaScriptMetadataProcessor"/>
+        /// Initializes a new instance of <see cref="JavaScriptMetadataProcessor"/>
         /// </summary>
         public JavaScriptMetadataProcessor()
         {

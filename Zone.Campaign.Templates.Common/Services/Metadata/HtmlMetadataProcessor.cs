@@ -26,7 +26,7 @@ namespace Zone.Campaign.Templates.Services.Metadata
         #region Constructor
 
         /// <summary>
-        /// Creates a new instance of <see cref="HtmlMetadataProcessor"/>
+        /// Initializes a new instance of <see cref="HtmlMetadataProcessor"/>
         /// </summary>
         public HtmlMetadataProcessor()
         {

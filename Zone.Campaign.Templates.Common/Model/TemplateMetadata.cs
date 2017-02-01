@@ -12,7 +12,7 @@ namespace Zone.Campaign.Templates.Model
         #region Constructor
 
         /// <summary>
-        /// Creates a new instance of <see cref="TemplateMetadata"/>
+        /// Initializes a new instance of <see cref="TemplateMetadata"/>
         /// </summary>
         public TemplateMetadata()
         {

@@ -40,7 +40,7 @@ namespace Zone.Campaign.Sync.Services
         #region Constructor
 
         /// <summary>
-        /// Creates a new instance of <see cref="Uploader"/>
+        /// Initializes a new instance of <see cref="Uploader"/>
         /// </summary>
         /// <param name="imageDataProvider">Image data provider</param>
         /// <param name="mappingFactory">Mapping factory</param>

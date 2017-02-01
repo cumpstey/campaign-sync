@@ -18,14 +18,14 @@ namespace Zone.Campaign
         #region Constructor
 
         /// <summary>
-        /// Creates a new instance of <see cref="InternalName"/>
+        /// Initializes a new instance of <see cref="InternalName"/>
         /// </summary>
         public InternalName()
         {
         }
 
         /// <summary>
-        /// Creates a new instance of <see cref="InternalName"/>
+        /// Initializes a new instance of <see cref="InternalName"/>
         /// </summary>
         /// <param name="namespace">Namespace - this can be null</param>
         /// <param name="name">Name</param>

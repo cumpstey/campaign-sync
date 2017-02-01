@@ -5,25 +5,28 @@ using System.Xml;
 
 namespace Zone.Campaign
 {
-    public static class XmlNodeExtensions
+    /// <summary>
+    /// Helper functions for dealing with XML documents.
+    /// </summary>
+    public static class XmlElementExtensions
     {
         /// <summary>
         /// Append an attribute to the node.
         /// </summary>
-        /// <param name="node">Node to append to</param>
+        /// <param name="element">Element to append to</param>
         /// <param name="name">Name of the attribute</param>
         /// <param name="value">Value of the attribute</param>
         /// <returns>The new attribute</returns>
-        public static XmlAttribute AppendAttribute(this XmlNode node, string name, string value = null)
+        public static XmlAttribute AppendAttribute(this XmlElement element, string name, string value = null)
         {
-            var ownerDocument = node.OwnerDocument;
+            var ownerDocument = element.OwnerDocument;
             if (ownerDocument == null)
             {
                 throw new ArgumentException("Node has no parent document.");
             }
 
             var attribute = ownerDocument.CreateAttribute(name);
-            node.Attributes.Append(attribute);
+            element.Attributes.Append(attribute);
             if (value != null)
             {
                 attribute.InnerText = value;
@@ -35,56 +38,56 @@ namespace Zone.Campaign
         /// <summary>
         /// Append a child element to the node.
         /// </summary>
-        /// <param name="node">Node to append to</param>
+        /// <param name="element">Element to append to</param>
         /// <param name="name">Name of the new element</param>
         /// <returns>The new element</returns>
-        public static XmlElement AppendChild(this XmlNode node, string name)
+        public static XmlElement AppendChild(this XmlElement element, string name)
         {
-            return node.AppendChildWithValue(name, null, null);
+            return element.AppendChildWithValue(name, null, null);
         }
 
         /// <summary>
         /// Append a child element to the node.
         /// </summary>
-        /// <param name="node">Node to append to</param>
+        /// <param name="element">Element to append to</param>
         /// <param name="name">Name of the new element</param>
         /// <param name="value">Value of the new element</param>
         /// <returns>The new element</returns>
-        public static XmlElement AppendChildWithValue(this XmlNode node, string name, string value)
+        public static XmlElement AppendChildWithValue(this XmlElement element, string name, string value)
         {
-            return node.AppendChildWithValue(name, null, value);
+            return element.AppendChildWithValue(name, null, value);
         }
 
         /// <summary>
         /// Append a child element to the node.
         /// </summary>
-        /// <param name="node">Node to append to</param>
+        /// <param name="element">Element to append to</param>
         /// <param name="qualifiedName">Name of the new element, qualified with a namespace prefix</param>
         /// <param name="namespaceUri">Namespace uri</param>
         /// <returns>The new element</returns>
-        public static XmlElement AppendChild(this XmlNode node, string qualifiedName, string namespaceUri)
+        public static XmlElement AppendChild(this XmlElement element, string qualifiedName, string namespaceUri)
         {
-            return node.AppendChildWithValue(qualifiedName, namespaceUri, null);
+            return element.AppendChildWithValue(qualifiedName, namespaceUri, null);
         }
 
         /// <summary>
         /// Append a child element to the node.
         /// </summary>
-        /// <param name="node">Node to append to</param>
+        /// <param name="element">Element to append to</param>
         /// <param name="qualifiedName">Name of the new element, qualified with a namespace prefix</param>
         /// <param name="namespaceUri">Namespace uri</param>
         /// <param name="value">Value of the new element</param>
         /// <returns>The new element</returns>
-        public static XmlElement AppendChildWithValue(this XmlNode node, string qualifiedName, string namespaceUri, string value)
+        public static XmlElement AppendChildWithValue(this XmlElement element, string qualifiedName, string namespaceUri, string value)
         {
-            var ownerDocument = node.OwnerDocument;
+            var ownerDocument = element.OwnerDocument;
             if (ownerDocument == null)
             {
                 throw new ArgumentException("Node has no parent document.");
             }
 
             var child = ownerDocument.CreateElement(qualifiedName, namespaceUri);
-            node.AppendChild(child);
+            element.AppendChild(child);
             if (value != null)
             {
                 child.InnerText = value;

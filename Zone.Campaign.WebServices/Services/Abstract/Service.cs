@@ -2,11 +2,20 @@
 
 namespace Zone.Campaign.WebServices.Services.Abstract
 {
+    /// <summary>
+    /// Base class for web service wrapper classes.
+    /// </summary>
     public abstract class Service
     {
         #region Helpers
 
-        protected XmlNode CreateServiceRequest(string serviceName, string serviceNs)
+        /// <summary>
+        /// Create an XML document containing a barebones SOAP envelope.
+        /// </summary>
+        /// <param name="serviceName">Name of the SOAP service</param>
+        /// <param name="serviceNs">Namespace of the SOAP service</param>
+        /// <returns>The XML element which should be populated with the details of the request</returns>
+        protected XmlElement CreateServiceRequest(string serviceName, string serviceNs)
         {
             var doc = new XmlDocument();
             doc.LoadXml(string.Format(@"<soapenv:Envelope xmlns:soapenv=""{0}""/>", Soap.XmlNamespace));
@@ -24,6 +33,13 @@ namespace Zone.Campaign.WebServices.Services.Abstract
             return serviceElement;
         }
 
+        /// <summary>
+        /// Select a single node by xpath from the node supplied.
+        /// </summary>
+        /// <param name="node">Source node</param>
+        /// <param name="xpath">Xpath defining the node to select</param>
+        /// <param name="serviceNs">Namespace of the SOAP service (with urn prefix)</param>
+        /// <returns>Selected XML node</returns>
         protected XmlNode SelectSingleNode(XmlNode node, string xpath, string serviceNs)
         {
             var nsmgr = new XmlNamespaceManager(node.OwnerDocument.NameTable);

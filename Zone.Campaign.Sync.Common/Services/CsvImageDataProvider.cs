@@ -25,7 +25,7 @@ namespace Zone.Campaign.Sync.Services
         #region Constructor
 
         /// <summary>
-        /// Creates a new instance of <see cref="CsvImageDataProvider"/>
+        /// Initializes a new instance of <see cref="CsvImageDataProvider"/>
         /// </summary>
         public CsvImageDataProvider()
         {

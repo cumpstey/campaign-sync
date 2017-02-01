@@ -32,7 +32,7 @@ namespace Zone.Campaign.Templates.Services.Metadata
         #region Constructor
 
         /// <summary>
-        /// Creates a new instance of <see cref="XmlMetadataProcessor"/>
+        /// Initializes a new instance of <see cref="XmlMetadataProcessor"/>
         /// </summary>
         public XmlMetadataProcessor()
         {
