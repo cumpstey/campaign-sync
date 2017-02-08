@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <package >
   <metadata>
-    <id>Zone.Campaign.Sync.Common</id>
+    <id>Zone.Campaign.Sync.Common.NoLog4NetDependency</id>
     <version>1.0</version>
-    <title>Adobe Campaign: Sync</title>
+    <title>Adobe Campaign: Sync (no log4net dependency)</title>
     <authors>Neil Cumpstey</authors>
     <owners>Neil Cumpstey</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
@@ -15,7 +15,6 @@
       <dependency id="Zone.Campaign.Templates.Common" version="1.0.20" />
       <dependency id="Zone.Campaign.WebServices" version="1.0.20" />
       <dependency id="CsvHelper" version="2.16.3" />
-      <dependency id="log4net" version="2.0.5" />
     </dependencies>
   </metadata>
 </package>

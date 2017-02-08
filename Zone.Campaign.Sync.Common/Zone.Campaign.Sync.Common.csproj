@@ -86,6 +86,7 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+    <None Include="Zone.Campaign.Sync.Common.NoLog4NetDependency.nuspec" />
     <None Include="Zone.Campaign.Sync.Common.nuspec" />
   </ItemGroup>
   <ItemGroup>

@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>Zone.Campaign.WebServices</id>
-    <version>1.0.21.1</version>
+    <version>1.0</version>
     <title>Adobe Campaign: WebServices</title>
     <authors>Neil Cumpstey</authors>
     <owners>Neil Cumpstey</owners>
@@ -11,8 +11,8 @@
     <copyright>Copyright 2017</copyright>
     <tags>adobe campaign</tags>
     <dependencies>
-      <dependency id="Zone.Campaign.Common" version="1.0.4" />
-      <!--<dependency id="log4net" version="2.0.5" />-->
+      <dependency id="Zone.Campaign.Common" version="1.0.20" />
+      <dependency id="log4net" version="2.0.5" />
     </dependencies>
   </metadata>
 </package>

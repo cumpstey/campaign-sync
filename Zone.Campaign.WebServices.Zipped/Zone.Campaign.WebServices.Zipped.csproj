@@ -66,6 +66,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="Zone.Campaign.WebServices.Zipped.NoLog4NetDependency.nuspec" />
     <None Include="Zone.Campaign.WebServices.Zipped.nuspec" />
   </ItemGroup>
   <ItemGroup />

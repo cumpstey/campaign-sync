@@ -88,6 +88,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="Zone.Campaign.Templates.Common.NoLog4NetDependency.nuspec" />
     <None Include="Zone.Campaign.Templates.Common.nuspec" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>Zone.Campaign.Templates.Common</id>
-    <version>1.0.13</version>
+    <version>1.0</version>
     <title>Adobe Campaign: Templates</title>
     <authors>Neil Cumpstey</authors>
     <owners>Neil Cumpstey</owners>
@@ -11,10 +11,10 @@
     <copyright>Copyright 2017</copyright>
     <tags>adobe campaign</tags>
     <dependencies>
-      <dependency id="Zone.Campaign.Common" version="1.0.4" />
-      <dependency id="Zone.Campaign.WebServices" version="1.0.13" />
+      <dependency id="Zone.Campaign.Common" version="1.0.20" />
+      <dependency id="Zone.Campaign.WebServices" version="1.0.20" />
       <dependency id="HtmlAgilityPack" version="1.4.9.5" />
-      <!--<dependency id="log4net" version="2.0.5" />-->
+      <dependency id="log4net" version="2.0.5" />
     </dependencies>
   </metadata>
 </package>
