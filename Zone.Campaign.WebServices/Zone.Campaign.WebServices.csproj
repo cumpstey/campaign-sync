@@ -58,6 +58,7 @@
     <Compile Include="Model\QueryFilter.cs" />
     <Compile Include="Model\Publishing.cs" />
     <Compile Include="Model\Option.cs" />
+    <Compile Include="Model\Event.cs" />
     <Compile Include="Model\SrcSchema.cs" />
     <Compile Include="Model\JavaScriptCode.cs" />
     <Compile Include="Model\JavaScriptTemplate.cs" />
@@ -67,6 +68,8 @@
     <Compile Include="Services\IImageWriteService.cs" />
     <Compile Include="Services\HttpSoapRequestHandler.cs" />
     <Compile Include="Services\IAuthenticatedRequestHandler.cs" />
+    <Compile Include="Services\TriggeredMessageService.cs" />
+    <Compile Include="Services\ITriggeredMessageService.cs" />
     <Compile Include="Services\IRequestHandler.cs" />
     <Compile Include="Services\IWriteService.cs" />
     <Compile Include="Services\IQueryService.cs" />
