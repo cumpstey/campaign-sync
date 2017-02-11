@@ -5,6 +5,9 @@ using Zone.Campaign.WebServices.Model;
 
 namespace Zone.Campaign.Sync.Mappings
 {
+    /// <summary>
+    /// Contains helper methods for mapping between the <see cref="Publishing"/> .NET class and information formatted for Campaign to understand.
+    /// </summary>
     public class PublishingMapping : EntityMapping<Publishing>
     {
         #region Fields

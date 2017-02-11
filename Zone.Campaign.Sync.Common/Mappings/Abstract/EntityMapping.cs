@@ -8,6 +8,9 @@ using Zone.Campaign.WebServices.Model.Abstract;
 
 namespace Zone.Campaign.Sync.Mappings.Abstract
 {
+    /// <summary>
+    /// Contains helper methods for mapping between a .NET class and information formatted for Campaign to understand.
+    /// </summary>
     public abstract class EntityMapping<T> : Mapping<T>
         where T : Entity, new()
     {

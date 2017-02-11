@@ -1,8 +1,8 @@
 ﻿namespace Zone.Campaign.Sync.Data
 {
     /// <summary>
-    /// Class to hold all the data about an image necessary
-    /// in order to create it as a file resource.
+    /// Class to hold all the metadata for an image which, along with the image file itself,
+    /// are necessary in order to create it as a file resource.
     /// </summary>
     public class ImageData
     {

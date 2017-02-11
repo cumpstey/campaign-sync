@@ -4,11 +4,17 @@ using Zone.Campaign.WebServices.Model.Abstract;
 
 namespace Zone.Campaign.WebServices.Model
 {
+    /// <summary>
+    /// Class representing an option (xtk:option).
+    /// </summary>
     [Schema(Schema)]
     public class Option : Persistable, IPersistable
     {
         #region Fields
 
+        /// <summary>
+        /// Schema represented by this class.
+        /// </summary>
         public const string Schema = "xtk:option";
 
         #endregion
@@ -78,6 +84,11 @@ namespace Zone.Campaign.WebServices.Model
             }
         }
 
+        /// <summary>
+        /// Formats the dataa into appropriate xml for sending in a persist request to Campaign.
+        /// </summary>
+        /// <param name="ownerDocument">Document to create the xml element from</param>
+        /// <returns>Xml element containing all the properties to update</returns>
         public virtual XmlElement GetXmlForPersist(XmlDocument ownerDocument)
         {
             var element = GetBaseXmlForPersist(ownerDocument, "@name");

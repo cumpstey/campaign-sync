@@ -8,6 +8,9 @@ using Zone.Campaign.WebServices.Model.Abstract;
 
 namespace Zone.Campaign.Sync.Mappings
 {
+    /// <summary>
+    /// Contains helper methods for mapping between the <see cref="IncludeView"/> .NET class and information formatted for Campaign to understand.
+    /// </summary>
     public class IncludeViewMapping : Mapping<IncludeView>
     {
         #region Fields

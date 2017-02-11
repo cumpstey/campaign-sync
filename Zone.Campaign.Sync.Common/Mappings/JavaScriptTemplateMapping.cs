@@ -8,6 +8,9 @@ using Zone.Campaign.WebServices.Model.Abstract;
 
 namespace Zone.Campaign.Sync.Mappings
 {
+    /// <summary>
+    /// Contains helper methods for mapping between the <see cref="JavaScriptTemplate"/> .NET class and information formatted for Campaign to understand.
+    /// </summary>
     public class JavaScriptTemplateMapping : Mapping<JavaScriptTemplate>
     {
         #region Fields

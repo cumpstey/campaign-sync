@@ -7,10 +7,16 @@ using Zone.Campaign.WebServices.Model.Abstract;
 
 namespace Zone.Campaign.Sync.Mappings
 {
+    /// <summary>
+    /// Contains helper methods for mapping between a .NET class and information formatted for Campaign to understand.
+    /// </summary>
     public abstract class Mapping<T> : IMapping
     {
         #region Properties
 
+        /// <summary>
+        /// Adobe Campaign schema associated with this mapping class.
+        /// </summary>
         protected virtual string Schema
         {
             get { return typeof(T).GetCustomAttributes(typeof(SchemaAttribute), false).Cast<SchemaAttribute>().First().Name; }
