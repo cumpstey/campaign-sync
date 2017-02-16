@@ -1,8 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
-MinimumVisualStudioVersion = 10.0.40219.1
+# Visual Studio Express 2012 for Web
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zone.Campaign.Common", "Zone.Campaign.Common\Zone.Campaign.Common.csproj", "{17C71387-CE81-449D-B30B-5D6A00EA3DC2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zone.Campaign.Common.Tests", "Zone.Campaign.Common.Tests\Zone.Campaign.Common.Tests.csproj", "{76B06509-D403-47E6-A380-C3B15211189E}"
@@ -16,6 +14,13 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zone.Campaign.Sync.UI", "Zone.Campaign.Sync.UI\Zone.Campaign.Sync.UI.csproj", "{C068A4AC-93B0-4323-A80F-B473418EC1B6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zone.Campaign.Sync.Common", "Zone.Campaign.Sync.Common\Zone.Campaign.Sync.Common.csproj", "{0EDFF7E4-7C8C-4C4C-9BA2-BACF622519F5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{062745BD-04F3-407E-8C8F-0215706C77CC}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
