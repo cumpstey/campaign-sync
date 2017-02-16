@@ -23,6 +23,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\Zone.Campaign.Sync.Common.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -32,6 +33,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\Zone.Campaign.Sync.Common.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="CsvHelper, Version=2.0.0.0, Culture=neutral, PublicKeyToken=8c4959082be5c823, processorArchitecture=MSIL">
@@ -70,6 +72,8 @@
     <Compile Include="Services\Downloader.cs" />
     <Compile Include="Services\CsvImageDataProvider.cs" />
     <Compile Include="Services\IImageDataProvider.cs" />
+    <Compile Include="Services\RawRequestProcessor.cs" />
+    <Compile Include="Services\IRawRequestProcessor.cs" />
     <Compile Include="Services\IUploader.cs" />
     <Compile Include="Services\UploadSettings.cs" />
     <Compile Include="Services\IMappingFactory.cs" />
@@ -82,6 +86,8 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+    <None Include="Zone.Campaign.Sync.Common.NoLog4NetDependency.nuspec" />
+    <None Include="Zone.Campaign.Sync.Common.nuspec" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Zone.Campaign.Common\Zone.Campaign.Common.csproj">
@@ -98,6 +104,13 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>rmdir /s /q "$(ProjectDir)packagecontents\lib"
+xcopy /Q /Y "$(TargetDir)$(TargetFileName)" "$(ProjectDir)packagecontents\lib\net40\"
+xcopy /Q /Y "$(TargetDir)$(TargetName).xml" "$(ProjectDir)packagecontents\lib\net40\"
+
+</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

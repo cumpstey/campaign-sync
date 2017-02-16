@@ -1,14 +1,21 @@
 ﻿using System;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 using Zone.Campaign.Templates.Model;
 using System.Collections.Generic;
 
-namespace Zone.Campaign.Templates.Services
+namespace Zone.Campaign.Templates.Services.Metadata
 {
-    public class MetadataParser : IMetadataFormatter, IMetadataParser
+    /// <summary>
+    /// Provides functions for processing metadata.
+    /// </summary>
+    public class MetadataProcessor : IMetadataFormatter, IMetadataParser
     {
+        /// <summary>
+        /// Format metadata sent from Campaign into a format in which it can be stored locally in a file on disk.
+        /// </summary>
+        /// <param name="metadata">Metadata</param>
+        /// <returns>String representation of the metadata</returns>
         public string Format(TemplateMetadata metadata)
         {
             if (metadata == null)
@@ -34,6 +41,11 @@ namespace Zone.Campaign.Templates.Services
             return string.Format("Adobe Campaign metadata:{0}{1}", Environment.NewLine, string.Join(Environment.NewLine, items.Select(i => string.Format("{0}: {1}", i.Key, i.Value))));
         }
 
+        /// <summary>
+        /// Parse metadata taken from a file into a form which can be sent to Campaign.
+        /// </summary>
+        /// <param name="input">String representation of metadata</param>
+        /// <returns>Metadata</returns>
         public TemplateMetadata Parse(string input)
         {
             if (input == null)

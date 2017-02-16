@@ -1,14 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
-using Zone.Campaign.WebServices.Security;
+using log4net;
 using Zone.Campaign.WebServices.Services.Abstract;
 using Zone.Campaign.WebServices.Services.Responses;
-using log4net;
 
 namespace Zone.Campaign.WebServices.Services
 {
+    /// <summary>
+    /// Wrapper for the zon:queryDef SOAP services, which accept zipped and base64 encoded SOAP requests.
+    /// </summary>
     public class ZippedQueryDefService : ZippedService, IQueryService
     {
         #region Fields
@@ -21,19 +22,24 @@ namespace Zone.Campaign.WebServices.Services
 
         #region Methods
 
-        public Response<IEnumerable<string>>  ExecuteQuery(Uri rootUri, Tokens tokens, string schema, IEnumerable<string> fields, IEnumerable<string> conditions)
+        /// <summary>
+        /// Query the data based on a set of conditions.
+        /// </summary>
+        /// <param name="requestHandler">Request handler</param>
+        /// <param name="schema">Schema of the data to query</param>
+        /// <param name="fields">Fields to return</param>
+        /// <param name="conditions">Conditions</param>
+        /// <returns>Response containing collection of matching items</returns>
+        public Response<IEnumerable<string>> ExecuteQuery(IRequestHandler requestHandler, string schema, IEnumerable<string> fields, IEnumerable<string> conditions)
         {
             const string serviceName = "ExecuteQueryZip";
             var serviceNs = string.Concat("urn:", ServiceNamespace);
 
             // Create common elements of SOAP request.
-            var serviceElement = CreateServiceRequest(serviceName, serviceNs, tokens);
+            var serviceElement = CreateServiceRequest(serviceName, serviceNs);
             var requestDoc = serviceElement.OwnerDocument;
 
             // Build request for this service.
-            ////var entityElement = serviceElement.AppendChild("urn:entity", serviceNs);
-            //var entityElement = requestDoc.CreateElement("urn:entity");
-            //var queryDefElement = entityElement.AppendChild("queryDef");
             var queryDefElement = requestDoc.CreateElement("queryDef");
             queryDefElement.AppendAttribute("operation", "select");
             queryDefElement.AppendAttribute("schema", schema);
@@ -59,7 +65,7 @@ namespace Zone.Campaign.WebServices.Services
             serviceElement.AppendChildWithValue("urn:input", encodedQuery);
 
             // Execute request and get response from server.
-            var response = ExecuteRequest(rootUri, tokens, serviceName, ServiceNamespace, requestDoc);
+            var response = requestHandler.ExecuteRequest(new ServiceName(ServiceNamespace, serviceName), requestDoc);
             if (!response.Success)
             {
                 return new Response<IEnumerable<string>>(response.Status, response.Message, response.Exception);

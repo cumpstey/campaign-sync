@@ -1,11 +1,12 @@
-﻿using System;
-using Zone.Campaign.WebServices.Security;
+﻿using log4net;
 using Zone.Campaign.WebServices.Services.Abstract;
 using Zone.Campaign.WebServices.Services.Responses;
-using log4net;
 
 namespace Zone.Campaign.WebServices.Services
 {
+    /// <summary>
+    /// Wrapper for the xtk:builder SOAP services.
+    /// </summary>
     public class BuilderService : Service, IBuilderService
     {
         #region Fields
@@ -21,24 +22,25 @@ namespace Zone.Campaign.WebServices.Services
         /// <summary>
         /// Trigger a build of the schema from the srcSchema
         /// </summary>
-        /// <param name="schamaName">Name of the schema to build</param>
-        /// <returns>Security and session tokens</returns>
-        public Response BuildSchema(Uri rootUri, Tokens tokens, InternalName schemaName)
+        /// <param name="requestHandler">Request handler</param>
+        /// <param name="schemaName">Name of the schema to build</param>
+        /// <returns>Response</returns>
+        public Response BuildSchema(IRequestHandler requestHandler, InternalName schemaName)
         {
             const string serviceName = "BuildSchemaFromId";
             var serviceNs = string.Concat("urn:", ServiceNamespace);
 
             // Create common elements of SOAP request.
-            var serviceElement = CreateServiceRequest("BuildSchemaFromId", serviceNs, tokens);
+            var serviceElement = CreateServiceRequest(serviceName, serviceNs);
             var requestDoc = serviceElement.OwnerDocument;
 
             // Build request for this service.
             serviceElement.AppendChildWithValue("urn:schemaId", serviceNs, schemaName.ToString());
 
             // Execute request and get response from server.
-            var response = ExecuteRequest(rootUri, tokens, serviceName, ServiceNamespace, requestDoc);
+            var response = requestHandler.ExecuteRequest(new ServiceName(ServiceNamespace, serviceName), requestDoc);
 
-            Log.DebugFormat("Response to {0} received: {1}", serviceName, response.Status);
+            Log.Debug($"Response to {serviceName} received: {response.Status}");
 
             return response;
         }

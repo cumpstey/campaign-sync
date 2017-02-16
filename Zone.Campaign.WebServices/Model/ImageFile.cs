@@ -1,29 +1,54 @@
 ﻿using System.Xml;
-using Zone.Campaign.WebServices.Model.Abstract;
-using Zone.Campaign;
 
 namespace Zone.Campaign.WebServices.Model
 {
+    /// <summary>
+    /// Class holding all the necessary information about an image in order to create a file resource (xtk:fileRes) record.
+    /// </summary>
     public class ImageFile
     {
         #region Properties
 
+        /// <summary>
+        /// Name of the folder the file resource record should be created in.
+        /// If a file resource of the same name already exists in a different folder, it will not be moved.
+        /// </summary>
         public string FolderName { get; set; }
 
+        /// <summary>
+        /// Information about the file resource.
+        /// </summary>
         public FileRes FileRes { get; set; }
 
+        /// <summary>
+        /// Mime type of the image.
+        /// </summary>
         public string MimeType { get; set; }
 
+        /// <summary>
+        /// File name of the image.
+        /// </summary>
         public string FileName { get; set; }
 
+        /// <summary>
+        /// MD5 hash of the image.
+        /// </summary>
         public string Md5 { get; set; }
 
+        /// <summary>
+        /// Base64 encoded image file content.
+        /// </summary>
         public string FileContent { get; set; }
 
         #endregion
 
         #region Methods
 
+        /// <summary>
+        /// Formats the data into appropriate xml for sending in a persist request to Campaign.
+        /// </summary>
+        /// <param name="ownerDocument">Document to create the xml element from</param>
+        /// <returns>Xml element containing all the properties to update</returns>
         public XmlElement GetXmlForPersist(XmlDocument ownerDocument)
         {
             var element = ownerDocument.CreateElement("file");

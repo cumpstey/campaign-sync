@@ -5,6 +5,7 @@
         Download,
         GenerateImageData,
         ImageUpload,
+        Raw,
         Upload,
     }
 }

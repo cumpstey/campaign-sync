@@ -8,6 +8,9 @@ using HtmlAgilityPack;
 
 namespace Zone.Campaign.Templates.Services
 {
+    /// <summary>
+    /// Provides functions to transform HTML code before it's uploaded to Campaign.
+    /// </summary>
     public class HtmlTemplateTransformer : ITemplateTransformer
     {
         #region Fields
@@ -35,6 +38,15 @@ namespace Zone.Campaign.Templates.Services
 
         #region Methods
 
+        /// <summary>
+        /// Transforms HTML code so that it can be uploaded to Campaign.
+        /// Allows the content of local HTML files to be transformed into JavaScript Server Pages for use in Campaign.
+        /// There is no reverse method, so HTML-based JavaScript Server Pages files cannot be directly downloaded from Campaign
+        /// into the format in which they are stored locally.
+        /// </summary>
+        /// <param name="input">Input HTML content</param>
+        /// <param name="workingDirectory">Directory in which the file being processed is stored</param>
+        /// <returns>Transformed JavaScript Server Pages content</returns>
         public string Transform(string input, string workingDirectory)
         {
             var output = input;

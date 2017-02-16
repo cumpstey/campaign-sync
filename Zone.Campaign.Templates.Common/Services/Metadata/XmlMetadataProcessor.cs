@@ -4,13 +4,20 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
+using log4net;
+using Zone.Campaign.Templates.Exceptions;
 using Zone.Campaign.Templates.Model;
 
-namespace Zone.Campaign.Templates.Services
+namespace Zone.Campaign.Templates.Services.Metadata
 {
-    public class XmlMetadataProcessor : IMetadataExtractor, IMetadataInserter
+    /// <summary>
+    /// Provides functions for processing XML files.
+    /// </summary>
+    public class XmlMetadataProcessor : IXmlMetadataExtractor, IMetadataInserter
     {
         #region Fields
+
+        private static readonly ILog Log = LogManager.GetLogger(typeof(XmlMetadataProcessor));
 
         private static readonly Regex MetadataCommentRegex = new Regex("^!(?<value>.*)!$", RegexOptions.Compiled | RegexOptions.Singleline);
 
@@ -24,16 +31,25 @@ namespace Zone.Campaign.Templates.Services
 
         #region Constructor
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="XmlMetadataProcessor"/>
+        /// </summary>
         public XmlMetadataProcessor()
         {
-            _metadataParser = new MetadataParser();
-            _metadataFormatter = new MetadataParser();
+            _metadataParser = new MetadataProcessor();
+            _metadataFormatter = new MetadataProcessor();
         }
 
         #endregion
 
         #region Methods
 
+        /// <summary>
+        /// Extract the code and metadata from raw XML file content.
+        /// </summary>
+        /// <param name="input">Raw XML file content</param>
+        /// <returns>Class containing code content and metadata.</returns>
+        /// <exception cref="MetadataException" />
         public Template ExtractMetadata(string input)
         {
             if (input == null)
@@ -43,7 +59,14 @@ namespace Zone.Campaign.Templates.Services
 
             // Parse xml.
             var xmlDocument = new XmlDocument();
-            xmlDocument.LoadXml(input);
+            try
+            {
+                xmlDocument.LoadXml(input);
+            }
+            catch(XmlException ex)
+            {
+                throw new MetadataException(ex);
+            }
 
             // Read metadata from first correctly formatted comment.
             var metadata = default(TemplateMetadata);
@@ -73,6 +96,11 @@ namespace Zone.Campaign.Templates.Services
             };
         }
 
+        /// <summary>
+        /// Converts metadata and code into raw XML file content which can be written to disk.
+        /// </summary>
+        /// <param name="input">Metadata and code</param>
+        /// <returns>Raw XML file content</returns>
         public string InsertMetadata(Template input)
         {
             if (input == null)

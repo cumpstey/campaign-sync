@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using CommandLine;
+﻿using CommandLine;
 using CommandLine.Text;
 
 namespace Zone.Campaign.Sync
@@ -9,12 +8,12 @@ namespace Zone.Campaign.Sync
         [ParserState]
         public IParserState LastParserState { get; set; }
 
-        [Option('m', "mode", Required = true,  HelpText = "Mode. [Download, ImageUpload, Upload]")]
+        [Option('m', "mode", Required = true,  HelpText = "Mode. [Download, ImageUpload, Raw, Upload]")]
         public RunMode RunMode { get; set; }
 
         #region Shared parameters
 
-        [Option('s', "server", HelpText = "Server root url, eg. https://neolane.com/.")]
+        [Option('s', "server", HelpText = "Server SOAP url, eg. https://neolane.com/nl/jsp/soaprouter.jsp.")]
         public string Server { get; set; }
 
         [Option('u', "username", HelpText = "Server username.")]
@@ -28,6 +27,9 @@ namespace Zone.Campaign.Sync
 
         [Option("prompt", HelpText = "Prompt to exit.")]
         public bool PromptToExit { get; set; }
+
+        [OptionArray("headers", HelpText = @"Additional headers to be included in any http request, eg. ""X-Custom: my-value"".")]
+        public string[] CustomHeaders { get; set; }
 
         #endregion
 
@@ -57,6 +59,13 @@ namespace Zone.Campaign.Sync
 
         [OptionArray("replacements", HelpText = @"Upload: String replacements to be applied, eg. ""DEVDB=>LIVDB"".")]
         public string[] Replacements { get; set; }
+
+        #endregion
+
+        #region Raw parameters
+
+        [Option("raw", HelpText = "Raw: Path to a file containing a raw SOAP request to process.")]
+        public string RawFilePath { get; set; }
 
         #endregion
 

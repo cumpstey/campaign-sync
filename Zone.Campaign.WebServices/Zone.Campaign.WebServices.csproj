@@ -22,6 +22,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\Zone.Campaign.WebServices.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -30,12 +31,9 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\Zone.Campaign.WebServices.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DotNetZip, Version=1.10.1.0, Culture=neutral, PublicKeyToken=6583c7c814667745, processorArchitecture=MSIL">
-      <HintPath>..\packages\DotNetZip.1.10.1\lib\net20\DotNetZip.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="log4net, Version=1.2.15.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <HintPath>..\packages\log4net.2.0.5\lib\net40-full\log4net.dll</HintPath>
       <Private>True</Private>
@@ -60,20 +58,23 @@
     <Compile Include="Model\QueryFilter.cs" />
     <Compile Include="Model\Publishing.cs" />
     <Compile Include="Model\Option.cs" />
+    <Compile Include="Model\Event.cs" />
     <Compile Include="Model\SrcSchema.cs" />
     <Compile Include="Model\JavaScriptCode.cs" />
     <Compile Include="Model\JavaScriptTemplate.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Security\Tokens.cs" />
-    <Compile Include="Services\Abstract\ZippedService.cs" />
     <Compile Include="Services\IBuilderService.cs" />
     <Compile Include="Services\IImageWriteService.cs" />
+    <Compile Include="Services\HttpSoapRequestHandler.cs" />
+    <Compile Include="Services\IAuthenticatedRequestHandler.cs" />
+    <Compile Include="Services\TriggeredMessageService.cs" />
+    <Compile Include="Services\ITriggeredMessageService.cs" />
+    <Compile Include="Services\IRequestHandler.cs" />
     <Compile Include="Services\IWriteService.cs" />
     <Compile Include="Services\IQueryService.cs" />
     <Compile Include="Services\BuilderService.cs" />
     <Compile Include="Services\ImagePersistService.cs" />
-    <Compile Include="Services\ZippedQueryDefService.cs" />
-    <Compile Include="Services\ZippedPersistService.cs" />
     <Compile Include="Services\QueryDefService.cs" />
     <Compile Include="Services\Abstract\Service.cs" />
     <Compile Include="Services\PersistService.cs" />
@@ -82,6 +83,7 @@
     <Compile Include="Services\Responses\Response.cs" />
     <Compile Include="Services\IAuthenticationService.cs" />
     <Compile Include="Services\SessionService.cs" />
+    <Compile Include="Soap.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Zone.Campaign.Common\Zone.Campaign.Common.csproj">
@@ -91,8 +93,18 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="Zone.Campaign.WebServices.NoLog4NetDependency.nuspec">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Zone.Campaign.WebServices.nuspec" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>rmdir /s /q "$(ProjectDir)packagecontents\lib"
+xcopy /Q /Y "$(TargetDir)$(TargetFileName)" "$(ProjectDir)packagecontents\lib\net40\"
+xcopy /Q /Y "$(TargetDir)$(TargetName).xml" "$(ProjectDir)packagecontents\lib\net40\"
+</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

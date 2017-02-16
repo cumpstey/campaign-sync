@@ -34,22 +34,26 @@ namespace Zone.Campaign.Sync.UI
             XmlConfigurator.Configure();
 
             // Set up IoC container
+            Initialization.Registry.SetOptions(options);
             var container = Container.For<Initialization.Registry>();
+
+            //var requestHandler = new HttpSoapRequestHandler(new Uri(options.Server), options.CustomHeaders);
+            var requestHandler = container.GetInstance<IAuthenticatedRequestHandler>();
 
             if (RequiresServerAuthentication(options.RunMode))
             {
                 // Logon
-                var rootUri = new Uri(options.Server);
+                var uri = new Uri(options.Server);
                 var sessionService = container.GetInstance<IAuthenticationService>();
-                var logonResponse = sessionService.Logon(rootUri, options.Username, options.Password);
+                var logonResponse = sessionService.Logon(requestHandler, options.Username, options.Password);
                 if (logonResponse.Status != ResponseStatus.Success)
                 {
                     // Logon failed - take no further action.
-                    Log.WarnFormat("Logon failed: {0}, {1}", logonResponse.Status, logonResponse.Message);
+                    Log.Warn($"Logon failed: {logonResponse.Status}, {logonResponse.Message}");
                     return;
                 }
 
-                var tokens = logonResponse.Data;
+                requestHandler.AuthenticationTokens = logonResponse.Data;
 
                 // Do download or upload as specified.
                 switch (options.RunMode)
@@ -57,7 +61,7 @@ namespace Zone.Campaign.Sync.UI
                     case RunMode.Download:
                         {
                             var downloader = container.GetInstance<IDownloader>(new ExplicitArguments(new Dictionary<string, object> { { "queryService", container.GetInstance<IQueryService>(options.RequestMode.ToString()) } }));
-                            downloader.DoDownload(rootUri, tokens, new DownloadSettings
+                            downloader.DoDownload(requestHandler, new DownloadSettings
                             {
                                 Conditions = options.DownloadConditions,
                                 SubdirectoryMode = options.DownloadSubdirectoryMode,
@@ -69,8 +73,8 @@ namespace Zone.Campaign.Sync.UI
                         break;
                     case RunMode.ImageUpload:
                         {
-                            var uploader = container.GetInstance<IUploader>(new ExplicitArguments(new Dictionary<string, object> { { "writeService", container.GetInstance<IWriteService>(options.RequestMode.ToString()) } }));
-                            uploader.DoImageUpload(rootUri, tokens, new UploadSettings
+                            var uploader = container.GetInstance<IUploader>();
+                            uploader.DoImageUpload(requestHandler, new UploadSettings
                             {
                                 FilePaths = options.UploadFilePaths,
                                 TestMode = options.UploadTestMode,
@@ -78,10 +82,17 @@ namespace Zone.Campaign.Sync.UI
                         }
 
                         break;
+                    case RunMode.Raw:
+                        {
+                            var processor = container.GetInstance<IRawRequestProcessor>();
+                            processor.ProcessRequest(requestHandler, options.RawFilePath);
+                        }
+
+                        break;
                     case RunMode.Upload:
                         {
-                            var uploader = container.GetInstance<IUploader>(new ExplicitArguments(new Dictionary<string, object> { { "writeService", container.GetInstance<IWriteService>(options.RequestMode.ToString()) } }));
-                            uploader.DoUpload(rootUri, tokens, new UploadSettings
+                            var uploader = container.GetInstance<IUploader>();
+                            uploader.DoUpload(requestHandler, new UploadSettings
                             {
                                 FilePaths = options.UploadFilePaths,
                                 Replacements = options.Replacements?.Select(i =>
@@ -168,7 +179,7 @@ namespace Zone.Campaign.Sync.UI
 
                     if (options.DownloadSubdirectoryMode != SubdirectoryMode.Default && options.DownloadSubdirectoryMode != SubdirectoryMode.UnderscoreDelimited)
                     {
-                        errors.Add(string.Format("Subdirectory mode must be one of: {0}, {1}.", SubdirectoryMode.Default, SubdirectoryMode.UnderscoreDelimited));
+                        errors.Add($"Subdirectory mode must be one of: {SubdirectoryMode.Default}, {SubdirectoryMode.UnderscoreDelimited}.");
                     }
 
                     break;

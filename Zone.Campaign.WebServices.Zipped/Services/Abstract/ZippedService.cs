@@ -5,10 +5,19 @@ using System.Xml;
 
 namespace Zone.Campaign.WebServices.Services.Abstract
 {
+    /// <summary>
+    /// Base class for services which zip requests before sending them to Campaign.
+    /// </summary>
     public abstract class ZippedService : Service
     {
         #region Helpers
 
+        /// <summary>
+        /// Zip and base64 encode the SOAP request.
+        /// </summary>
+        /// <param name="queryElement">XML node containing the SOAP request</param>
+        /// <param name="queryName">Name of the query</param>
+        /// <returns>Zipped and encoded request</returns>
         public string ZipAndEncodeQuery(XmlNode queryElement, string queryName)
         {
             byte[] zippedQuery;

@@ -6,9 +6,13 @@ using Zone.Campaign.Templates.Model;
 using Zone.Campaign.Templates.Services;
 using Zone.Campaign.WebServices.Security;
 using Zone.Campaign.WebServices.Services;
+using Zone.Campaign.Templates.Services.Metadata;
 
 namespace Zone.Campaign.Sync.Services
 {
+    /// <summary>
+    /// Contains methods to download files from Campaign and save them to disk.
+    /// </summary>
     public class Downloader : IDownloader
     {
         #region Fields
@@ -25,6 +29,12 @@ namespace Zone.Campaign.Sync.Services
 
         #region Constructor
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="Downloader"/>
+        /// </summary>
+        /// <param name="mappingFactory">Mapping factory</param>
+        /// <param name="metadataInserterFactory">Metadata inserter factory</param>
+        /// <param name="queryService">Query service</param>
         public Downloader(IMappingFactory mappingFactory,
                           IMetadataInserterFactory metadataInserterFactory,
                           IQueryService queryService)
@@ -38,7 +48,12 @@ namespace Zone.Campaign.Sync.Services
 
         #region Methods
 
-        public void DoDownload(Uri rootUri, Tokens tokens, DownloadSettings settings)
+        /// <summary>
+        /// Download files based on parameters defined in the settings.
+        /// </summary>
+        /// <param name="tokens">Authentication tokens</param>
+        /// <param name="settings">Download settings</param>
+        public void DoDownload(IRequestHandler requestHandler, DownloadSettings settings)
         {
             // Create output dir
             var outDir = Path.Combine(settings.OutputDirectory, settings.Schema.Replace(":", "_"));
@@ -47,20 +62,20 @@ namespace Zone.Campaign.Sync.Services
             var mapping = _mappingFactory.GetMapping(settings.Schema);
             if (mapping == null)
             {
-                Log.ErrorFormat("Unrecognised schema: {0}", settings.Schema);
+                Log.Error($"Unrecognised schema: {settings.Schema}");
                 return;
             }
 
             // Do query
-            var response = _queryService.ExecuteQuery(rootUri, tokens, settings.Schema, mapping.QueryFields, settings.Conditions);
+            var response = _queryService.ExecuteQuery(requestHandler, settings.Schema, mapping.QueryFields, settings.Conditions);
 
             if (!response.Success)
             {
-                Log.ErrorFormat("Query failed: {0}", response.Message);
+                Log.Error($"Query failed: {response.Message}");
                 return;
             }
 
-            Log.DebugFormat("Query succeeded:{0}{1}", Environment.NewLine, string.Join(",", response.Data));
+            Log.Debug($"Query succeeded:{Environment.NewLine}{string.Join(",", response.Data)}");
 
             foreach (var item in response.Data)
             {
@@ -72,7 +87,7 @@ namespace Zone.Campaign.Sync.Services
                 }
                 catch (Exception ex)
                 {
-                    Log.ErrorFormat("Query response parsing failed: {0}", ex.Message);
+                    Log.Error($"Query response parsing failed: {ex.Message}");
                     Log.Debug(ex);
                     continue;
                 }
@@ -98,10 +113,10 @@ namespace Zone.Campaign.Sync.Services
                 }
 
                 File.WriteAllText(filePath, code);
-                Log.DebugFormat("{0} downloaded.", template.Metadata.Name);
+                Log.Debug($"{template.Metadata.Name} downloaded.");
             }
 
-            Log.InfoFormat("{0} files downloaded.", response.Data.Count());
+            Log.Info($"{response.Data.Count()} files downloaded.");
         }
 
         #endregion

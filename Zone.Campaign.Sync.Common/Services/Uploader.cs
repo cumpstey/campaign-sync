@@ -5,12 +5,16 @@ using System.Linq;
 using System.Security.Cryptography;
 using log4net;
 using Zone.Campaign.Templates.Services;
+using Zone.Campaign.Templates.Services.Metadata;
 using Zone.Campaign.WebServices.Model;
 using Zone.Campaign.WebServices.Security;
 using Zone.Campaign.WebServices.Services;
 
 namespace Zone.Campaign.Sync.Services
 {
+    /// <summary>
+    /// Contains methods to read files from disk and upload them into Campaign.
+    /// </summary>
     public class Uploader : IUploader
     {
         #region Fields
@@ -35,6 +39,16 @@ namespace Zone.Campaign.Sync.Services
 
         #region Constructor
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="Uploader"/>
+        /// </summary>
+        /// <param name="imageDataProvider">Image data provider</param>
+        /// <param name="mappingFactory">Mapping factory</param>
+        /// <param name="metadataExtractorFactory">Metadata extractor factory</param>
+        /// <param name="templateTransformerFactory">Template transformer factory</param>
+        /// <param name="builderService">Builder service</param>
+        /// <param name="imageWriteService">Image write service</param>
+        /// <param name="writeService">Write service</param>
         public Uploader(IImageDataProvider imageDataProvider,
                         IMappingFactory mappingFactory,
                         IMetadataExtractorFactory metadataExtractorFactory,
@@ -56,7 +70,12 @@ namespace Zone.Campaign.Sync.Services
 
         #region Methods
 
-        public void DoUpload(Uri rootUri, Tokens tokens, UploadSettings settings)
+        /// <summary>
+        /// Upload a set of files defined by the settings.
+        /// </summary>
+        /// <param name="requestHandler">Request handler</param>
+        /// <param name="settings">Upload settings</param>
+        public void DoUpload(IRequestHandler requestHandler, UploadSettings settings)
         {
             var pathList = settings.FilePaths.SelectMany(i =>
             {
@@ -76,7 +95,7 @@ namespace Zone.Campaign.Sync.Services
                     return Directory.GetFiles(dir, Path.GetFileName(i), SearchOption.AllDirectories);
                 }
 
-                Log.WarnFormat("{0} specified for upload but no matching files found.", i);
+                Log.Warn($"{i} specified for upload but no matching files found.");
                 return new string[0];
             }).ToArray();
 
@@ -86,7 +105,7 @@ namespace Zone.Campaign.Sync.Services
                 var metadataExtractor = _metadataExtractorFactory.GetExtractor(fileExtension);
                 if (metadataExtractor == null)
                 {
-                    Log.WarnFormat("Unsupported filetype {0}.", i);
+                    Log.Warn($"Unsupported filetype {i}.");
                     return null;
                 }
 
@@ -95,17 +114,17 @@ namespace Zone.Campaign.Sync.Services
 
                 if (template.Metadata == null)
                 {
-                    Log.WarnFormat("No metadata found in {0}.", i);
+                    Log.Warn($"No metadata found in {i}.");
                     return template;
                 }
                 else if (template.Metadata.Schema == null)
                 {
-                    Log.WarnFormat("No schema found in {0}.", i);
+                    Log.Warn($"No schema found in {i}.");
                     return template;
                 }
                 else if (template.Metadata.Name == null)
                 {
-                    Log.WarnFormat("No name found in {0}.", i);
+                    Log.Warn($"No name found in {i}.");
                     return template;
                 }
 
@@ -129,77 +148,94 @@ namespace Zone.Campaign.Sync.Services
 
             if (settings.TestMode)
             {
-                Log.InfoFormat("{1} files found:{0}{2}", Environment.NewLine, templateList.Count(), string.Join(Environment.NewLine, templateList.Select(i => i.Metadata.Name)));
+                Log.Info($"{templateList.Count()} files found:{Environment.NewLine}{string.Join(Environment.NewLine, templateList.Select(i => i.Metadata.Name))}");
             }
             else
             {
-                var templateCount = 0;
+                var templateTotalCount = templateList.Length;
+                var templateProcessedCount = 0;
+                var templateSuccessCount = 0;
                 foreach (var template in templateList)
                 {
+                    templateProcessedCount++;
+
                     // Get mapping for defined schema, and generate object for write
                     var mapping = _mappingFactory.GetMapping(template.Metadata.Schema.ToString());
                     var persistable = mapping.GetPersistableItem(template);
 
-                    var response = _writeService.Write(rootUri, tokens, persistable);
+                    var response = _writeService.Write(requestHandler, persistable);
                     if (!response.Success)
                     {
-                        Log.WarnFormat("Upload of {0} failed: {1}", template.Metadata.Name, response.Message);
+                        Log.Warn($"Upload of {template.Metadata.Name} failed: {response.Message}");
                     }
                     else
                     {
-                        templateCount++;
+                        templateSuccessCount++;
                     }
                 }
 
-                Log.InfoFormat("{0} files uploaded.", templateCount);
+                Log.Info($"{templateSuccessCount} files uploaded.");
 
                 var schemaList = templateList.Where(i => i.Metadata.Schema.ToString() == SrcSchema.Schema).ToArray();
                 if (schemaList.Any())
                 {
-                    var schemaCount = 0;
+                    var schemaTotalCount = schemaList.Length;
+                    var schemaProcessedCount = 0;
+                    var schemaSuccessCount = 0;
                     foreach (var schema in schemaList)
                     {
-                        var response = _builderService.BuildSchema(rootUri, tokens, schema.Metadata.Name);
+                        schemaProcessedCount++;
+
+                        var response = _builderService.BuildSchema(requestHandler, schema.Metadata.Name);
                         if (!response.Success)
                         {
-                            Log.WarnFormat("Build of {0} failed: {1}", schema.Metadata.Name, response.Message);
+                            Log.Warn($"Build of {schema.Metadata.Name} failed: {response.Message}");
                         }
                         else
                         {
-                            schemaCount++;
+                            schemaSuccessCount++;
                         }
                     }
 
-                    Log.InfoFormat("{0} schemas built.", schemaCount);
+                    Log.Info($"{schemaSuccessCount} schemas built.");
                 }
             }
         }
 
-        public void DoImageUpload(Uri rootUri, Tokens tokens, UploadSettings settings)
+        /// <summary>
+        /// Upload a set of images defined by the settings.
+        /// </summary>
+        /// <param name="requestHandler">Request handler</param>
+        /// <param name="settings">Upload settings</param>
+        public void DoImageUpload(IRequestHandler requestHandler, UploadSettings settings)
         {
             var imageData = settings.FilePaths.SelectMany(i => _imageDataProvider.GetData(i)).ToArray();
 
-            var imageCount = 0;
+            var totalCount = imageData.Length;
+            var processedCount = 0;
+            var successCount = 0;
             foreach (var imageItem in imageData)
             {
+                processedCount++;
+
                 var mimeType = ImageHelper.GetMimeType(Path.GetExtension(imageItem.FilePath));
                 if (mimeType == null)
                 {
-                    Log.WarnFormat("Unsupported file type: {0}", imageItem.FilePath);
+                    Log.Warn($"Unsupported file type: {imageItem.FilePath}");
                     continue;
                 }
 
                 var fileInfo = new FileInfo(imageItem.FilePath);
                 if (!fileInfo.Exists)
                 {
-                    Log.WarnFormat("File does not exist: {0}", imageItem.FilePath);
+                    Log.Warn($"File does not exist: {imageItem.FilePath}");
                     continue;
                 }
 
                 InternalName internalName;
                 if (!InternalName.TryParse(imageItem.InternalName, out internalName))
                 {
-                    Log.WarnFormat("Failed to parse internal name: {0}", imageItem.InternalName);
+                    Log.Warn($"Failed to parse internal name: {imageItem.InternalName}");
                     continue;
                 }
 
@@ -236,18 +272,18 @@ namespace Zone.Campaign.Sync.Services
                     FileContent = fileContent,
                 };
 
-                var response = _imageWriteService.WriteImage(rootUri, tokens, file);
+                var response = _imageWriteService.WriteImage(requestHandler, file);
                 if (!response.Success)
                 {
-                    Log.WarnFormat("Upload of {0} failed: {1}", imageItem.InternalName, response.Message);
+                    Log.Warn($"Upload of {imageItem.InternalName} failed: {response.Message}");
                 }
                 else
                 {
-                    imageCount++;
+                    successCount++;
                 }
             }
 
-            Log.InfoFormat("{0} images uploaded.", imageCount);
+            Log.Info($"{successCount} images uploaded.");
         }
 
         #endregion
