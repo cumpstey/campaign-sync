@@ -18,6 +18,8 @@
            {
                case FileTypes.Html:
                    return new HtmlTemplateTransformer();
+                case FileTypes.Jssp:
+                    return new JsspTemplateTransformer();
                default:
                    return new NullTemplateTransformer();
            }

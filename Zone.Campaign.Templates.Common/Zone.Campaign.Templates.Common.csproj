@@ -57,6 +57,7 @@
     <Compile Include="Model\Template.cs" />
     <Compile Include="Model\TemplateMetadata.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\JsspTemplateTransformer.cs" />
     <Compile Include="Services\Metadata\IXmlMetadataExtractor.cs" />
     <Compile Include="Services\Metadata\IMetadataInserterFactory.cs" />
     <Compile Include="Services\ITemplateTransformerFactory.cs" />

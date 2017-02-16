@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web;
 using HtmlAgilityPack;
+using log4net;
 
 namespace Zone.Campaign.Templates.Services
 {
@@ -14,6 +15,8 @@ namespace Zone.Campaign.Templates.Services
     public class HtmlTemplateTransformer : ITemplateTransformer
     {
         #region Fields
+
+        private static readonly ILog Log = LogManager.GetLogger(typeof(HtmlTemplateTransformer));
 
         private const string FunctionDefinitionFormat = @"function {0} ({1}) {{/-->{2}<!--/}} // end {0}";
 
@@ -345,6 +348,10 @@ namespace Zone.Campaign.Templates.Services
                                              : fileContent;
 
                     output = output.Insert(start, includeContent);
+                }
+                else
+                {
+                    Log.Warn($"Cannot include file in template, as it does not exist: {fullPath}.");
                 }
             }
 
