@@ -15,7 +15,9 @@ namespace Zone.Campaign.Sync.Mappings
     {
         #region Fields
 
-        private readonly string[] _queryFields = { "@name", "@label", "@visible", "source/text", "source/html" };
+        private const string FormatSeparator = "<%---- text above, html below ----%>";
+
+        private readonly string[] _queryFields = { "@name", "@label", "@visible", "source/@dependOnFormat", "source/text", "source/html" };
 
         #endregion
 
@@ -41,14 +43,25 @@ namespace Zone.Campaign.Sync.Mappings
             {
                 Name = template.Metadata.Name,
                 Label = template.Metadata.Label,
-                TextCode = template.Code,
             };
+
+            if (template.Code.Contains(FormatSeparator))
+            {
+                item.VariesByFormat = true;
+                item.TextCode = template.Code.Substring(0, template.Code.IndexOf(FormatSeparator)).Trim();
+                item.HtmlCode = template.Code.Substring(template.Code.LastIndexOf(FormatSeparator) + FormatSeparator.Length).Trim();
+            }
+            else
+            {
+                item.VariesByFormat = false;
+                item.TextCode = template.Code;
+            }
 
             bool visible;
             if (template.Metadata.AdditionalProperties.ContainsKey("Visible")
                 && bool.TryParse(template.Metadata.AdditionalProperties["Visible"], out visible))
             {
-                item.Visible = visible;
+                item.IncludeInCustomisationMenus = visible;
             }
 
             return item;
@@ -77,10 +90,26 @@ namespace Zone.Campaign.Sync.Mappings
                 metadata.AdditionalProperties.Add("Visible", (visibleAttribute.InnerText == "1").ToString());
             }
 
-            var codeNode = doc.DocumentElement.SelectSingleNode("source/text");
-            var rawCode = codeNode == null
+            var textCodeNode = doc.DocumentElement.SelectSingleNode("source/text");
+            var rawTextCode = textCodeNode == null
                           ? string.Empty
-                          : codeNode.InnerText;
+                          : textCodeNode.InnerText;
+
+            var htmlCodeNode = doc.DocumentElement.SelectSingleNode("source/html");
+            var rawHtmlCode = htmlCodeNode == null
+                          ? string.Empty
+                          : htmlCodeNode.InnerText;
+
+            var dependOnFormat = false;
+            var dependOnFormatAttribute = doc.DocumentElement.SelectSingleNode("source/@dependOnFormat");
+            if (dependOnFormatAttribute != null)
+            {
+                dependOnFormat = dependOnFormatAttribute.InnerText == "true";
+            }
+
+            var rawCode = dependOnFormat
+                ? string.Concat(rawTextCode, Environment.NewLine, Environment.NewLine, FormatSeparator, Environment.NewLine, Environment.NewLine, rawHtmlCode)
+                : rawTextCode;
 
             return new Template
             {
