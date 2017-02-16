@@ -48,6 +48,8 @@ namespace Zone.Campaign.Sync.Mappings
             if (template.Code.Contains(FormatSeparator))
             {
                 item.VariesByFormat = true;
+                item.TextCode = template.Code.Substring(0, template.Code.IndexOf(FormatSeparator)).Trim();
+                item.HtmlCode = template.Code.Substring(template.Code.LastIndexOf(FormatSeparator) + FormatSeparator.Length).Trim();
             }
             else
             {
@@ -106,7 +108,7 @@ namespace Zone.Campaign.Sync.Mappings
             }
 
             var rawCode = dependOnFormat
-                ? string.Concat(rawTextCode, Environment.NewLine, FormatSeparator, Environment.NewLine, rawHtmlCode)
+                ? string.Concat(rawTextCode, Environment.NewLine, Environment.NewLine, FormatSeparator, Environment.NewLine, Environment.NewLine, rawHtmlCode)
                 : rawTextCode;
 
             return new Template
