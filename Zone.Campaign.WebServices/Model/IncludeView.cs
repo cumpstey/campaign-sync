@@ -31,14 +31,24 @@ namespace Zone.Campaign.WebServices.Model
         public string Label { get; set; }
 
         /// <summary>
-        /// The raw xml of the code of the text version as a string.
+        /// The raw code of the text version as a string.
         /// </summary>
         public string TextCode { get; set; }
 
         /// <summary>
-        /// Flag indicating whether this personalisation block is visible in selection lists.
+        /// The raw code of the html version as a string.
         /// </summary>
-        public bool? Visible { get; set; }
+        public string HtmlCode { get; set; }
+
+        /// <summary>
+        /// Flag indicating whether the content of this personalisation block depends on the format of the content in which it's included.
+        /// </summary>
+        public bool? VariesByFormat { get; set; }
+
+        /// <summary>
+        /// Flag indicating whether this personalisation block is included in customisation menua.
+        /// </summary>
+        public bool? IncludeInCustomisationMenus { get; set; }
 
         #endregion
 
@@ -59,17 +69,29 @@ namespace Zone.Campaign.WebServices.Model
                 element.AppendAttribute("label", Label);
             }
 
+            var sourceElement = element.AppendChild("source");
+            if(VariesByFormat != null)
+            {
+                sourceElement.AppendAttribute("dependOnFormat", VariesByFormat.Value.ToString().ToLower());
+            }
+
             if (TextCode != null)
             {
-                var sourceElement = element.AppendChild("source");
                 var textElement = sourceElement.AppendChild("text");
                 var textCData = ownerDocument.CreateCDataSection(TextCode);
                 textElement.AppendChild(textCData);
             }
 
-            if (Visible != null)
+            if (HtmlCode != null)
             {
-                element.AppendAttribute("visible", Visible.Value.ToString().ToLower());
+                var htmlElement = sourceElement.AppendChild("html");
+                var htmlCData = ownerDocument.CreateCDataSection(HtmlCode);
+                htmlElement.AppendChild(htmlCData);
+            }
+
+            if (IncludeInCustomisationMenus != null)
+            {
+                element.AppendAttribute("visible", IncludeInCustomisationMenus.Value.ToString().ToLower());
             }
 
             return element;
