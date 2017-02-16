@@ -22,7 +22,7 @@ This whole project is built entirely on my own ideas as to how Campaign developm
 
 The app allows the download and upload of the following entities:
 
-- `nms:includeView` - Personalisation block (text part only).
+- `nms:includeView` - Personalisation block.
 - `nms:publishing` - Publishing model.
 - `xtk:form` - Input form.
 - `xtk:javascript` - JavaScript code.
@@ -45,7 +45,7 @@ Example commands for the various usages are below. Descriptions of the available
 To download all JavaScript templates with namespace 'cus' and name starting with 'myTemplate' into the folder 'C:\Campaign files\xtk_jst\cus':
 
 ```dos
-> CampaignSync.exe -m Download -s http://neolane.net -u myuser -p mypassword --dir "C:\Campaign files" --schema xtk:jst --conditions "@namespace='cus'" "@name like 'myTemplate%'"
+> CampaignSync.exe -m Download -s http://neolane.net/nl/jsp/soaprouter.jsp -u myuser -p mypassword --dir "C:\Campaign files" --schema xtk:jst --conditions "@namespace='cus'" "@name like 'myTemplate%'"
 ```
 
 ### Upload
@@ -53,13 +53,13 @@ To download all JavaScript templates with namespace 'cus' and name starting with
 To upload all files which have metadata specified in the appropriate syntax from: `C:\Campaign files\xtk_javascript\cus\myscript.js`; any file with the .jssp extension within `C:\Campaign files\xtk_jst` and chid folders; and any file within `C:\Campaign files\xtk_form` or child folders:
 
 ```dos
-> CampaignSync.exe -m Upload -s http://neolane.net -u myuser -p mypassword --files "C:\Campaign files\xtk_javascript\cus\myscript.js" "C:\Campaign files\xtk_jst\*.jssp" "C:\Campaign files\xtk_form"
+> CampaignSync.exe -m Upload -s http://neolane.net/nl/jsp/soaprouter.jsp -u myuser -p mypassword --files "C:\Campaign files\xtk_javascript\cus\myscript.js" "C:\Campaign files\xtk_jst\*.jssp" "C:\Campaign files\xtk_form"
 ```
 
 Text in the files can be replaced with alternative text on upload. We use this as we have a secondary database which Campaign connects to, which has a different name on each environment.
 
 ```dos
-> CampaignSync.exe -m Upload -s http://neolane.net -u myuser -p mypassword --files "C:\Campaign files\xtk_srcSchema\cus\*.xml"  --replacements "DevDB=>ProdDB" "DevSetting=>LivSetting"
+> CampaignSync.exe -m Upload -s http://neolane.net/nl/jsp/soaprouter.jsp -u myuser -p mypassword --files "C:\Campaign files\xtk_srcSchema\cus\*.xml"  --replacements "DevDB=>ProdDB" "DevSetting=>LivSetting"
 ```
 
 ### Image upload
@@ -73,7 +73,7 @@ Images must have an associated `imageData.csv` metadata file, which covers all i
 The images can then be uploaded by:
 
 ```dos
-> CampaignSync.exe -m ImageUpload -s http://neolane.net -u myuser -p mypassword --files "C:\Campaign files\images"
+> CampaignSync.exe -m ImageUpload -s http://neolane.net/nl/jsp/soaprouter.jsp -u myuser -p mypassword --files "C:\Campaign files\images"
 ```
 
 Images are created, as far as I can tell, in the same way as they would be if manually uploaded in Campaign: same location on disk, and same properties in the `xtk:fileRes` record.
@@ -89,6 +89,7 @@ Wrappers are provided for the following built-in endpoints:
 - `xtk:persist#Write`
 - `xtk:persist#WriteCollection`
 - `xtk:queryDef#ExecuteQuery`
+- `nms:rtEvent#PushRtEvent`
 
 It's easy enough to add a wrapper for another, or a custom, endpoint.
 
@@ -101,11 +102,10 @@ Also included are:
 
 Features which we aim to include soon:
 
-- Upload support of `nms:includeView` and `nms:publishing`.
+- Upload support of `nms:publishing`.
 - Moving the hardcoded filepaths in a couple of the JS functions into `xtk:option`.
 - Generic workflow trigger.
 - Workflow which regenerates deliveries which use a JS template, which can be triggered when the template is updated so the deliveries can use the latest version without manual regeneration of each in the ui.
-- Removing irrelevant elements and attributes from the `xtk:form`, `xtk:srcSchema` and other types deriving from `xtk:entity` on download.
 
 ## Further notes
 
@@ -113,13 +113,14 @@ The `xtk:session#Logon` method requires credentials to be sent in plain text. Pa
 
 The Campaign metadata which identifies which entity in Campaign a file corresponds to - schema, namespace, name, label - is stored in a comment in the file. This is written on download, and read and removed on upload - it doesn't appear in the file in Campaign itself.
 
-We use the `.jssp` (ie. JavaScript Server Page) file extension for JavaScript templates. No code editor I've found has properly decent support for this. Notepad++ HTML syntax highlighting works fairly well, but misses things; and JSP isn't satisfactory for those cases where JS syntax differs from Java syntax. Atom does well with its JavaServer Pages grammar. Sublime does slightly less well with its Java Server Page (JSP) syntax, and although I've not done it it looks like you can probably set a default for a file extension. There's no built-in language in VS Code which does a good job. To set JavaServer Pages as the default grammer for `.jssp` in Atom, add this to the config:
+We use the `.jssp` (ie. JavaScript Server Page) file extension for JavaScript templates. No code editor I've found has properly decent support for this out of the box. By far the best I've found (having also explored various configurations of Notepad++, Sublime, Visual Studio and Atom) is Visual Studio Code with the [.ejs](https://marketplace.visualstudio.com/items?itemName=QassimFarid.ejs-language-support) extension. Set `.jssp` files to use this as the default syntax by adding this to the settings:
 
-```coffeescript
-core:
-  customFileTypes: {
-    "text.html.jsp": ["jssp"]
+```json
+{
+  "files.associations": {
+    "*.jssp": "ejs"
   }
+}
 ```
 
 Actually in our particular case we use `.jssp` for the JS template for the text version of the email only; and `.html` for the html version. The app does an additional transform step on files with the `.html` extension. I developed a syntax which allows us to hold both static example content, so the front end developers can build, demonstrate and test their markup, and the code which adds in the dynamic content in a single file. I'll document that syntax here in the future.
