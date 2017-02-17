@@ -26,7 +26,9 @@ namespace Zone.Campaign.Templates.Services
 
         private static readonly Regex FullFunctionRegex = new Regex(@"<!--\{\s*(?<func>[a-z0-9_]+)\s*\((?<args>.*?)\)(\s*\[prototype:(?<prototypeClass>.*?)\])?\s*\}-->(?<code>.*?)<!--\{\s*end\s*\k<func>\s*\}-->", RegexOptions.Singleline | RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
-        private static readonly Regex IncludeRegex = new Regex(@"<!--@include-(?<when>pre|post)\s*(?<path>.*?)\s*@(?<flags>[h]*)-->", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        private static readonly Regex IncludeWhenRegex = new Regex(@"<!--@include-(?<when>pre|post)\s*(?<path>.*?)\s*@(?<flags>[ht]*)-->", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+
+        private static readonly Regex IncludeRegex = new Regex(@"<%--@include\s*(?<path>.*?)\s*@(?<flags>[t]*)--%>", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         #endregion
 
@@ -313,12 +315,12 @@ namespace Zone.Campaign.Templates.Services
         }
 
         /// <summary>
-        /// Processes specifically the <!--@include @--> comments which contain include directives
+        /// Processes specifically the <!--@include-xxx @--> comments which contain include directives
         /// </summary>
         private static string ProcessIncludes(string input, string workingDirectory, string when)
         {
             var output = input;
-            var matches = IncludeRegex.Matches(output);
+            var matches = IncludeWhenRegex.Matches(output);
             foreach (var match in matches.Cast<Match>().Reverse())
             {
                 var itemWhen = match.Groups["when"].Value;
@@ -337,7 +339,7 @@ namespace Zone.Campaign.Templates.Services
                 output = output.Remove(start, length);
 
                 // Insert file content.
-                var fullPath = Path.Combine(workingDirectory, path);
+                var fullPath = Path.GetFullPath(Path.Combine(workingDirectory, path));
                 if (File.Exists(fullPath))
                 {
                     var fileContent = File.ReadAllText(fullPath);
@@ -346,7 +348,50 @@ namespace Zone.Campaign.Templates.Services
                     var includeContent = flags.Contains('h')
                                              ? GetHtmlBody(fileContent)
                                              : fileContent;
+                    includeContent = ProcessIncludes(includeContent, Path.GetDirectoryName(fullPath));
 
+                    output = output.Insert(start, includeContent);
+                }
+                else
+                {
+                    Log.Warn($"Cannot include file in template, as it does not exist: {fullPath}.");
+                }
+            }
+
+            return output;
+        }
+
+        /// <summary>
+        /// Processes specifically the &lt;%--@include @--%&gt; comments which contain include directives
+        /// </summary>
+        private static string ProcessIncludes(string input, string workingDirectory)
+        {
+            var output = input;
+            var matches = IncludeRegex.Matches(output);
+            foreach (var match in matches.Cast<Match>().Reverse())
+            {
+                var path = match.Groups["path"].Value;
+                var flags = match.Groups["flags"].Value.Distinct().ToArray();
+
+                var start = match.Captures[0].Index;
+                var length = match.Captures[0].Length;
+
+                // Remove insert directive.
+                output = output.Remove(start, length);
+
+                // Insert file content.
+                var fullPath = Path.GetFullPath(Path.Combine(workingDirectory, path));
+                if (File.Exists(fullPath))
+                {
+                    var fileContent = File.ReadAllText(fullPath);
+
+                    // If trim flag is specified, trim file content.
+                    if (flags.Contains('t'))
+                    {
+                        fileContent = fileContent.Trim();
+                    }
+
+                    var includeContent = ProcessIncludes(fileContent, Path.GetDirectoryName(fullPath));
                     output = output.Insert(start, includeContent);
                 }
                 else

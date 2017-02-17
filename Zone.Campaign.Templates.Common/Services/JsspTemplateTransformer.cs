@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
-using System.Web;
-using HtmlAgilityPack;
 using log4net;
 
 namespace Zone.Campaign.Templates.Services
@@ -18,7 +14,7 @@ namespace Zone.Campaign.Templates.Services
 
         private static readonly ILog Log = LogManager.GetLogger(typeof(JsspTemplateTransformer));
 
-        private static readonly Regex IncludeRegex = new Regex(@"<%--@include\s*(?<path>.*?)\s*@(?<flags>[h]*)--%>", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        private static readonly Regex IncludeRegex = new Regex(@"<%--@include\s*(?<path>.*?)\s*@(?<flags>[t]*)--%>", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         private static readonly Regex CodeFileRegex = new Regex(@"^\s*<%(?<content>.*)%>\s*$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
@@ -67,11 +63,19 @@ namespace Zone.Campaign.Templates.Services
                 output = output.Remove(start, length);
 
                 // Insert file content.
-                var fullPath = Path.Combine(workingDirectory, path);
+                var fullPath = Path.GetFullPath(Path.Combine(workingDirectory, path));
                 if (File.Exists(fullPath))
                 {
                     var fileContent = File.ReadAllText(fullPath);
-                    output = output.Insert(start, fileContent);
+
+                    // If trim flag is specified, trim file content.
+                    if (flags.Contains('t'))
+                    {
+                        fileContent = fileContent.Trim();
+                    }
+
+                    var includeContent = ProcessIncludes(fileContent, Path.GetDirectoryName(fullPath));
+                    output = output.Insert(start, includeContent);
                 }
                 else
                 {
