@@ -108,7 +108,7 @@ namespace Zone.Campaign.Sync.Mappings
             }
 
             var rawCode = dependOnFormat
-                ? string.Concat(rawTextCode, Environment.NewLine, FormatSeparator, Environment.NewLine, rawHtmlCode)
+                ? string.Concat(rawTextCode, Environment.NewLine, Environment.NewLine, FormatSeparator, Environment.NewLine, Environment.NewLine, rawHtmlCode)
                 : rawTextCode;
 
             return new Template
