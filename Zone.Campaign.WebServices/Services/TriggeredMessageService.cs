@@ -12,7 +12,7 @@ namespace Zone.Campaign.WebServices.Services
     {
         #region Fields
 
-        private const string ServiceNamespace = "bar:mc";
+        private const string ServiceNamespace = "nms:rtEvent";
 
         private static readonly ILog Log = LogManager.GetLogger(typeof(TriggeredMessageService));
 
