@@ -348,9 +348,16 @@ namespace Zone.Campaign.Templates.Services
                     var includeContent = flags.Contains('h')
                                              ? GetHtmlBody(fileContent)
                                              : fileContent;
-                    includeContent = ProcessIncludes(includeContent, Path.GetDirectoryName(fullPath));
+                    if (includeContent == null)
+                    {
+                        Log.Warn($"No includable content in file: {fullPath}.");
+                    }
+                    else
+                    {
+                        includeContent = ProcessIncludes(includeContent, Path.GetDirectoryName(fullPath));
+                    }
 
-                    output = output.Insert(start, includeContent);
+                    output = output.Insert(start, includeContent ?? string.Empty);
                 }
                 else
                 {
@@ -412,10 +419,13 @@ namespace Zone.Campaign.Templates.Services
             };
 
             htmlDocument.LoadHtml(input);
-            var bodyNode = htmlDocument.DocumentNode.SelectSingleNode("html/body");
-            return bodyNode != null
-                       ? bodyNode.InnerHtml.Trim()
-                       : null;
+
+            // Return the content of either the data-container, or the body, or the whole file content.
+            var containerNode = htmlDocument.DocumentNode.SelectSingleNode("//*[@data-container]")
+                             ?? htmlDocument.DocumentNode.SelectSingleNode("html/body");
+            return containerNode != null
+                ? containerNode.InnerHtml.Trim()
+                : null;
         }
 
         #endregion
