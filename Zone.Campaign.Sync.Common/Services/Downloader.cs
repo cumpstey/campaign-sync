@@ -3,8 +3,6 @@ using System;
 using System.IO;
 using System.Linq;
 using Zone.Campaign.Templates.Model;
-using Zone.Campaign.Templates.Services;
-using Zone.Campaign.WebServices.Security;
 using Zone.Campaign.WebServices.Services;
 using Zone.Campaign.Templates.Services.Metadata;
 
@@ -51,7 +49,7 @@ namespace Zone.Campaign.Sync.Services
         /// <summary>
         /// Download files based on parameters defined in the settings.
         /// </summary>
-        /// <param name="tokens">Authentication tokens</param>
+        /// <param name="requestHandler">Request handler</param>
         /// <param name="settings">Download settings</param>
         public void DoDownload(IRequestHandler requestHandler, DownloadSettings settings)
         {

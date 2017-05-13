@@ -17,7 +17,7 @@ namespace Zone.Campaign.Sync.Mappings
         /// <summary>
         /// Adobe Campaign schema associated with this mapping class.
         /// </summary>
-        protected virtual string Schema
+        public virtual string Schema
         {
             get { return typeof(T).GetCustomAttributes(typeof(SchemaAttribute), false).Cast<SchemaAttribute>().First().Name; }
         }

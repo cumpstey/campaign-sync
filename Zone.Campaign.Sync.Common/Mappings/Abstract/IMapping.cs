@@ -12,6 +12,11 @@ namespace Zone.Campaign.Sync.Mappings.Abstract
         #region Properties
 
         /// <summary>
+        /// Adobe Campaign schema associated with this mapping class.
+        /// </summary>
+        string Schema { get; }
+
+        /// <summary>
         /// List of field names which should be requested when querying Campaign.
         /// </summary>
         IEnumerable<string> QueryFields { get; }

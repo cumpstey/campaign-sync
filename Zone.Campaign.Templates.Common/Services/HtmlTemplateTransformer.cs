@@ -75,11 +75,26 @@ namespace Zone.Campaign.Templates.Services
 
         #region Helpers
 
+        private static string ProcessFunctionDefinitions(string input)
+        {
+            var output = input;
+            int found;
+            do
+            {
+                output = ProcessFunctionDefinitionsOnce(output, out found);
+            } while (found > 0);
+
+            var replacementIndex = output.IndexOf(FunctionPlaceholder);
+            output = output.Remove(replacementIndex, FunctionPlaceholder.Length);
+
+            return output;
+        }
+
         /// <summary>
         /// Processes specifically the <!--{}--> comments which contain code blocks
         /// to be extracted as functions.
         /// </summary>
-        private static string ProcessFunctionDefinitions(string input)
+        private static string ProcessFunctionDefinitionsOnce(string input, out int found)
         {
             var output = input;
             var matches = FullFunctionRegex.Matches(output);
@@ -104,16 +119,18 @@ namespace Zone.Campaign.Templates.Services
                                        : string.Format(FunctionDefinitionFormat, func, args, code));
             }
 
+            found = formattedFuncs.Count;
+
             // Insert concatenated function definitions.
             var replacementIndex = output.IndexOf(FunctionPlaceholder);
             if (replacementIndex == -1)
             {
-                output = string.Concat(string.Join(Environment.NewLine + Environment.NewLine, formattedFuncs), output);
+                output = string.Concat(string.Join(Environment.NewLine + Environment.NewLine, formattedFuncs) + Environment.NewLine + Environment.NewLine, output);
             }
             else
             {
-                output = output.Remove(replacementIndex, FunctionPlaceholder.Length);
-                output = output.Insert(replacementIndex, string.Join(Environment.NewLine + Environment.NewLine, formattedFuncs.Reverse<string>()));
+                //output = output.Remove(replacementIndex, FunctionPlaceholder.Length);
+                output = output.Insert(replacementIndex, string.Join(Environment.NewLine + Environment.NewLine, formattedFuncs.Reverse<string>()) + Environment.NewLine + Environment.NewLine);
             }
 
             return output;

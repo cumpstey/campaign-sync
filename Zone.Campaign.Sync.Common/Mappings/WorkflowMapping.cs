@@ -9,13 +9,13 @@ using Zone.Campaign.WebServices.Model.Abstract;
 namespace Zone.Campaign.Sync.Mappings
 {
     /// <summary>
-    /// Contains helper methods for mapping between the <see cref="JavaScriptCode"/> .NET class and information formatted for Campaign to understand.
+    /// Contains helper methods for mapping between a .NET class and information formatted for Campaign to understand.
     /// </summary>
-    public class JavaScriptCodeMapping : Mapping<JavaScriptCode>
+    public class WorkflowMapping : Mapping<Workflow>
     {
         #region Fields
 
-        private readonly string[] _queryFields = { "@name", "@label", "data" };
+        private readonly string[] _queryFields = { "@internalName", "@label", "data" };
 
         #endregion
 
@@ -25,6 +25,11 @@ namespace Zone.Campaign.Sync.Mappings
         /// List of field names which should be requested when querying Campaign.
         /// </summary>
         public override IEnumerable<string> QueryFields { get { return _queryFields; } }
+
+        /// <summary>
+        /// List of the attributes on the root element which should be persisted to the local file on download.
+        /// </summary>
+        public virtual IEnumerable<string> AttributesToKeep { get { return new string[0]; } }
 
         #endregion
 
@@ -37,11 +42,11 @@ namespace Zone.Campaign.Sync.Mappings
         /// <returns>Class containing information which can be sent to Campaign</returns>
         public override IPersistable GetPersistableItem(Template template)
         {
-            return new JavaScriptCode
+            return new Workflow
             {
                 Name = template.Metadata.Name,
                 Label = template.Metadata.Label,
-                Code = template.Code,
+                RawXml = template.Code,
             };
         }
 
@@ -58,24 +63,20 @@ namespace Zone.Campaign.Sync.Mappings
             var metadata = new TemplateMetadata
             {
                 Schema = InternalName.Parse(Schema),
-                Name = new InternalName(doc.DocumentElement.Attributes["namespace"].InnerText, doc.DocumentElement.Attributes["name"].InnerText),
+                Name = new InternalName(null, doc.DocumentElement.Attributes["internalName"].InnerText),
+                Label = doc.DocumentElement.Attributes["label"].InnerText,
             };
 
-            var labelNode = doc.DocumentElement.Attributes["label"];
-            if (labelNode != null)
-            {
-                metadata.Label = labelNode.InnerText;
-            }
+            doc.DocumentElement.RemoveAllAttributesExcept(AttributesToKeep);
+            doc.DocumentElement.RemoveChild("createdBy");
+            doc.DocumentElement.RemoveChild("modifiedBy");
 
-            var codeNode = doc.DocumentElement.SelectSingleNode("data");
-            var rawCode = codeNode == null
-                          ? string.Empty
-                          : codeNode.InnerText;
+            var rawCode = doc.OuterXml;
             return new Template
             {
                 Code = rawCode,
                 Metadata = metadata,
-                FileExtension = FileTypes.JavaScript,
+                FileExtension = FileTypes.Xml,
             };
         }
 

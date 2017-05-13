@@ -1,7 +1,7 @@
 ﻿using System;
-using Zone.Campaign.Sync.Mappings;
+using System.Collections.Generic;
+using System.Linq;
 using Zone.Campaign.Sync.Mappings.Abstract;
-using Zone.Campaign.WebServices.Model;
 
 namespace Zone.Campaign.Sync.Services
 {
@@ -10,6 +10,24 @@ namespace Zone.Campaign.Sync.Services
     /// </summary>
     public class MappingFactory : IMappingFactory
     {
+        #region Fields
+
+        private readonly IEnumerable<IMapping> _mappings;
+
+        #endregion
+
+        #region Constructor
+
+        /// <summary>
+        /// Initializes a new instance of <see cref="MappingFactory"/>
+        /// </summary>
+        public MappingFactory(IEnumerable<IMapping> mappings)
+        {
+            _mappings = mappings;
+        }
+
+        #endregion
+
         #region Methods
 
         /// <summary>
@@ -19,28 +37,13 @@ namespace Zone.Campaign.Sync.Services
         /// <returns>Mapping class</returns>
         public IMapping GetMapping(string schema)
         {
-            // TODO: Make this better: compile a dictionary at runtime, or use an IoC container.
-            switch (schema)
+            var mapping = _mappings.FirstOrDefault(i => i.Schema == schema);
+            if (mapping == null)
             {
-                case Form.Schema:
-                    return new FormMapping();
-                case IncludeView.Schema:
-                    return new IncludeViewMapping();
-                case JavaScriptCode.Schema:
-                    return new JavaScriptCodeMapping();
-                case JavaScriptTemplate.Schema:
-                    return new JavaScriptTemplateMapping();
-                case Option.Schema:
-                    return new OptionMapping();
-                case Publishing.Schema:
-                    return new PublishingMapping();
-                case QueryFilter.Schema:
-                    return new QueryFilterMapping();
-                case SrcSchema.Schema:
-                    return new SrcSchemaMapping();
-                default:
-                    throw new InvalidOperationException("Unrecognised schema.");
+                throw new InvalidOperationException("Unrecognised schema.");
             }
+
+            return mapping;
         }
 
         #endregion

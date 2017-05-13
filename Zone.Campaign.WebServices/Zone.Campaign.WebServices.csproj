@@ -34,8 +34,8 @@
     <DocumentationFile>bin\Release\Zone.Campaign.WebServices.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="log4net, Version=1.2.15.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
-      <HintPath>..\packages\log4net.2.0.5\lib\net40-full\log4net.dll</HintPath>
+    <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.8\lib\net40-full\log4net.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -55,6 +55,7 @@
     <Compile Include="Model\Form.cs" />
     <Compile Include="Model\ImageFile.cs" />
     <Compile Include="Model\IncludeView.cs" />
+    <Compile Include="Model\Workflow.cs" />
     <Compile Include="Model\QueryFilter.cs" />
     <Compile Include="Model\Publishing.cs" />
     <Compile Include="Model\Option.cs" />

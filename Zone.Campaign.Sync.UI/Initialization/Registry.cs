@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Zone.Campaign.Sync.Mappings.Abstract;
 using Zone.Campaign.Sync.Services;
 using Zone.Campaign.Templates.Services;
 using Zone.Campaign.Templates.Services.Metadata;
@@ -24,6 +25,7 @@ namespace Zone.Campaign.Sync.UI.Initialization
                 scan.AssemblyContainingType<IUploader>();
                 scan.AssemblyContainingType<NullTemplateTransformer>();
                 scan.WithDefaultConventions();
+                scan.AddAllTypesOf<IMapping>();
             });
 
             // Doesn't follow convention, so requires explicit declaration
