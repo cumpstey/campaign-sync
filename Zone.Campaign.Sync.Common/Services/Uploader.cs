@@ -131,7 +131,9 @@ namespace Zone.Campaign.Sync.Services
                 // TODO: I think maybe this should be set by the mapping, not the file extension.
                 var templateTransformer = _templateTransformerFactory.GetTransformer(fileExtension);
                 var workingDirectory = Path.GetDirectoryName(i);
-                var code = templateTransformer.Transform(template.Code, workingDirectory);
+                var code = templateTransformer != null
+                    ? templateTransformer.Transform(template.Code, workingDirectory)
+                    : template.Code;
 
                 if (code != null && settings.Replacements != null)
                 {
@@ -161,7 +163,7 @@ namespace Zone.Campaign.Sync.Services
 
                     // Get mapping for defined schema, and generate object for write
                     var mapping = _mappingFactory.GetMapping(template.Metadata.Schema.ToString());
-                    var persistable = mapping.GetPersistableItem(template);
+                    var persistable = mapping.GetPersistableItem(requestHandler, template);
 
                     var response = _writeService.Write(requestHandler, persistable);
                     if (!response.Success)

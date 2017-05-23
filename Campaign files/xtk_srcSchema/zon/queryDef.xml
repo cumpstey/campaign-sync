@@ -11,6 +11,9 @@ Label: Query def SOAP services
         <param desc="Input data" inout="in" name="input" type="string" />
         <param desc="Output" inout="out" name="pdomOutput" type="DOMDocument"/>
       </parameters>
+      <description>
+        <para>Wrapper for the xtk:queryDef#ExecuteQuery endpoint, accepting a zipped query in order to help bypass length and keyword firewall filters.</para>
+      </description>
     </method>
   </methods>
 </srcSchema>

@@ -23,7 +23,7 @@ namespace Zone.Campaign.Sync.UI.Initialization
             Scan(scan =>
             {
                 scan.AssemblyContainingType<IUploader>();
-                scan.AssemblyContainingType<NullTemplateTransformer>();
+                scan.AssemblyContainingType<ITemplateTransformerFactory>();
                 scan.WithDefaultConventions();
                 scan.AddAllTypesOf<IMapping>();
             });

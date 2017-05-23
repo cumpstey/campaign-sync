@@ -63,7 +63,6 @@
     <Compile Include="Services\ITemplateTransformerFactory.cs" />
     <Compile Include="Services\Metadata\JsspMetadataProcessor.cs" />
     <Compile Include="Services\TemplateTransformerFactory.cs" />
-    <Compile Include="Services\NullTemplateTransformer.cs" />
     <Compile Include="Services\ITemplateTransformer.cs" />
     <Compile Include="Services\HtmlTemplateTransformer.cs" />
     <Compile Include="Services\Metadata\MetadataProcessorFactory.cs" />

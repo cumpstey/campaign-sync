@@ -1,10 +1,21 @@
-﻿namespace Zone.Campaign.Templates.Services
+﻿using System.Collections.Generic;
+
+namespace Zone.Campaign.Templates.Services
 {
     /// <summary>
     /// Provides functions to transform code before it's uploaded to Campaign.
     /// </summary>
     public interface ITemplateTransformer
     {
+        #region Properties
+
+        /// <summary>
+        /// File types which this transformer should be used for.
+        /// </summary>
+        IEnumerable<string> CompatibleFileTypes { get; }
+
+        #endregion
+
         #region Methods
 
         /// <summary>

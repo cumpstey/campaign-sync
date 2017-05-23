@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using log4net;
@@ -39,6 +40,15 @@ namespace Zone.Campaign.Templates.Services
 
             return output;
         }
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// File types which this transformer should be used for.
+        /// </summary>
+        public IEnumerable<string> CompatibleFileTypes { get { return new[] { FileTypes.Jssp }; } }
 
         #endregion
 

@@ -81,7 +81,7 @@ namespace Zone.Campaign.Sync.Services
                 Template template;
                 try
                 {
-                    template = mapping.ParseQueryResponse(rawCode);
+                    template = mapping.ParseQueryResponse(requestHandler, rawCode);
                 }
                 catch (Exception ex)
                 {

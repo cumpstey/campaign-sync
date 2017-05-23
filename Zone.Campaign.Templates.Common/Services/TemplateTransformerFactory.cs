@@ -1,10 +1,31 @@
-﻿namespace Zone.Campaign.Templates.Services
+﻿using System.Collections.Generic;
+using System.Linq;
+
+namespace Zone.Campaign.Templates.Services
 {
     /// <summary>
     /// Contains a function to return a template transformer class for a given file type.
     /// </summary>
     public class TemplateTransformerFactory : ITemplateTransformerFactory
     {
+        #region Fields
+
+        private readonly IEnumerable<ITemplateTransformer> _transformers;
+
+        #endregion
+
+        #region Constructor
+
+        /// <summary>
+        /// Initializes a new instance of <see cref="TemplateTransformerFactory"/>
+        /// </summary>
+        public TemplateTransformerFactory(IEnumerable<ITemplateTransformer> transformers)
+        {
+            _transformers = transformers;
+        }
+
+        #endregion
+
         #region Methods
 
         /// <summary>
@@ -14,15 +35,8 @@
         /// <returns>Template transformer class</returns>
         public ITemplateTransformer GetTransformer(string fileExtension)
         {
-           switch (fileExtension)
-           {
-               case FileTypes.Html:
-                   return new HtmlTemplateTransformer();
-                case FileTypes.Jssp:
-                    return new JsspTemplateTransformer();
-               default:
-                   return new NullTemplateTransformer();
-           }
+            var transformer = _transformers.FirstOrDefault(i => i.CompatibleFileTypes != null && i.CompatibleFileTypes.Contains(fileExtension));
+            return transformer;
         }
 
         #endregion

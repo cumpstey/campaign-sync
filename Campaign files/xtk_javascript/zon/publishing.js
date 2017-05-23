@@ -10,9 +10,9 @@ Label: Publishing
  * @name NL.ZON.Publishing
  * @namespace
  */
-NL.ns('NL.ZON.Publishing');
-NL.require('/nl/core/shared/nl.js')
-  .require('/nl/core/shared/xtk.js')
+NL.ns("NL.ZON.Publishing");
+NL.require("/nl/core/shared/nl.js")
+  .require("/nl/core/shared/xtk.js")
   .require("xtk:common.js");
 
 (function(ns) {
@@ -91,6 +91,7 @@ var getDeliveryTemplates = function(folderName, recursive) {
  * @param {object} delivery - Delivery to republish.
  */
 var republishContent = function(delivery) {
+
   // Get readable delivery name for logging
   var deliveryIdentifier = '"' + delivery.$label + '" (' + delivery.$internalName + ')';
 

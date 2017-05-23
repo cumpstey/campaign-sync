@@ -78,7 +78,7 @@ namespace Zone.Campaign.WebServices.Services
             var collectionNode = SelectSingleNode(response.Data, "urn:pdomOutput/urn:*", serviceNs);
             var itemNodes = collectionNode.ChildNodes.Cast<XmlNode>();
 
-            return new Response<IEnumerable<string>>(ResponseStatus.Success, itemNodes.Select(i => i.OuterXml).ToArray());
+            return new Response<IEnumerable<string>>(ResponseStatus.Success, itemNodes.Select(i => i.OuterXml.Replace($@" xmlns=""{serviceNs}""", string.Empty)).ToArray());
         }
 
         #endregion

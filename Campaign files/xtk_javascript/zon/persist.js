@@ -4,13 +4,13 @@ Schema: xtk:javascript
 Name: zon:persist.js
 Label: Persist SOAP endpoints
 !*/
-loadLibrary('zon:common.js');
+NL.require("zon:common.js");
 
 /**
  * Wrapper for the xtk:persist#Write endpoint, which unencodes submitted data
  */
 function zon_persist_WriteZip(input) {
-  var queryXml = unzipAsXml(input, "WriteZip");
+  var queryXml = NL.ZON.unzipAsXml(input, "WriteZip");
   xtk.session.Write(queryXml);
 }
 
@@ -18,7 +18,7 @@ function zon_persist_WriteZip(input) {
  * Wrapper for the xtk:persist#WriteCollection endpoint, which unencodes submitted data
  */
 function zon_persist_WriteCollectionZip(input) {
-  var queryXml = unzipAsXml(input, "WriteCollectionZip");
+  var queryXml = NL.ZON.unzipAsXml(input, "WriteCollectionZip");
   xtk.session.WriteCollection(queryXml);
 }
 
@@ -32,7 +32,7 @@ function zon_persist_WriteImage(input) {
   var publishDirPath = getOption("zon_FileResPublishDirectory");
 
   // Check folder exists
-  var folderId = getFolderIdByName(input["@folderName"]);
+  var folderId = NL.ZON.getFolderIdByName(input["@folderName"]);
   if (!folderId.toString()) {
     return <response>
              <status>2</status>
@@ -61,7 +61,7 @@ function zon_persist_WriteImage(input) {
   buffer.dispose();
 
   // Check whether fileRes already exists
-  var existingFileResId = getFileResIdByName(input.fileRes["@internalName"]);
+  var existingFileResId = NL.ZON.getFileResIdByName(input.fileRes["@internalName"]);
   if (existingFileResId > 0)
   {
     var fileRes = xtk.fileRes.load(existingFileResId);
@@ -81,7 +81,7 @@ function zon_persist_WriteImage(input) {
   else
   {
     // Create the file resource
-    var fileResXML = <fileRes
+    var fileResXml = <fileRes
                 codepage='0'
                 internalName={input.fileRes["@internalName"]}
                 label={input.fileRes["@label"]}
@@ -98,7 +98,7 @@ function zon_persist_WriteImage(input) {
                 height={input.fileRes["@height"]}>
                 <folder id={folderId} />
               </fileRes>;
-    var fileRes = xtk.fileRes.create(fileResXML);
+    var fileRes = xtk.fileRes.create(fileResXml);
     fileRes.save();
     fileRes.PublishIfNeeded();
   }

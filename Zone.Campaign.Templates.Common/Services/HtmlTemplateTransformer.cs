@@ -41,6 +41,15 @@ namespace Zone.Campaign.Templates.Services
 
         #endregion
 
+        #region Properties
+
+        /// <summary>
+        /// File types which this transformer should be used for.
+        /// </summary>
+        public IEnumerable<string> CompatibleFileTypes { get { return new[] { FileTypes.Html }; } }
+
+        #endregion
+
         #region Methods
 
         /// <summary>

@@ -4,7 +4,7 @@ Schema: xtk:javascript
 Name: zon:queryDef.js
 Label: Query def SOAP endpoints
 !*/
-loadLibrary('zon:common.js');
+NL.require("zon:common.js");
 
 /**
  * Wrapper for the xtk:queryDef#ExecuteQuery endpoint, which unencodes submitted data
