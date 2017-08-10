@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Zone.Campaign.Templates.Model;
+using Zone.Campaign.Templates.Services;
 using Zone.Campaign.WebServices.Model.Abstract;
 using Zone.Campaign.WebServices.Services;
 
@@ -41,6 +42,8 @@ namespace Zone.Campaign.Sync.Mappings.Abstract
         /// <param name="rawQueryResponse">Raw response from Campaign.</param>
         /// <returns>Class containing file content and metadata</returns>
         Template ParseQueryResponse(IRequestHandler requestHandler, string rawQueryResponse);
+
+        ITemplateTransformer GetTransformer(string fileExtension);
 
         #endregion
     }

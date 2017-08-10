@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
 using log4net;
-using Zone.Campaign;
 using Zone.Campaign.Templates;
 using Zone.Campaign.Templates.Model;
+using Zone.Campaign.Templates.Services;
 using Zone.Campaign.WebServices.Model;
 using Zone.Campaign.WebServices.Model.Abstract;
 using Zone.Campaign.WebServices.Services;
@@ -25,6 +25,8 @@ namespace Zone.Campaign.Sync.Mappings
 
         private readonly IQueryService _queryService;
 
+        private readonly WorkflowTransformer _transformer;
+
         #endregion
 
         #region Constructor
@@ -33,9 +35,11 @@ namespace Zone.Campaign.Sync.Mappings
         /// Initializes a new instance of <see cref="WorkflowMapping"/>
         /// </summary>
         /// <param name="queryService">Query service</param>
-        public WorkflowMapping(IQueryService queryService)
+        /// <param name="transformer">Template transformer</param>
+        public WorkflowMapping(IQueryService queryService, WorkflowTransformer transformer)
         {
             _queryService = queryService;
+            _transformer = transformer;
         }
 
         #endregion
@@ -166,6 +170,16 @@ namespace Zone.Campaign.Sync.Mappings
                 Metadata = metadata,
                 FileExtension = FileTypes.Xml,
             };
+        }
+
+        /// <summary>
+        /// Retrieves the appropriate template transformer for a workflow.
+        /// </summary>
+        /// <param name="fileExtension">Extension of the file being processed</param>
+        /// <returns>An instance of a template transformer</returns>
+        public override ITemplateTransformer GetTransformer(string fileExtension)
+        {
+            return _transformer;
         }
 
         #endregion

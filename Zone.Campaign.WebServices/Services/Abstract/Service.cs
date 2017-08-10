@@ -46,8 +46,25 @@ namespace Zone.Campaign.WebServices.Services.Abstract
             nsmgr.AddNamespace("soap", Soap.XmlNamespace);
             nsmgr.AddNamespace("urn", serviceNs);
 
-            var responseElement = node.SelectSingleNode(xpath, nsmgr);
-            return responseElement;
+            var selected = node.SelectSingleNode(xpath, nsmgr);
+            return selected;
+        }
+
+        /// <summary>
+        /// Select nodes by xpath from the node supplied.
+        /// </summary>
+        /// <param name="node">Source node</param>
+        /// <param name="xpath">Xpath defining the node to select</param>
+        /// <param name="serviceNs">Namespace of the SOAP service (with urn prefix)</param>
+        /// <returns>Selected XML node</returns>
+        protected XmlNodeList SelectNodes(XmlNode node, string xpath, string serviceNs)
+        {
+            var nsmgr = new XmlNamespaceManager(node.OwnerDocument.NameTable);
+            nsmgr.AddNamespace("soap", Soap.XmlNamespace);
+            nsmgr.AddNamespace("urn", serviceNs);
+
+            var selected = node.SelectNodes(xpath, nsmgr);
+            return selected;
         }
 
         #endregion

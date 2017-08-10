@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Zone.Campaign.Templates.Model;
 
 namespace Zone.Campaign.Templates.Services
 {
@@ -12,7 +13,7 @@ namespace Zone.Campaign.Templates.Services
         /// <summary>
         /// File types which this transformer should be used for.
         /// </summary>
-        IEnumerable<string> CompatibleFileTypes { get; }
+        ////IEnumerable<string> CompatibleFileTypes { get; }
 
         #endregion
 
@@ -24,10 +25,10 @@ namespace Zone.Campaign.Templates.Services
         /// There is no reverse method, so file types which are transformed cannot be directly downloaded from Campaign
         /// into the format in which they are stored locally.
         /// </summary>
-        /// <param name="input">Input content</param>
-        /// <param name="workingDirectory">Directory in which the file being processed is stored</param>
+        /// <param name="template">Source content</param>
+        /// <param name="parameters">Parameters to determine transform behaviour</param>
         /// <returns>Transformed content</returns>
-        string Transform(string input, string workingDirectory);
+        IEnumerable<Template> Transform(Template template, TransformParameters parameters);
 
         #endregion
     }

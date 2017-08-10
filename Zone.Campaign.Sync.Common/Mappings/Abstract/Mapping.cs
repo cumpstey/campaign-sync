@@ -2,6 +2,7 @@
 using System.Linq;
 using Zone.Campaign.Sync.Mappings.Abstract;
 using Zone.Campaign.Templates.Model;
+using Zone.Campaign.Templates.Services;
 using Zone.Campaign.WebServices.Model;
 using Zone.Campaign.WebServices.Model.Abstract;
 using Zone.Campaign.WebServices.Services;
@@ -47,6 +48,17 @@ namespace Zone.Campaign.Sync.Mappings
         /// <param name="rawQueryResponse">Raw response from Campaign.</param>
         /// <returns>Class containing file content and metadata</returns>
         public abstract Template ParseQueryResponse(IRequestHandler requestHandler, string rawQueryResponse);
+
+        /// <summary>
+        /// Retrieves the appropriate template transformer for this entity type,
+        /// based on the provided file extension.
+        /// </summary>
+        /// <param name="fileExtension">Extension of the file being processed</param>
+        /// <returns>An instance of a template transformer</returns>
+        public virtual ITemplateTransformer GetTransformer(string fileExtension)
+        {
+            return null;
+        }
 
         #endregion
     }

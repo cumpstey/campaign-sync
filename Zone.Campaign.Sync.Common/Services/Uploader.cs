@@ -4,10 +4,10 @@ using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using log4net;
+using Zone.Campaign.Templates.Model;
 using Zone.Campaign.Templates.Services;
 using Zone.Campaign.Templates.Services.Metadata;
 using Zone.Campaign.WebServices.Model;
-using Zone.Campaign.WebServices.Security;
 using Zone.Campaign.WebServices.Services;
 
 namespace Zone.Campaign.Sync.Services
@@ -27,7 +27,7 @@ namespace Zone.Campaign.Sync.Services
 
         private readonly IMetadataExtractorFactory _metadataExtractorFactory;
 
-        private readonly ITemplateTransformerFactory _templateTransformerFactory;
+        ////private readonly ITemplateTransformerFactory _templateTransformerFactory;
 
         private readonly IBuilderService _builderService;
 
@@ -52,7 +52,7 @@ namespace Zone.Campaign.Sync.Services
         public Uploader(IImageDataProvider imageDataProvider,
                         IMappingFactory mappingFactory,
                         IMetadataExtractorFactory metadataExtractorFactory,
-                        ITemplateTransformerFactory templateTransformerFactory,
+                        ////ITemplateTransformerFactory templateTransformerFactory,
                         IBuilderService builderService,
                         IImageWriteService imageWriteService,
                         IWriteService writeService)
@@ -60,7 +60,7 @@ namespace Zone.Campaign.Sync.Services
             _imageDataProvider = imageDataProvider;
             _mappingFactory = mappingFactory;
             _metadataExtractorFactory = metadataExtractorFactory;
-            _templateTransformerFactory = templateTransformerFactory;
+            ////_templateTransformerFactory = templateTransformerFactory;
             _builderService = builderService;
             _imageWriteService = imageWriteService;
             _writeService = writeService;
@@ -115,77 +115,88 @@ namespace Zone.Campaign.Sync.Services
                 if (template.Metadata == null)
                 {
                     Log.Warn($"No metadata found in {i}.");
-                    return template;
+                    return new Tuple<string, Template>(i, template);
                 }
                 else if (template.Metadata.Schema == null)
                 {
                     Log.Warn($"No schema found in {i}.");
-                    return template;
+                    return new Tuple<string, Template>(i, template);
                 }
                 else if (template.Metadata.Name == null)
                 {
                     Log.Warn($"No name found in {i}.");
-                    return template;
+                    return new Tuple<string, Template>(i, template);
                 }
 
-                // TODO: I think maybe this should be set by the mapping, not the file extension.
-                var templateTransformer = _templateTransformerFactory.GetTransformer(fileExtension);
-                var workingDirectory = Path.GetDirectoryName(i);
-                var code = templateTransformer != null
-                    ? templateTransformer.Transform(template.Code, workingDirectory)
-                    : template.Code;
-
-                if (code != null && settings.Replacements != null)
-                {
-                    foreach (var replacement in settings.Replacements)
-                    {
-                        code = code.Replace(replacement.Item1, replacement.Item2);
-                    }
-                }
-
-                template.Code = code;
-                return template;
-            }).Where(i => i != null && i.Metadata != null && i.Metadata.Schema != null && i.Metadata.Name != null)
+                return new Tuple<string, Template>(i, template);
+            }).Where(i => i != null && i.Item2.Metadata != null && i.Item2.Metadata.Schema != null && i.Item2.Metadata.Name != null)
               .ToArray();
 
             if (settings.TestMode)
             {
-                Log.Info($"{templateList.Count()} files found:{Environment.NewLine}{string.Join(Environment.NewLine, templateList.Select(i => i.Metadata.Name))}");
+                Log.Info($"{templateList.Count()} files found:{Environment.NewLine}{string.Join(Environment.NewLine, templateList.Select(i => i.Item2.Metadata.Name))}");
             }
             else
             {
                 var templateTotalCount = templateList.Length;
                 var templateProcessedCount = 0;
                 var templateSuccessCount = 0;
-                foreach (var template in templateList)
+                foreach (var item in templateList)
                 {
+                    var filePath = item.Item1;
+                    var template = item.Item2;
                     templateProcessedCount++;
 
                     // Get mapping for defined schema, and generate object for write
                     var mapping = _mappingFactory.GetMapping(template.Metadata.Schema.ToString());
-                    var persistable = mapping.GetPersistableItem(requestHandler, template);
 
-                    var response = _writeService.Write(requestHandler, persistable);
-                    if (!response.Success)
+                    // Get transformer, which is dependent on file type as well as entity type
+                    var templateTransformer = mapping.GetTransformer(Path.GetExtension(filePath));
+
+                    // The transformer may return multiple variants, each of which should be uploaded
+                    var variants = templateTransformer != null
+                     ? templateTransformer.Transform(template, new TransformParameters {
+                         OriginalFileName = filePath,
+                         ApplyTransforms = settings.ApplyTransforms,
+                     })
+                     : new[] { template };
+
+                    // Upload each variant
+                    foreach (var variant in variants)
                     {
-                        Log.Warn($"Upload of {template.Metadata.Name} failed: {response.Message}");
-                    }
-                    else
-                    {
-                        templateSuccessCount++;
+                        if (variant.Code != null && settings.Replacements != null)
+                        {
+                            foreach (var replacement in settings.Replacements)
+                            {
+                                variant.Code = variant.Code.Replace(replacement.Item1, replacement.Item2);
+                            }
+                        }
+
+                        var persistable = mapping.GetPersistableItem(requestHandler, variant);
+
+                        var response = _writeService.Write(requestHandler, persistable);
+                        if (!response.Success)
+                        {
+                            Log.Warn($"Upload of {variant.Metadata.Name} failed: {response.Message}");
+                        }
+                        else
+                        {
+                            templateSuccessCount++;
+                        }
                     }
                 }
 
                 Log.Info($"{templateSuccessCount} files uploaded.");
 
-                var schemaList = templateList.Where(i => i.Metadata.Schema.ToString() == SrcSchema.Schema).ToArray();
+                var schemaList = templateList.Where(i => i.Item2.Metadata.Schema.ToString() == SrcSchema.Schema).ToArray();
                 if (schemaList.Any())
                 {
                     var schemaTotalCount = schemaList.Length;
                     var schemaProcessedCount = 0;
                     var schemaSuccessCount = 0;
-                    foreach (var schema in schemaList)
+                    foreach (var item in schemaList)
                     {
+                        var schema = item.Item2;
                         schemaProcessedCount++;
 
                         var response = _builderService.BuildSchema(requestHandler, schema.Metadata.Name);

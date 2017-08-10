@@ -20,6 +20,11 @@ namespace Zone.Campaign.Sync.Services
         public IList<Tuple<string, string>> Replacements { get; set; }
 
         /// <summary>
+        /// Apply transforms to the code files before uploading potentially multiple variants.
+        /// </summary>
+        public bool ApplyTransforms { get; set; }
+
+        /// <summary>
         /// Test mode: Report what would have been uploaded, but don't actually upload any files.
         /// </summary>
         public bool TestMode { get; set; }

@@ -57,8 +57,11 @@ namespace Zone.Campaign.Sync
         [Option("uploadtest", HelpText = "Upload: Test mode - don't upload, but print list of files which have been found.")]
         public bool UploadTestMode { get; set; }
 
+        [Option("transform", HelpText = "Upload: Apply transforms. Transforms can be applied to workflows, using xdt syntax in www.xxx.config files. All transforms will be applied - they're not environment-specific.")]
+        public bool UploadApplyTransforms { get; set; }
+
         [OptionArray("replacements", HelpText = @"Upload: String replacements to be applied, eg. ""DEVDB=>LIVDB"".")]
-        public string[] Replacements { get; set; }
+        public string[] UploadReplacements { get; set; }
 
         #endregion
 

@@ -38,8 +38,16 @@
       <HintPath>..\packages\HtmlAgilityPack.1.4.9.5\lib\Net40\HtmlAgilityPack.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Humanizer, Version=1.37.7.0, Culture=neutral, PublicKeyToken=979442b78dfc278e, processorArchitecture=MSIL">
+      <HintPath>..\packages\Humanizer.1.37.7\lib\portable-win+net40+sl50+wp8+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Humanizer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <HintPath>..\packages\log4net.2.0.8\lib\net40-full\log4net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Web.XmlTransform, Version=2.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Web.Xdt.2.1.1\lib\net40\Microsoft.Web.XmlTransform.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -57,14 +65,14 @@
     <Compile Include="Model\Template.cs" />
     <Compile Include="Model\TemplateMetadata.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\JsspTemplateTransformer.cs" />
+    <Compile Include="Services\ITemplateTransformer.cs" />
+    <Compile Include="Services\TransformParameters.cs" />
+    <Compile Include="Services\WorkflowTransformer.cs" />
+    <Compile Include="Services\JsspJavaScriptTemplateTransformer.cs" />
     <Compile Include="Services\Metadata\IXmlMetadataExtractor.cs" />
     <Compile Include="Services\Metadata\IMetadataInserterFactory.cs" />
-    <Compile Include="Services\ITemplateTransformerFactory.cs" />
     <Compile Include="Services\Metadata\JsspMetadataProcessor.cs" />
-    <Compile Include="Services\TemplateTransformerFactory.cs" />
-    <Compile Include="Services\ITemplateTransformer.cs" />
-    <Compile Include="Services\HtmlTemplateTransformer.cs" />
+    <Compile Include="Services\HtmlJavaScriptTemplateTransformer.cs" />
     <Compile Include="Services\Metadata\MetadataProcessorFactory.cs" />
     <Compile Include="Services\Metadata\IMetadataExtractorFactory.cs" />
     <Compile Include="Services\Metadata\IMetadataFormatter.cs" />

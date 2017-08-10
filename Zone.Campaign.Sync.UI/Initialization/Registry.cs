@@ -23,9 +23,10 @@ namespace Zone.Campaign.Sync.UI.Initialization
             Scan(scan =>
             {
                 scan.AssemblyContainingType<IUploader>();
-                scan.AssemblyContainingType<ITemplateTransformerFactory>();
+                scan.AssemblyContainingType<ITemplateTransformer>();
                 scan.WithDefaultConventions();
                 scan.AddAllTypesOf<IMapping>();
+                scan.AddAllTypesOf<ITemplateTransformer>();
             });
 
             // Doesn't follow convention, so requires explicit declaration

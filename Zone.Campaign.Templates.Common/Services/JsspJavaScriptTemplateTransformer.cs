@@ -1,19 +1,21 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using log4net;
+using Zone.Campaign.Templates.Model;
 
 namespace Zone.Campaign.Templates.Services
 {
     /// <summary>
     /// Provides functions to transform JavaScript Server Pages code before it's uploaded to Campaign.
     /// </summary>
-    public class JsspTemplateTransformer : ITemplateTransformer
+    public class JsspJavaScriptTemplateTransformer : ITemplateTransformer
     {
         #region Fields
 
-        private static readonly ILog Log = LogManager.GetLogger(typeof(JsspTemplateTransformer));
+        private static readonly ILog Log = LogManager.GetLogger(typeof(JsspJavaScriptTemplateTransformer));
 
         private static readonly Regex IncludeRegex = new Regex(@"<%--@include\s*(?<path>.*?)\s*@(?<flags>[t]*)--%>", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
@@ -29,29 +31,29 @@ namespace Zone.Campaign.Templates.Services
         /// There is no reverse method, so JavaScript Server Pages files cannot be directly downloaded from Campaign
         /// into the format in which they are stored locally.
         /// </summary>
-        /// <param name="input">Input HTML content</param>
-        /// <param name="workingDirectory">Directory in which the file being processed is stored</param>
+        /// <param name="template">Source content</param>
+        /// <param name="parameters">Parameters to determine transform behaviour</param>
         /// <returns>Transformed JavaScript Server Pages content</returns>
-        public string Transform(string input, string workingDirectory)
+        public IEnumerable<Template> Transform(Template template, TransformParameters parameters)
         {
-            var output = input;
+            if (parameters == null)
+            {
+                throw new ArgumentNullException(nameof(parameters));
+            }
 
-            output = ProcessIncludes(output, workingDirectory);
+            if (string.IsNullOrEmpty(parameters.OriginalFileName))
+            {
+                throw new ArgumentException("Original file name must be provided.", nameof(parameters.OriginalFileName));
+            }
 
-            return output;
+            var workingDirectory = Path.GetDirectoryName(parameters.OriginalFileName);
+
+            template.Code = ProcessIncludes(template.Code, workingDirectory);
+            return new[] { template };
         }
 
         #endregion
-
-        #region Properties
-
-        /// <summary>
-        /// File types which this transformer should be used for.
-        /// </summary>
-        public IEnumerable<string> CompatibleFileTypes { get { return new[] { FileTypes.Jssp }; } }
-
-        #endregion
-
+        
         #region Helpers
 
         /// <summary>

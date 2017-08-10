@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Xml;
 using Zone.Campaign.Templates;
 using Zone.Campaign.Templates.Model;
+using Zone.Campaign.Templates.Services;
 using Zone.Campaign.WebServices.Model;
 using Zone.Campaign.WebServices.Model.Abstract;
 using Zone.Campaign.WebServices.Services;
@@ -17,6 +17,25 @@ namespace Zone.Campaign.Sync.Mappings
         #region Fields
 
         private readonly string[] _queryFields = { "@name", "@label", "@entitySchema", "code" };
+
+        private readonly HtmlJavaScriptTemplateTransformer _htmlTransformer;
+
+        private readonly JsspJavaScriptTemplateTransformer _jsspTransformer;
+
+        #endregion
+
+        #region Constructor
+
+        /// <summary>
+        /// Initializes a new instance of <see cref="JavaScriptTemplateMapping"/>
+        /// </summary>
+        /// <param name="htmlTransformer">Template transformer for files with .html extension</param>
+        /// <param name="jsspTransformer">Template transformer for files with .jssp extension</param>
+        public JavaScriptTemplateMapping(HtmlJavaScriptTemplateTransformer htmlTransformer, JsspJavaScriptTemplateTransformer jsspTransformer)
+        {
+            _htmlTransformer = htmlTransformer;
+            _jsspTransformer = jsspTransformer;
+        }
 
         #endregion
 
@@ -76,6 +95,25 @@ namespace Zone.Campaign.Sync.Mappings
                 Metadata = metadata,
                 FileExtension = FileTypes.Jssp,
             };
+        }
+
+        /// <summary>
+        /// Retrieves the appropriate template transformer for a JavaScript template,
+        /// based on the provided file extension.
+        /// </summary>
+        /// <param name="fileExtension">Extension of the file being processed</param>
+        /// <returns>An instance of a template transformer</returns>
+        public override ITemplateTransformer GetTransformer(string fileExtension)
+        {
+            switch (fileExtension)
+            {
+                case FileTypes.Html:
+                    return _htmlTransformer;
+                case FileTypes.Jssp:
+                    return _jsspTransformer;
+                default:
+                    return null;
+            }
         }
 
         #endregion
