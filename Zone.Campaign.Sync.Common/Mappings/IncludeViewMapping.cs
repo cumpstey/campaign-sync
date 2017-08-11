@@ -12,13 +12,26 @@ namespace Zone.Campaign.Sync.Mappings
     /// <summary>
     /// Contains helper methods for mapping between the <see cref="IncludeView"/> .NET class and information formatted for Campaign to understand.
     /// </summary>
-    public class IncludeViewMapping : Mapping<IncludeView>
+    public class IncludeViewMapping : FolderItemMapping<IncludeView>
     {
         #region Fields
 
         private const string FormatSeparator = "<%---- text above, html below ----%>";
 
-        private readonly string[] _queryFields = { "@name", "@label", "@visible", "source/@dependOnFormat", "source/text", "source/html" };
+        private readonly string[] _queryFields = { "@name", "@label", "@visible", "source/@dependOnFormat", "source/text", "source/html", "folder/@name" };
+
+        #endregion
+
+        #region Constructor
+
+        /// <summary>
+        /// Initializes a new instance of <see cref="IncludeViewMapping"/>
+        /// </summary>
+        /// <param name="queryService">Query service</param>
+        public IncludeViewMapping(IQueryService queryService)
+            : base(queryService)
+        {
+        }
 
         #endregion
 
@@ -46,6 +59,11 @@ namespace Zone.Campaign.Sync.Mappings
                 Name = template.Metadata.Name,
                 Label = template.Metadata.Label,
             };
+
+            if (template.Metadata.AdditionalProperties.ContainsKey("Folder"))
+            {
+                item.FolderId = GetFolderId(requestHandler, template.Metadata.AdditionalProperties["Folder"]);
+            }
 
             if (template.Code.Contains(FormatSeparator))
             {
@@ -86,6 +104,9 @@ namespace Zone.Campaign.Sync.Mappings
                 Name = new InternalName(null, doc.DocumentElement.Attributes["name"].InnerText),
                 Label = doc.DocumentElement.Attributes["label"].InnerText,
             };
+
+            var folderInternalName = doc.DocumentElement.SelectSingleNode("folder").Attributes["name"].InnerText;
+            metadata.AdditionalProperties.Add("Folder", folderInternalName);
 
             var visibleAttribute = doc.DocumentElement.Attributes["visible"];
             if (visibleAttribute != null)

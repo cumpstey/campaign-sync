@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
 using log4net;
+using Zone.Campaign;
 using Zone.Campaign.Templates;
 using Zone.Campaign.Templates.Model;
 using Zone.Campaign.Templates.Services;
@@ -15,15 +16,13 @@ namespace Zone.Campaign.Sync.Mappings
     /// <summary>
     /// Contains helper methods for mapping between a .NET class and information formatted for Campaign to understand.
     /// </summary>
-    public class WorkflowMapping : Mapping<Workflow>
+    public class WorkflowMapping : FolderItemMapping<Workflow>
     {
         #region Fields
 
         private static readonly ILog Log = LogManager.GetLogger(typeof(WorkflowMapping));
 
-        private readonly string[] _queryFields = { "@internalName", "@label", "data" };
-
-        private readonly IQueryService _queryService;
+        private readonly string[] _queryFields = { "@internalName", "@label", "data", "folder/@name" };
 
         private readonly WorkflowTransformer _transformer;
 
@@ -37,8 +36,8 @@ namespace Zone.Campaign.Sync.Mappings
         /// <param name="queryService">Query service</param>
         /// <param name="transformer">Template transformer</param>
         public WorkflowMapping(IQueryService queryService, WorkflowTransformer transformer)
+            : base(queryService)
         {
-            _queryService = queryService;
             _transformer = transformer;
         }
 
@@ -68,6 +67,12 @@ namespace Zone.Campaign.Sync.Mappings
         /// <returns>Class containing information which can be sent to Campaign</returns>
         public override IPersistable GetPersistableItem(IRequestHandler requestHandler, Template template)
         {
+            var folderId = default(int?);
+            if (template.Metadata.AdditionalProperties.ContainsKey("Folder"))
+            {
+                folderId = GetFolderId(requestHandler, template.Metadata.AdditionalProperties["Folder"]);
+            }
+
             var doc = new XmlDocument();
             try
             {
@@ -108,6 +113,7 @@ namespace Zone.Campaign.Sync.Mappings
             {
                 Name = template.Metadata.Name,
                 Label = template.Metadata.Label,
+                FolderId = folderId,
                 RawXml = doc.OuterXml,
             };
         }
@@ -130,12 +136,15 @@ namespace Zone.Campaign.Sync.Mappings
                 Label = doc.DocumentElement.Attributes["label"].InnerText,
             };
 
+            var folderInternalName = doc.DocumentElement.SelectSingleNode("folder").Attributes["name"].InnerText;
+            metadata.AdditionalProperties.Add("Folder", folderInternalName);
+
             doc.DocumentElement.RemoveAllAttributesExcept(AttributesToKeep);
             doc.DocumentElement.RemoveChild("createdBy");
             doc.DocumentElement.RemoveChild("modifiedBy");
-
+            
             // Substitute delivery internal name for id in each delivery activity.
-            var deliveryActions = doc.SelectNodes("/workflow/activities/delivery");
+            var deliveryActions = doc.DocumentElement.SelectNodes("activities/delivery");
             if (deliveryActions != null)
             {
                 foreach (XmlElement deliveryAction in deliveryActions)
@@ -185,10 +194,10 @@ namespace Zone.Campaign.Sync.Mappings
         #endregion
 
         #region Helpers
-
+        
         private int? GetDeliveryId(IRequestHandler requestHandler, string internalName)
         {
-            var queryResponse = _queryService.ExecuteQuery(requestHandler, "nms:delivery", new[] { "@id" }, new[] { $"@internalName = '{internalName}'" });
+            var queryResponse = QueryService.ExecuteQuery(requestHandler, "nms:delivery", new[] { "@id" }, new[] { $"@internalName = '{internalName}'" });
             if (!queryResponse.Success)
             {
                 Log.Error($"Failed to retrieve internal name of delivery {internalName}: {queryResponse.Message}", queryResponse.Exception);
@@ -217,7 +226,7 @@ namespace Zone.Campaign.Sync.Mappings
 
         private string GetDeliveryInternalName(IRequestHandler requestHandler, int id)
         {
-            var queryResponse = _queryService.ExecuteQuery(requestHandler, "nms:delivery", new[] { "@internalName" }, new[] { $"@id = {id}" });
+            var queryResponse = QueryService.ExecuteQuery(requestHandler, "nms:delivery", new[] { "@internalName" }, new[] { $"@id = {id}" });
             if (!queryResponse.Success)
             {
                 Log.Error($"Failed to retrieve internal name of delivery {id}: {queryResponse.Message}", queryResponse.Exception);

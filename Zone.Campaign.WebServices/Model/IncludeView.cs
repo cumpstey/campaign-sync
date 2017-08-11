@@ -31,6 +31,11 @@ namespace Zone.Campaign.WebServices.Model
         public string Label { get; set; }
 
         /// <summary>
+        /// Id of the folder this entity is stored in.
+        /// </summary>
+        public int? FolderId { get; set; }
+
+        /// <summary>
         /// The raw code of the text version as a string.
         /// </summary>
         public string TextCode { get; set; }
@@ -67,6 +72,12 @@ namespace Zone.Campaign.WebServices.Model
             if (Label != null)
             {
                 element.AppendAttribute("label", Label);
+            }
+
+            if (FolderId != null)
+            {
+                var folderElement = element.AppendChild("folder");
+                folderElement.AppendAttribute("id", FolderId.ToString());
             }
 
             var sourceElement = element.AppendChild("source");
