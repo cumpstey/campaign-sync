@@ -25,7 +25,7 @@ Label: Persist SOAP services
     <method library="zon:persist.js" name="WriteImage" static="true">
       <parameters>
         <param desc="Input" inout="in" name="input" type="DOMDocument"/>
-        <param desc="Output" inout="out" name="output" type="DOMDocument"/>
+        <!-- <param desc="Output" inout="out" name="output" type="DOMDocument"/> -->
       </parameters>
       <description>
         <para>Accepts metadata and a base64 encoded image, and creates or updates an xtk:fileRes record.</para>

@@ -6,15 +6,17 @@ Label: Publishing
 !*/
 "use strict";
 
-/**
- * @name NL.ZON.Publishing
- * @namespace
- */
+loadLibrary("/nl/core/shared/nl.js");
+
 NL.ns("NL.ZON.Publishing");
 NL.require("/nl/core/shared/nl.js")
   .require("/nl/core/shared/xtk.js")
   .require("xtk:common.js");
 
+/**
+ * @name NL.ZON.Publishing
+ * @namespace
+ */
 (function(ns) {
 
 /**

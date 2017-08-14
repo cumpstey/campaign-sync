@@ -59,10 +59,7 @@ namespace Zone.Campaign.WebServices.Services
                 return new Response<string>(response.Status, response.Message, response.Exception);
             }
 
-            // Parse response to extract data as string.
-            var outputNode = SelectSingleNode(response.Data, "urn:output", serviceNs);
-
-            return new Response<string>(ResponseStatus.Success, outputNode.InnerText);
+            return new Response<string>(ResponseStatus.Success);
         }
 
         #endregion

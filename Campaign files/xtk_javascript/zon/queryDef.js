@@ -4,6 +4,8 @@ Schema: xtk:javascript
 Name: zon:queryDef.js
 Label: Query def SOAP endpoints
 !*/
+loadLibrary("/nl/core/shared/nl.js");
+
 NL.require("zon:common.js");
 
 /**

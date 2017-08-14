@@ -36,7 +36,6 @@ var deleteFileIfExists = function(filePath) {
  * @param {string} queryName - The name of the xml file within the zip.
  */
 var unzipAsXml = function(content, queryName) {
-
   // Global parameters
   var uploadDirPath = getOption("zon_UploadDirectory");
 
@@ -64,14 +63,6 @@ var unzipAsXml = function(content, queryName) {
   return fileContent;
 }
 
-// // /**
-// //  * Escapes any relevant characters so a string can be used in a query.
-// //  */
-// // function escapeForQuery(value) {
-// //   return value.replace(/'/g, "\\'")
-// //               .replace(/%/g, "\\%");
-// // }
-
 /**
  * Get the id of an xtk:folder with the specified name.
  * @param {string} name - The name of the folder.
@@ -96,14 +87,6 @@ function getFolderIdByName(name) {
   var query = NLWS.xtkQueryDef.create(queryDef);
   var result = query.ExecuteQuery();
   return result ? result.$id : null;
-
-  /*var query = new XML(
-    <queryDef schema="xtk:folder" operation="getIfExists">
-      <select><node expr="@id"/></select>
-      <where><condition expr={"[@name] = '" + escapeForQuery(name) + "'"}/></where>
-    </queryDef>);
-  var queryResult = xtk.queryDef.create(query).ExecuteQuery();
-  return queryResult.@id;*/
 }
 
 /**
@@ -130,14 +113,6 @@ var getFileResIdByName = function(name) {
   var query = NLWS.xtkQueryDef.create(queryDef);
   var result = query.ExecuteQuery();
   return result ? result.$id : null;
-
-  /*var query = new XML(
-    <queryDef schema="xtk:fileRes" operation="getIfExists">
-      <select><node expr="@id"/></select>
-      <where><condition expr={"[@internalName] = '" + escapeForQuery(name) + "'"}/></where>
-    </queryDef>);
-  var queryResult = xtk.queryDef.create(query).ExecuteQuery();
-  return queryResult.@id;*/
 }
 
 // Set namespace properties
@@ -145,4 +120,4 @@ ns.unzipAsXml = unzipAsXml;
 ns.getFolderIdByName = getFolderIdByName;
 ns.getFileResIdByName = getFileResIdByName;
 
-}(NL.ZON.Publishing));
+}(NL.ZON));
