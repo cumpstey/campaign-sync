@@ -66,6 +66,7 @@
     <Compile Include="Model\TemplateMetadata.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\ITemplateTransformer.cs" />
+    <Compile Include="Services\Metadata\PlainTextMetadataProcessor.cs" />
     <Compile Include="Services\TransformParameters.cs" />
     <Compile Include="Services\WorkflowTransformer.cs" />
     <Compile Include="Services\JsspJavaScriptTemplateTransformer.cs" />

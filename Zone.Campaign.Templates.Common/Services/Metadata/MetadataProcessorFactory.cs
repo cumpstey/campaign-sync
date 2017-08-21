@@ -22,6 +22,8 @@
                     return new JavaScriptMetadataProcessor();
                 case FileTypes.Jssp:
                     return new JsspMetadataProcessor();
+                case FileTypes.PlainText:
+                    return new PlainTextMetadataProcessor();
                 case FileTypes.Xml:
                     return new XmlMetadataProcessor();
                 default:
@@ -44,6 +46,8 @@
                     return new JavaScriptMetadataProcessor();
                 case FileTypes.Jssp:
                     return new JsspMetadataProcessor();
+                case FileTypes.PlainText:
+                    return new PlainTextMetadataProcessor();
                 case FileTypes.Xml:
                     return new XmlMetadataProcessor();
                 default:

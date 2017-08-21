@@ -21,6 +21,11 @@
         public const string Jssp = ".jssp";
 
         /// <summary>
+        /// File extension for plain text file.
+        /// </summary>
+        public const string PlainText = ".txt";
+
+        /// <summary>
         /// File extension for XML file.
         /// </summary>
         public const string Xml = ".xml";

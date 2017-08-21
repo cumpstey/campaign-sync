@@ -55,6 +55,7 @@
     <Compile Include="Model\Form.cs" />
     <Compile Include="Model\ImageFile.cs" />
     <Compile Include="Model\IncludeView.cs" />
+    <Compile Include="Model\Image.cs" />
     <Compile Include="Model\Workflow.cs" />
     <Compile Include="Model\QueryFilter.cs" />
     <Compile Include="Model\Publishing.cs" />
