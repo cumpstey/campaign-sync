@@ -13,6 +13,11 @@ namespace Zone.Campaign.Sync.Mappings
     {
         #region Fields
 
+        /// <summary>
+        /// Name of the additional data field which stores the folder.
+        /// </summary>
+        protected const string AdditionalData_Folder = "Folder";
+
         private static readonly ILog Log = LogManager.GetLogger(typeof(FolderItemMapping<T>));
 
         private readonly IQueryService _queryService;

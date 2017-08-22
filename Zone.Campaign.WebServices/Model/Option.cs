@@ -7,7 +7,7 @@ namespace Zone.Campaign.WebServices.Model
     /// <summary>
     /// Class representing an option (xtk:option).
     /// </summary>
-    [Schema(Schema)]
+    [Schema(EntitySchema)]
     public class Option : Persistable, IPersistable
     {
         #region Fields
@@ -15,26 +15,50 @@ namespace Zone.Campaign.WebServices.Model
         /// <summary>
         /// Schema represented by this class.
         /// </summary>
-        public const string Schema = "xtk:option";
+        public const string EntitySchema = "xtk:option";
 
         #endregion
 
         #region Properties
 
+        /// <summary>
+        /// Internal name, combining namespace and name.
+        /// </summary>
         public InternalName Name { get; set; }
 
+        /// <summary>
+        /// Label.
+        /// </summary>
         public string Label { get; set; }
 
+        /// <summary>
+        /// Datatype of the data stored in this option.
+        /// </summary>
         public DataType DataType { get; set; }
 
+        /// <summary>
+        /// Value of the data if stored as a string.
+        /// </summary>
         public string StringValue { get; set; }
 
+        /// <summary>
+        /// Value of the data if stored as an integer.
+        /// </summary>
         public long? LongValue { get; set; }
 
+        /// <summary>
+        /// Value of the data if stored as a floating point number.
+        /// </summary>
         public double? DoubleValue { get; set; }
 
+        /// <summary>
+        /// Value of the data if stored as a timestamp.
+        /// </summary>
         public DateTime? TimeStampValue { get; set; }
 
+        /// <summary>
+        /// Value of the data if stored as a string containing linebreaks.
+        /// </summary>
         public string MemoValue { get; set; }
 
         #endregion

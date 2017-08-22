@@ -6,7 +6,7 @@ namespace Zone.Campaign.WebServices.Model
     /// <summary>
     /// Class representing a JavaScript template (xtk:jst).
     /// </summary>
-    [Schema(Schema)]
+    [Schema(EntitySchema)]
     public class JavaScriptTemplate : Persistable, IPersistable
     {
         #region Fields
@@ -14,7 +14,7 @@ namespace Zone.Campaign.WebServices.Model
         /// <summary>
         /// Schema represented by this class.
         /// </summary>
-        public const string Schema = "xtk:jst";
+        public const string EntitySchema = "xtk:jst";
 
         #endregion
 

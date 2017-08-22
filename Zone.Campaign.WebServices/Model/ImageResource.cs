@@ -5,7 +5,7 @@ namespace Zone.Campaign.WebServices.Model
     /// <summary>
     /// Class holding all the necessary information about an image in order to create a file resource (xtk:fileRes) record.
     /// </summary>
-    public class ImageFile
+    public class ImageResource
     {
         #region Properties
 
@@ -18,7 +18,7 @@ namespace Zone.Campaign.WebServices.Model
         /// <summary>
         /// Information about the file resource.
         /// </summary>
-        public FileRes FileRes { get; set; }
+        public FileResource FileRes { get; set; }
 
         /// <summary>
         /// Mime type of the image.

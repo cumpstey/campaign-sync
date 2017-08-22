@@ -68,9 +68,9 @@ namespace Zone.Campaign.Sync.Mappings
         public override IPersistable GetPersistableItem(IRequestHandler requestHandler, Template template)
         {
             var folderId = default(int?);
-            if (template.Metadata.AdditionalProperties.ContainsKey("Folder"))
+            if (template.Metadata.AdditionalProperties.ContainsKey(AdditionalData_Folder))
             {
-                folderId = GetFolderId(requestHandler, template.Metadata.AdditionalProperties["Folder"]);
+                folderId = GetFolderId(requestHandler, template.Metadata.AdditionalProperties[AdditionalData_Folder]);
             }
 
             var doc = new XmlDocument();
@@ -137,7 +137,7 @@ namespace Zone.Campaign.Sync.Mappings
             };
 
             var folderInternalName = doc.DocumentElement.SelectSingleNode("folder").Attributes["name"].InnerText;
-            metadata.AdditionalProperties.Add("Folder", folderInternalName);
+            metadata.AdditionalProperties.Add(AdditionalData_Folder, folderInternalName);
 
             doc.DocumentElement.RemoveAllAttributesExcept(AttributesToKeep);
             doc.DocumentElement.RemoveChild("createdBy");

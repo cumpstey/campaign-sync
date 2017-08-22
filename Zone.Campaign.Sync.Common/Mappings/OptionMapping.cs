@@ -16,6 +16,8 @@ namespace Zone.Campaign.Sync.Mappings
     {
         #region Fields
 
+        private const string AdditionalData_DataType = "DataType";
+
         private readonly string[] _queryFields = { "@name", "@dataType", "@stringValue", "@longValue", "@doubleValue", "@timeStampValue", "memoValue" };
 
         #endregion
@@ -39,7 +41,7 @@ namespace Zone.Campaign.Sync.Mappings
         /// <returns>Class containing information which can be sent to Campaign</returns>
         public override IPersistable GetPersistableItem(IRequestHandler requestHandler, Template template)
         {
-            var dataType = (DataType)Enum.Parse(typeof(DataType), template.Metadata.AdditionalProperties["DataType"]);
+            var dataType = (DataType)Enum.Parse(typeof(DataType), template.Metadata.AdditionalProperties[AdditionalData_DataType]);
             var option = new Option
             {
                 Name = template.Metadata.Name,
@@ -92,7 +94,7 @@ namespace Zone.Campaign.Sync.Mappings
                 option.TimeStampValue = timeStampValue;
             }
 
-            metadata.AdditionalProperties.Add("DataType", option.DataType.ToString());
+            metadata.AdditionalProperties.Add(AdditionalData_DataType, option.DataType.ToString());
             return new Template
             {
                 Code = Convert.ToString(option.GetValue()),

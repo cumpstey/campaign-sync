@@ -188,7 +188,7 @@ namespace Zone.Campaign.Sync.Services
 
                 Log.Info($"{templateSuccessCount} files uploaded.");
 
-                var schemaList = templateList.Where(i => i.Item2.Metadata.Schema.ToString() == SrcSchema.Schema).ToArray();
+                var schemaList = templateList.Where(i => i.Item2.Metadata.Schema.ToString() == Schema.EntitySchema).ToArray();
                 if (schemaList.Any())
                 {
                     var schemaTotalCount = schemaList.Length;
@@ -268,10 +268,10 @@ namespace Zone.Campaign.Sync.Services
 
                 var fileContent = Convert.ToBase64String(File.ReadAllBytes(imageItem.FilePath));
 
-                var file = new ImageFile
+                var file = new ImageResource
                 {
                     FolderName = imageItem.FolderName,
-                    FileRes = new FileRes
+                    FileRes = new FileResource
                     {
                         Name = internalName,
                         Label = imageItem.Label,

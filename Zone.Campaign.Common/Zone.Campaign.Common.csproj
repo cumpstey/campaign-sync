@@ -42,7 +42,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ImageType.cs" />
     <Compile Include="DeliveryType.cs" />
     <Compile Include="DataType.cs" />
     <Compile Include="ServiceName.cs" />

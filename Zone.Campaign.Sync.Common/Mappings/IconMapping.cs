@@ -10,13 +10,13 @@ using Zone.Campaign.WebServices.Services;
 namespace Zone.Campaign.Sync.Mappings
 {
     /// <summary>
-    /// Contains helper methods for mapping between the <see cref="Image"/> .NET class and information formatted for Campaign to understand.
+    /// Contains helper methods for mapping between the <see cref="Icon"/> .NET class and information formatted for Campaign to understand.
     /// </summary>
-    public class ImageMapping : Mapping<Image>
+    public class IconMapping : Mapping<Icon>
     {
         #region Fields
 
-        private readonly string[] _queryFields = { "@name", "@label", "@type", "data" };
+        private readonly string[] _queryFields = { "@name", "@label", "data" };
 
         #endregion
 
@@ -39,12 +39,10 @@ namespace Zone.Campaign.Sync.Mappings
         /// <returns>Class containing information which can be sent to Campaign</returns>
         public override IPersistable GetPersistableItem(IRequestHandler requestHandler, Template template)
         {
-            var imageType = (ImageType)Enum.Parse(typeof(ImageType), template.Metadata.AdditionalProperties["ImageType"], true);
-            var image = new Image
+            var image = new Icon
             {
                 Name = template.Metadata.Name,
                 Label = template.Metadata.Label,
-                ImageType = imageType,
                 FileContent = template.Code,
             };
             return image;
@@ -71,12 +69,6 @@ namespace Zone.Campaign.Sync.Mappings
             if (labelNode != null)
             {
                 metadata.Label = labelNode.InnerText;
-            }
-
-            var typeNode = doc.DocumentElement.Attributes["type"];
-            if (typeNode != null)
-            {
-                metadata.AdditionalProperties["ImageType"] = typeNode.InnerText;
             }
 
             var dataNode = doc.DocumentElement.SelectSingleNode("data");

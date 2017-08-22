@@ -6,9 +6,9 @@ using Zone.Campaign.WebServices.Model;
 namespace Zone.Campaign.Sync.Mappings
 {
     /// <summary>
-    /// Contains helper methods for mapping between the <see cref="SrcSchema"/> .NET class and information formatted for Campaign to understand.
+    /// Contains helper methods for mapping between the <see cref="Schema"/> .NET class and information formatted for Campaign to understand.
     /// </summary>
-    public class SrcSchemaMapping : EntityMapping<SrcSchema>
+    public class SchemaMapping : EntityMapping<Schema>
     {
         #region Fields
 

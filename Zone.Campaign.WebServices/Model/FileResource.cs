@@ -4,17 +4,17 @@ using Zone.Campaign.WebServices.Model.Abstract;
 namespace Zone.Campaign.WebServices.Model
 {
     /// <summary>
-    /// Class representing a query filter (xtk:queryFilter).
+    /// Class representing a file resource (xtk:fileRes).
     /// </summary>
     [Schema(EntitySchema)]
-    public class QueryFilter : Persistable, IPersistable
+    public class FileResource : Persistable, IPersistable
     {
         #region Fields
 
         /// <summary>
         /// Schema represented by this class.
         /// </summary>
-        public const string EntitySchema = "xtk:queryFilter";
+        public const string EntitySchema = "xtk:FileRes";
 
         #endregion
 
@@ -31,14 +31,24 @@ namespace Zone.Campaign.WebServices.Model
         public string Label { get; set; }
 
         /// <summary>
-        /// The raw xml of the data as a string.
+        /// Alt text for the image.
         /// </summary>
-        public string Data { get; set; }
+        public string Alt { get; set; }
+
+        /// <summary>
+        /// Width of the image.
+        /// </summary>
+        public int? Width { get; set; }
+
+        /// <summary>
+        /// Height of the image.
+        /// </summary>
+        public int? Height { get; set; }
 
         #endregion
 
         #region Methods
-
+        
         /// <summary>
         /// Formats the dataa into appropriate xml for sending in a persist request to Campaign.
         /// </summary>
@@ -46,11 +56,28 @@ namespace Zone.Campaign.WebServices.Model
         /// <returns>Xml element containing all the properties to update</returns>
         public virtual XmlElement GetXmlForPersist(XmlDocument ownerDocument)
         {
-            var element = GetBaseXmlForPersist(ownerDocument, "@name");
-            element.AppendAttribute("name", Name.Name);
+            var element = GetBaseXmlForPersist(ownerDocument, "@internalName");
+            element.AppendAttribute("internalName", Name.Name);
 
-            element.AppendAttribute("label", Label);
-            element.AppendChildWithValue("data", Data);
+            if (!string.IsNullOrEmpty(Label))
+            {
+                element.AppendAttribute("label", Label);
+            }
+
+            if (!string.IsNullOrEmpty(Alt))
+            {
+                element.AppendAttribute("alt", Label);
+            }
+
+            if (Width == null)
+            {
+                element.AppendAttribute("width", Width.ToString());
+            }
+
+            if (Height == null)
+            {
+                element.AppendAttribute("height", Height.ToString());
+            }
 
             return element;
         }

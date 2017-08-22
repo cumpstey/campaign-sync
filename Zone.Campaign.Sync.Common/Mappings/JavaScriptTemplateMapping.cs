@@ -79,7 +79,7 @@ namespace Zone.Campaign.Sync.Mappings
 
             var metadata = new TemplateMetadata
             {
-                Schema = InternalName.Parse(JavaScriptTemplate.Schema),
+                Schema = InternalName.Parse(JavaScriptTemplate.EntitySchema),
                 Name = new InternalName(doc.DocumentElement.Attributes["namespace"].InnerText, doc.DocumentElement.Attributes["name"].InnerText),
                 Label = doc.DocumentElement.Attributes["label"].InnerText,
             };

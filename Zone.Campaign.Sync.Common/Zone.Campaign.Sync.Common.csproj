@@ -60,7 +60,7 @@
     <Compile Include="Mappings\Abstract\IMapping.cs" />
     <Compile Include="Mappings\Abstract\FolderItemMapping.cs" />
     <Compile Include="Mappings\Abstract\Mapping.cs" />
-    <Compile Include="Mappings\ImageMapping.cs" />
+    <Compile Include="Mappings\IconMapping.cs" />
     <Compile Include="Mappings\WorkflowMapping.cs" />
     <Compile Include="Mappings\FormMapping.cs" />
     <Compile Include="Mappings\IncludeViewMapping.cs" />
@@ -69,7 +69,7 @@
     <Compile Include="Mappings\JavaScriptCodeMapping.cs" />
     <Compile Include="Mappings\JavaScriptTemplateMapping.cs" />
     <Compile Include="Mappings\PublishingMapping.cs" />
-    <Compile Include="Mappings\SrcSchemaMapping.cs" />
+    <Compile Include="Mappings\SchemaMapping.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\IDownloader.cs" />
     <Compile Include="Services\Downloader.cs" />

@@ -16,6 +16,8 @@ namespace Zone.Campaign.Sync.Mappings
     {
         #region Fields
 
+        private const string AdditionalData_Visible = "Visible";
+
         private const string FormatSeparator = "<%---- text above, html below ----%>";
 
         private readonly string[] _queryFields = { "@name", "@label", "@visible", "source/@dependOnFormat", "source/text", "source/html", "folder/@name" };
@@ -60,9 +62,9 @@ namespace Zone.Campaign.Sync.Mappings
                 Label = template.Metadata.Label,
             };
 
-            if (template.Metadata.AdditionalProperties.ContainsKey("Folder"))
+            if (template.Metadata.AdditionalProperties.ContainsKey(AdditionalData_Folder))
             {
-                item.FolderId = GetFolderId(requestHandler, template.Metadata.AdditionalProperties["Folder"]);
+                item.FolderId = GetFolderId(requestHandler, template.Metadata.AdditionalProperties[AdditionalData_Folder]);
             }
 
             if (template.Code.Contains(FormatSeparator))
@@ -78,8 +80,8 @@ namespace Zone.Campaign.Sync.Mappings
             }
 
             bool visible;
-            if (template.Metadata.AdditionalProperties.ContainsKey("Visible")
-                && bool.TryParse(template.Metadata.AdditionalProperties["Visible"], out visible))
+            if (template.Metadata.AdditionalProperties.ContainsKey(AdditionalData_Visible)
+                && bool.TryParse(template.Metadata.AdditionalProperties[AdditionalData_Visible], out visible))
             {
                 item.IncludeInCustomisationMenus = visible;
             }
@@ -100,18 +102,18 @@ namespace Zone.Campaign.Sync.Mappings
 
             var metadata = new TemplateMetadata
             {
-                Schema = InternalName.Parse(IncludeView.Schema),
+                Schema = InternalName.Parse(IncludeView.EntitySchema),
                 Name = new InternalName(null, doc.DocumentElement.Attributes["name"].InnerText),
                 Label = doc.DocumentElement.Attributes["label"].InnerText,
             };
 
             var folderInternalName = doc.DocumentElement.SelectSingleNode("folder").Attributes["name"].InnerText;
-            metadata.AdditionalProperties.Add("Folder", folderInternalName);
+            metadata.AdditionalProperties.Add(AdditionalData_Folder, folderInternalName);
 
             var visibleAttribute = doc.DocumentElement.Attributes["visible"];
             if (visibleAttribute != null)
             {
-                metadata.AdditionalProperties.Add("Visible", (visibleAttribute.InnerText == "1").ToString());
+                metadata.AdditionalProperties.Add(AdditionalData_Visible, (visibleAttribute.InnerText == "1").ToString());
             }
 
             var textCodeNode = doc.DocumentElement.SelectSingleNode("source/text");

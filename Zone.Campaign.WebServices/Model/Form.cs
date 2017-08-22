@@ -5,7 +5,7 @@ namespace Zone.Campaign.WebServices.Model
     /// <summary>
     /// Class representing a form (xtk:form).
     /// </summary>
-    [Schema(Schema)]
+    [Schema(EntitySchema)]
     public class Form : Entity
     {
         #region Fields
@@ -13,7 +13,7 @@ namespace Zone.Campaign.WebServices.Model
         /// <summary>
         /// Schema represented by this class.
         /// </summary>
-        public const string Schema = "xtk:form";
+        public const string EntitySchema = "xtk:form";
 
         #endregion
     }

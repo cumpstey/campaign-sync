@@ -16,7 +16,7 @@ namespace Zone.Campaign.WebServices.Services
         /// <param name="requestHandler">Request handler</param>
         /// <param name="item">Image file and metadata</param>
         /// <returns>Response</returns>
-        Response WriteImage(IRequestHandler requestHandler, ImageFile item);
+        Response WriteImage(IRequestHandler requestHandler, ImageResource item);
         
         #endregion
     }

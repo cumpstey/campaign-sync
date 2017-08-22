@@ -1,20 +1,21 @@
-﻿using System.Xml;
+﻿using System;
+using System.Xml;
 using Zone.Campaign.WebServices.Model.Abstract;
 
 namespace Zone.Campaign.WebServices.Model
 {
     /// <summary>
-    /// Class representing a file resource (xtk:fileRes).
+    /// Class representing an image (xtk:image).
     /// </summary>
-    [Schema(Schema)]
-    public class FileRes : Persistable, IPersistable
+    [Schema(EntitySchema)]
+    public class Icon : Persistable, IPersistable
     {
         #region Fields
 
         /// <summary>
         /// Schema represented by this class.
         /// </summary>
-        public const string Schema = "xtk:FileRes";
+        public const string EntitySchema = "xtk:image";
 
         #endregion
 
@@ -31,24 +32,14 @@ namespace Zone.Campaign.WebServices.Model
         public string Label { get; set; }
 
         /// <summary>
-        /// Alt text for the image.
+        /// Base64 encoded image data.
         /// </summary>
-        public string Alt { get; set; }
-
-        /// <summary>
-        /// Width of the image.
-        /// </summary>
-        public int? Width { get; set; }
-
-        /// <summary>
-        /// Height of the image.
-        /// </summary>
-        public int? Height { get; set; }
+        public string FileContent { get; set; }
 
         #endregion
 
         #region Methods
-        
+
         /// <summary>
         /// Formats the dataa into appropriate xml for sending in a persist request to Campaign.
         /// </summary>
@@ -56,27 +47,20 @@ namespace Zone.Campaign.WebServices.Model
         /// <returns>Xml element containing all the properties to update</returns>
         public virtual XmlElement GetXmlForPersist(XmlDocument ownerDocument)
         {
-            var element = GetBaseXmlForPersist(ownerDocument, "@internalName");
-            element.AppendAttribute("internalName", Name.Name);
+            var element = GetBaseXmlForPersist(ownerDocument, "@namespace, @name");
+            element.AppendAttribute("namespace", Name.Namespace);
+            element.AppendAttribute("name", Name.Name);
 
-            if (!string.IsNullOrEmpty(Label))
+            if (Label != null)
             {
                 element.AppendAttribute("label", Label);
             }
 
-            if (!string.IsNullOrEmpty(Alt))
+            if (FileContent != null)
             {
-                element.AppendAttribute("alt", Label);
-            }
-
-            if (Width == null)
-            {
-                element.AppendAttribute("width", Width.ToString());
-            }
-
-            if (Height == null)
-            {
-                element.AppendAttribute("height", Height.ToString());
+                var dataElement = element.AppendChild("data");
+                var dataCData = ownerDocument.CreateCDataSection(FileContent);
+                dataElement.AppendChild(dataCData);
             }
 
             return element;

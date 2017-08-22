@@ -6,7 +6,7 @@ namespace Zone.Campaign.WebServices.Model
     /// <summary>
     /// Class representing a personalisation block (nms:includeView).
     /// </summary>
-    [Schema(Schema)]
+    [Schema(EntitySchema)]
     public class IncludeView : Persistable, IPersistable
     {
         #region Fields
@@ -14,7 +14,7 @@ namespace Zone.Campaign.WebServices.Model
         /// <summary>
         /// Schema represented by this class.
         /// </summary>
-        public const string Schema = "nms:includeView";
+        public const string EntitySchema = "nms:includeView";
 
         #endregion
 

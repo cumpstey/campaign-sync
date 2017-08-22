@@ -6,7 +6,7 @@ namespace Zone.Campaign.WebServices.Model
     /// <summary>
     /// Class representing a JavaScript file (xtk:javascript).
     /// </summary>
-    [Schema(Schema)]
+    [Schema(EntitySchema)]
     public class JavaScriptCode : Persistable, IPersistable
     {
         #region Fields
@@ -14,7 +14,7 @@ namespace Zone.Campaign.WebServices.Model
         /// <summary>
         /// Schema represented by this class.
         /// </summary>
-        public const string Schema = "xtk:javascript";
+        public const string EntitySchema = "xtk:javascript";
 
         #endregion
 

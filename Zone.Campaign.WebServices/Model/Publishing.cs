@@ -5,7 +5,7 @@ namespace Zone.Campaign.WebServices.Model
     /// <summary>
     /// Class representing a publication model (ncm:publishing).
     /// </summary>
-    [Schema(Schema)]
+    [Schema(EntitySchema)]
     public class Publishing : Entity
     {
         #region Fields
@@ -13,7 +13,7 @@ namespace Zone.Campaign.WebServices.Model
         /// <summary>
         /// Schema represented by this class.
         /// </summary>
-        public const string Schema = "ncm:publishing";
+        public const string EntitySchema = "ncm:publishing";
 
         #endregion
     }
