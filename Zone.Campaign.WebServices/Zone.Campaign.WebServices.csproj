@@ -56,6 +56,7 @@
     <Compile Include="Model\ImageResource.cs" />
     <Compile Include="Model\IncludeView.cs" />
     <Compile Include="Model\Icon.cs" />
+    <Compile Include="Model\NavigationHierarchy.cs" />
     <Compile Include="Model\Workflow.cs" />
     <Compile Include="Model\QueryFilter.cs" />
     <Compile Include="Model\Publishing.cs" />

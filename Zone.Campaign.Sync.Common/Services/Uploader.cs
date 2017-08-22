@@ -188,6 +188,7 @@ namespace Zone.Campaign.Sync.Services
 
                 Log.Info($"{templateSuccessCount} files uploaded.");
 
+                // Build any schemas uploaded
                 var schemaList = templateList.Where(i => i.Item2.Metadata.Schema.ToString() == Schema.EntitySchema).ToArray();
                 if (schemaList.Any())
                 {
@@ -211,6 +212,20 @@ namespace Zone.Campaign.Sync.Services
                     }
 
                     Log.Info($"{schemaSuccessCount} schemas built.");
+                }
+
+                // If any navigation hierarchies uploaded, build navigation hierarchy
+                if (templateList.Any(i => i.Item2.Metadata.Schema.ToString() == NavigationHierarchy.EntitySchema))
+                {
+                    var response = _builderService.BuildNavigationHierarchy(requestHandler);
+                    if (!response.Success)
+                    {
+                        Log.Warn($"Build of navigation hierarchy failed: {response.Message}");
+                    }
+                    else
+                    {
+                        Log.Info("Navigation hierarchy built.");
+                    }
                 }
             }
         }

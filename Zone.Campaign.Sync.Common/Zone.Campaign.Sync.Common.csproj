@@ -61,6 +61,7 @@
     <Compile Include="Mappings\Abstract\FolderItemMapping.cs" />
     <Compile Include="Mappings\Abstract\Mapping.cs" />
     <Compile Include="Mappings\IconMapping.cs" />
+    <Compile Include="Mappings\NavigationHierarchyMapping.cs" />
     <Compile Include="Mappings\WorkflowMapping.cs" />
     <Compile Include="Mappings\FormMapping.cs" />
     <Compile Include="Mappings\IncludeViewMapping.cs" />

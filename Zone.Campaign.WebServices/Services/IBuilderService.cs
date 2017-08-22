@@ -10,7 +10,14 @@ namespace Zone.Campaign.WebServices.Services
         #region Methods
 
         /// <summary>
-        /// Trigger a build of the schema from the srcSchema
+        /// Trigger a build of the entire navigation hierarchy.
+        /// </summary>
+        /// <param name="requestHandler">Request handler</param>
+        /// <returns>Response</returns>
+        Response BuildNavigationHierarchy(IRequestHandler requestHandler);
+
+        /// <summary>
+        /// Trigger a build of the schema from the srcSchema.
         /// </summary>
         /// <param name="requestHandler">Request handler</param>
         /// <param name="schemaName">Name of the schema to build</param>
