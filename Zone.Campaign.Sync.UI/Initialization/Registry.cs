@@ -39,6 +39,7 @@ namespace Zone.Campaign.Sync.UI.Initialization
 
             For<IAuthenticationService>().Use<SessionService>();
             For<IBuilderService>().Use<BuilderService>();
+            For<IPublishingService>().Use<PublishingService>();
             For<IImageWriteService>().Use<ImagePersistService>();
 
             if (Options.RequestMode == RequestMode.Zip)

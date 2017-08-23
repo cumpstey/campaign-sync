@@ -1,24 +1,22 @@
 ﻿using System.Collections.Generic;
-using Zone.Campaign.WebServices.Model;
 using Zone.Campaign.WebServices.Services.Responses;
 
 namespace Zone.Campaign.WebServices.Services
 {
     /// <summary>
-    /// Wrapper for the nms:rtEvent SOAP services.
+    /// Wrapper for the zon:publishing SOAP services.
     /// </summary>
-    public interface ITriggeredMessageService
+    public interface IPublishingService
     {
         #region Methods
 
         /// <summary>
-        /// Push a real time event in order to trigger a delivery.
+        /// Publish all triggered message instances.
         /// </summary>
         /// <param name="requestHandler">Request handler</param>
-        /// <param name="eventDetails">The event to push</param>
         /// <returns>Response, with the returned id of the event</returns>
-        Response<int> PushRealTimeEvent(IRequestHandler requestHandler, Event eventDetails);
-        
+        Response<IEnumerable<KeyValuePair<int, bool>>> PublishTriggeredMessageInstances(IRequestHandler requestHandler);
+
         #endregion
     }
 }

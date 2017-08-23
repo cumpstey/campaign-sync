@@ -63,6 +63,9 @@ namespace Zone.Campaign.Sync
         [OptionArray("replacements", HelpText = @"Upload: String replacements to be applied, eg. ""DEVDB=>LIVDB"".")]
         public string[] UploadReplacements { get; set; }
 
+        [Option("publish", HelpText = "Upload: Publish all Message Center services.")]
+        public bool UploadPublishDeliveryTemplates { get; set; }
+
         #endregion
 
         #region Raw parameters

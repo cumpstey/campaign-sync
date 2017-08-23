@@ -101,6 +101,7 @@ namespace Zone.Campaign.Sync.UI
                                     return new Tuple<string, string>(parts[0], parts.Length == 2 ? parts[1] : string.Empty);
                                 }).ToList(),
                                 ApplyTransforms = options.UploadApplyTransforms,
+                                PublishDeliveryTemplates = options.UploadPublishDeliveryTemplates,
                                 TestMode = options.UploadTestMode,
                             });
                         }
@@ -186,7 +187,7 @@ namespace Zone.Campaign.Sync.UI
                     break;
                 case RunMode.ImageUpload:
                 case RunMode.Upload:
-                    if (options.UploadFilePaths == null || !options.UploadFilePaths.Any())
+                    if ((options.UploadFilePaths == null || !options.UploadFilePaths.Any()) && !options.UploadPublishDeliveryTemplates)
                     {
                         errors.Add("Files is required");
                     }

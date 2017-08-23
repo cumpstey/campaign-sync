@@ -89,6 +89,35 @@ var getDeliveryTemplates = function(folderName, recursive) {
 }
 
 /**
+ * Retrieves the names of delivery templates within the specified folder.
+ */
+var getTriggeredMessageInstances = function() {
+  var queryDef = DOMDocument.fromJXON({
+    queryDef: {
+      schema: "nms:delivery",
+      operation: "select",
+      select: {
+        node: [
+          { expr: "@id" },
+          { expr: "@internalName" },
+          { expr: "@label" },
+        ]
+      },
+      where: {
+        condition: [
+          { expr: "@isModel = 0" },
+          { expr: "@state = 0" },
+          { expr: "[triggerMessage/@eventType] IS NOT NULL" },
+        ]
+      },
+    }
+  });
+  var query = NLWS.xtkQueryDef.create(queryDef);
+  var results = query.ExecuteQuery();
+  return results;
+}
+
+/**
  * Update markup for the specified delivery
  * @param {object} delivery - Delivery to republish.
  */
@@ -148,6 +177,30 @@ var updateMarkupForDeliveryTemplatesInFolder = function(folderName, recursive) {
 
 // Set namespace properties
 ns.updateMarkupForDeliveryTemplatesInFolder = updateMarkupForDeliveryTemplatesInFolder;
+ns.getTriggeredMessageInstances = getTriggeredMessageInstances;
 
 }(NL.ZON.Publishing));
 
+/**
+ * Wrapper for the nms:delivery#DeployTriggerMessageSingle endpoint,
+ * to allow publishing of all instances in a single soap call.
+ */
+function zon_publishing_PublishTriggeredMessageInstances() {
+  var out = DOMDocument.fromJXON({ deliveries: { delivery: [] }});
+  // var outDeliveries = out.root.getFirstElement("deliveries");
+
+  var deliveries = NL.ZON.Publishing.getTriggeredMessageInstances().getElements();
+  for (var i = 0; i < deliveries.length; i++) {
+    var delivery = deliveries[i];
+    var success = NLWS.nmsDelivery.DeployTriggerMessageSingle(delivery.$id, false);
+    
+    out.root.appendChild({
+      delivery: {
+        id: delivery.$id,
+        success: success
+      }
+    });
+  }
+
+  return out;
+}

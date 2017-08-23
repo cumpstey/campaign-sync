@@ -1,4 +1,5 @@
-﻿using log4net;
+﻿using System.Collections.Generic;
+using log4net;
 using Zone.Campaign.WebServices.Model;
 using Zone.Campaign.WebServices.Services.Abstract;
 using Zone.Campaign.WebServices.Services.Responses;
@@ -6,7 +7,7 @@ using Zone.Campaign.WebServices.Services.Responses;
 namespace Zone.Campaign.WebServices.Services
 {
     /// <summary>
-    /// Wrapper for the bar:mc SOAP services.
+    /// Wrapper for the nms:rtEvent SOAP services.
     /// </summary>
     public class TriggeredMessageService : Service, ITriggeredMessageService
     {

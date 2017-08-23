@@ -25,6 +25,11 @@ namespace Zone.Campaign.Sync.Services
         public bool ApplyTransforms { get; set; }
 
         /// <summary>
+        /// Publish all Message Center services, if any delivery templates are uploaded.
+        /// </summary>
+        public bool PublishDeliveryTemplates { get; set; }
+
+        /// <summary>
         /// Test mode: Report what would have been uploaded, but don't actually upload any files.
         /// </summary>
         public bool TestMode { get; set; }

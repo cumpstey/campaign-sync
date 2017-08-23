@@ -27,9 +27,9 @@ namespace Zone.Campaign.Sync.Services
 
         private readonly IMetadataExtractorFactory _metadataExtractorFactory;
 
-        ////private readonly ITemplateTransformerFactory _templateTransformerFactory;
-
         private readonly IBuilderService _builderService;
+
+        private readonly IPublishingService _publishingService;
 
         private readonly IImageWriteService _imageWriteService;
 
@@ -45,23 +45,23 @@ namespace Zone.Campaign.Sync.Services
         /// <param name="imageDataProvider">Image data provider</param>
         /// <param name="mappingFactory">Mapping factory</param>
         /// <param name="metadataExtractorFactory">Metadata extractor factory</param>
-        /// <param name="templateTransformerFactory">Template transformer factory</param>
         /// <param name="builderService">Builder service</param>
+        /// <param name="publishingService">Publishing service</param>
         /// <param name="imageWriteService">Image write service</param>
         /// <param name="writeService">Write service</param>
         public Uploader(IImageDataProvider imageDataProvider,
                         IMappingFactory mappingFactory,
                         IMetadataExtractorFactory metadataExtractorFactory,
-                        ////ITemplateTransformerFactory templateTransformerFactory,
                         IBuilderService builderService,
+                        IPublishingService publishingService,
                         IImageWriteService imageWriteService,
                         IWriteService writeService)
         {
             _imageDataProvider = imageDataProvider;
             _mappingFactory = mappingFactory;
             _metadataExtractorFactory = metadataExtractorFactory;
-            ////_templateTransformerFactory = templateTransformerFactory;
             _builderService = builderService;
+            _publishingService = publishingService;
             _imageWriteService = imageWriteService;
             _writeService = writeService;
         }
@@ -77,7 +77,7 @@ namespace Zone.Campaign.Sync.Services
         /// <param name="settings">Upload settings</param>
         public void DoUpload(IRequestHandler requestHandler, UploadSettings settings)
         {
-            var pathList = settings.FilePaths.SelectMany(i =>
+            var pathList = settings.FilePaths?.SelectMany(i =>
             {
                 if (File.Exists(i))
                 {
@@ -97,7 +97,7 @@ namespace Zone.Campaign.Sync.Services
 
                 Log.Warn($"{i} specified for upload but no matching files found.");
                 return new string[0];
-            }).ToArray();
+            }).ToArray() ?? new string[0];
 
             var templateList = pathList.Select(i =>
             {
@@ -225,6 +225,24 @@ namespace Zone.Campaign.Sync.Services
                     else
                     {
                         Log.Info("Navigation hierarchy built.");
+                    }
+                }
+
+                //
+                if (settings.PublishDeliveryTemplates)
+                {
+                    var response = _publishingService.PublishTriggeredMessageInstances(requestHandler);
+                    if (!response.Success)
+                    {
+                        Log.Warn($"Publishing of Message Center services failed: {response.Message}");
+                    }
+                    else if (response.Data != null && response.Data.Any(i => !i.Value))
+                    {
+                        Log.Warn($"Publishing of Message Center services failed for: {string.Join(", ", response.Data.Where(i => !i.Value).Select(i => i.Key))}");
+                    }
+                    else
+                    {
+                        Log.Info("Message Center services published.");
                     }
                 }
             }

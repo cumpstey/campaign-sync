@@ -1,0 +1,18 @@
+<!--!
+Adobe Campaign metadata:
+Schema: xtk:srcSchema
+Name: zon:publishing
+Label: Publishing
+!-->
+<srcSchema library="true" implements="xtk:persist">
+  <methods>
+    <method library="zon:publishing.js" name="PublishTriggeredMessageInstances" static="true">
+      <parameters>
+        <param desc="Output" inout="out" name="output" type="DOMDocument" />
+      </parameters>
+      <description>
+        <para>Wrapper for the nms:delivery#DeployTriggerMessageSingle endpoint, to allow publishing of all instances in a single soap call.</para>
+      </description>
+    </method>
+  </methods>
+</srcSchema>

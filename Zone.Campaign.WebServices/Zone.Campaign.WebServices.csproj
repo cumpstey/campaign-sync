@@ -71,6 +71,8 @@
     <Compile Include="Services\IImageWriteService.cs" />
     <Compile Include="Services\HttpSoapRequestHandler.cs" />
     <Compile Include="Services\IAuthenticatedRequestHandler.cs" />
+    <Compile Include="Services\IPublishingService.cs" />
+    <Compile Include="Services\PublishingService.cs" />
     <Compile Include="Services\TriggeredMessageService.cs" />
     <Compile Include="Services\ITriggeredMessageService.cs" />
     <Compile Include="Services\IRequestHandler.cs" />
