@@ -187,7 +187,6 @@ ns.getTriggeredMessageInstances = getTriggeredMessageInstances;
  */
 function zon_publishing_PublishTriggeredMessageInstances() {
   var out = DOMDocument.fromJXON({ deliveries: { delivery: [] }});
-  // var outDeliveries = out.root.getFirstElement("deliveries");
 
   var deliveries = NL.ZON.Publishing.getTriggeredMessageInstances().getElements();
   for (var i = 0; i < deliveries.length; i++) {
