@@ -1,0 +1,5 @@
+﻿Adobe Campaign metadata:
+Schema: xtk:entity
+Name: cwm:test
+Label: This is a test
+Property1: Value 1

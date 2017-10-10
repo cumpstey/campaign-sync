@@ -1,0 +1,7 @@
+﻿<!doctype html>
+<html>
+<head></head>
+<body>
+<p><%= variable %> <span>plain text</span></p>
+</body>
+</html>

@@ -1,0 +1,2 @@
+﻿<% var variable = "variable"; %><%--@include IncludedJssp
+@--%><%= variable %> and plain text

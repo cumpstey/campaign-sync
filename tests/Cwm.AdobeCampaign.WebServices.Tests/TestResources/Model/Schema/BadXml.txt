@@ -1,0 +1,5 @@
+﻿<srcSchema view="true">
+  <element name="test">
+    <attribute label="Code" name="code" type="string" />
+  <element>
+</srcSchema>

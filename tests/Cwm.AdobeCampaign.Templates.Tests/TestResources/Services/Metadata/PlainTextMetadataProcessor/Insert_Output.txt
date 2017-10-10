@@ -1,0 +1,3 @@
+﻿Dummy metadata
+!----!
+Some plain text

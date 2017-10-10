@@ -1,0 +1,7 @@
+﻿<!doctype html>
+<html>
+<head></head>
+<body>
+<p><%= test.encode(value) %> plain text</p>
+</body>
+</html>

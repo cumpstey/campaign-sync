@@ -1,0 +1,4 @@
+﻿<% var variable = "variable"; %>
+Text from the main content
+Included content with nested includes
+Included content with <%= "blocks" %>

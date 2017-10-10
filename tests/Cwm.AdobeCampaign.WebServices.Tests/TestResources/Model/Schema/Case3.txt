@@ -1,0 +1,1 @@
+﻿<srcSchema _operation="insertOrUpdate" xtkschema="xtk:srcSchema" namespace="cwm" name="test" />

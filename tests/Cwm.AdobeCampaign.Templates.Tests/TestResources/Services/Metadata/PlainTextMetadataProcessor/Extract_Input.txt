@@ -1,0 +1,6 @@
+﻿Adobe Campaign metadata:
+Schema: xtk:text
+Name: cwm:test
+Label: This is a test
+!----!
+Some plain text

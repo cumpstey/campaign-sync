@@ -1,0 +1,7 @@
+﻿<!doctype html>
+<html>
+<head></head>
+<body>
+<p>Included content from full html file</p>
+</body>
+</html>

@@ -1,0 +1,9 @@
+﻿<!doctype html>
+<html>
+<head></head>
+<body>
+<p>Main content</p>
+<p>Included content with <%= "blocks" %></p>
+
+</body>
+</html>

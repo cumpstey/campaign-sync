@@ -1,0 +1,9 @@
+﻿<!doctype html>
+<html>
+<head></head>
+<body>
+<p><% var variable = "value"; %></p>
+<p><% var variable = "value"; %><span>text</span></p>
+<p><% var variable = "value"; %><span>plain text</span></p>
+</body>
+</html>

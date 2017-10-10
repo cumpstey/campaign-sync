@@ -1,0 +1,4 @@
+﻿use strict;
+
+// This is some javascript
+function dummy() {}

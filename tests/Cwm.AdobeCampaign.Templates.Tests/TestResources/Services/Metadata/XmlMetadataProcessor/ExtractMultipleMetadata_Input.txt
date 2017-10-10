@@ -1,0 +1,11 @@
+﻿<!--!
+Adobe Campaign metadata:
+Schema: xtk:javascript
+!-->
+<xml>
+<!--!
+Name: cwm:test
+Label: This is a test
+!-->
+  <content />
+</xml>

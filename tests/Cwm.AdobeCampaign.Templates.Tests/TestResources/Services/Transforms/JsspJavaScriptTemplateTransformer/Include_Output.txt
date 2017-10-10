@@ -1,0 +1,2 @@
+﻿<% var variable = "variable"; %>Included content with <%= "blocks" %>
+<%= variable %> and plain text

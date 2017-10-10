@@ -1,7 +1,0 @@
-<%--!
-Adobe Campaign metadata:
-Schema: xtk:option
-Name: zon_FileResPublishDirectory
-DataType: String
-!--%>
-C:\Program Files (x86)\Adobe\Adobe Campaign v6\var\res\barrattv6_dev\

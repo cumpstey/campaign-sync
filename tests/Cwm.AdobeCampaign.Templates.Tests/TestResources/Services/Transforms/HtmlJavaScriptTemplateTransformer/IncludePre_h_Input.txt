@@ -1,0 +1,8 @@
+﻿<!doctype html>
+<html>
+<head></head>
+<body>
+<p>Main content</p>
+<!--@include-pre IncludedHtml_html @h-->
+</body>
+</html>

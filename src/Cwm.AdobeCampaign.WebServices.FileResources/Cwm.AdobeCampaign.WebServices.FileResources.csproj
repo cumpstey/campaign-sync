@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <RootNamespace>Cwm.AdobeCampaign.WebServices</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Model\FileResource.cs" />
+    <Compile Remove="Model\ImageResource.cs" />
+    <Compile Remove="Services\IImageWriteService.cs" />
+    <Compile Remove="Services\ImagePersistService.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Model\" />
+    <Folder Include="Services\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="2.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Cwm.AdobeCampaign.WebServices\Cwm.AdobeCampaign.WebServices.csproj" />
+  </ItemGroup>
+
+</Project>

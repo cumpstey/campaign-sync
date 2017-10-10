@@ -1,0 +1,10 @@
+﻿/*
+Adobe Campaign metadata:
+Schema: xtk:javascript
+Name: cwm:test
+Label: This is a test
+!*/
+use strict;
+
+// This is some javascript
+function dummy() {}

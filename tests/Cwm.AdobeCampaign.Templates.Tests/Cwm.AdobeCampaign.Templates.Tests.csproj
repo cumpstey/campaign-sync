@@ -1,0 +1,309 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\..\packages\NUnit3TestAdapter.3.8.0\build\net35\NUnit3TestAdapter.props" Condition="Exists('..\..\packages\NUnit3TestAdapter.3.8.0\build\net35\NUnit3TestAdapter.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{7890B2DF-A95E-493F-B095-CB08F7BD638A}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Cwm.AdobeCampaign.Templates.Tests</RootNamespace>
+    <AssemblyName>Cwm.AdobeCampaign.Templates.Tests</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">15.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+    <ReferencePath>$(ProgramFiles)\Common Files\microsoft shared\VSTT\$(VisualStudioVersion)\UITestExtensionPackages</ReferencePath>
+    <IsCodedUITest>False</IsCodedUITest>
+    <TestProjectType>UnitTest</TestProjectType>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Extensions.Logging.Abstractions, Version=2.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Extensions.Logging.Abstractions.2.0.0\lib\netstandard2.0\Microsoft.Extensions.Logging.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.framework, Version=3.8.1.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\NUnit.3.8.1\lib\net45\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Dummy\DummyMetadataFormatter.cs" />
+    <Compile Include="Dummy\DummyMetadataParser.cs" />
+    <Compile Include="EmbeddedResourceFileProvider.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\Metadata\XmlMetadataProcessorTests.cs" />
+    <Compile Include="Services\Metadata\PlainTextMetadataProcessorTests.cs" />
+    <Compile Include="Services\Metadata\JsspMetadataProcessorTests.cs" />
+    <Compile Include="Services\Metadata\JavaScriptMetadataProcessorTests.cs" />
+    <Compile Include="Services\Metadata\MetadataProcessorTests.cs" />
+    <Compile Include="Services\Transforms\HtmlJavaScriptTemplateTransformerTests.cs" />
+    <Compile Include="Services\Transforms\JsspJavaScriptTemplateTransformerTests.cs" />
+    <EmbeddedResource Include="TestResources\Services\Metadata\MetadataProcessor\Format_Output.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestResources\Services\Transforms\JsspJavaScriptTemplateTransformer\IncludedJssp.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Cwm.AdobeCampaign.Common\Cwm.AdobeCampaign.Common.csproj">
+      <Project>{7595EB01-D155-4ED6-8700-42E1649E03B5}</Project>
+      <Name>Cwm.AdobeCampaign.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\Cwm.AdobeCampaign.Templates\Cwm.AdobeCampaign.Templates.csproj">
+      <Project>{e374a25c-d2b5-4a74-96d4-1dd2407402d8}</Project>
+      <Name>Cwm.AdobeCampaign.Templates</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Cwm.AdobeCampaign.Testing\Cwm.AdobeCampaign.Testing.csproj">
+      <Project>{98104885-6a2e-4bb3-80cd-5e393413ade1}</Project>
+      <Name>Cwm.AdobeCampaign.Testing</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestResources\Services\Metadata\MetadataProcessor\Parse_Input.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestResources\Services\Metadata\HtmlMetadataProcessor\Extract_Input.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestResources\Services\Metadata\HtmlMetadataProcessor\Extract_Output.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestResources\Services\Metadata\JavaScriptMetadataProcessor\Extract_Input.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestResources\Services\Metadata\JavaScriptMetadataProcessor\Extract_Output.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestResources\Services\Metadata\JavaScriptMetadataProcessor\ExtractNoMetadata_Input.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestResources\Services\Metadata\JavaScriptMetadataProcessor\ExtractMultipleMetadata_Input.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestResources\Services\Metadata\JsspMetadataProcessor\Extract_Input.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestResources\Services\Metadata\JsspMetadataProcessor\Extract_Output.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestResources\Services\Metadata\JsspMetadataProcessor\ExtractMultipleMetadata_Input.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestResources\Services\Metadata\JsspMetadataProcessor\ExtractNoMetadata_Input.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestResources\Services\Metadata\PlainTextMetadataProcessor\Extract_Input.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestResources\Services\Metadata\PlainTextMetadataProcessor\Extract_Output.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestResources\Services\Metadata\PlainTextMetadataProcessor\ExtractNoMetadata_Input.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestResources\Services\Metadata\JavaScriptMetadataProcessor\Insert_Output.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestResources\Services\Metadata\JavaScriptMetadataProcessor\Insert_Input.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestResources\Services\Metadata\JsspMetadataProcessor\Insert_Input.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestResources\Services\Metadata\JsspMetadataProcessor\Insert_Output.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestResources\Services\Metadata\PlainTextMetadataProcessor\Insert_Input.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestResources\Services\Metadata\PlainTextMetadataProcessor\Insert_Output.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestResources\Services\Metadata\XmlMetadataProcessor\Extract_Input.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestResources\Services\Metadata\XmlMetadataProcessor\Extract_Output.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestResources\Services\Metadata\XmlMetadataProcessor\ExtractMultipleMetadata_Input.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestResources\Services\Metadata\XmlMetadataProcessor\ExtractNoMetadata_Input.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestResources\Services\Metadata\XmlMetadataProcessor\Insert_Input.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestResources\Services\Metadata\XmlMetadataProcessor\Insert_Output.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestResources\Services\Metadata\XmlMetadataProcessor\InvalidXml_Input.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestResources\Services\Transforms\JsspJavaScriptTemplateTransformer\Simple_Input.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestResources\Services\Transforms\JsspJavaScriptTemplateTransformer\Include_Input.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestResources\Services\Transforms\JsspJavaScriptTemplateTransformer\Simple_Output.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestResources\Services\Transforms\JsspJavaScriptTemplateTransformer\Include_Output.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestResources\Services\Transforms\JsspJavaScriptTemplateTransformer\Include_t_Output.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestResources\Services\Transforms\JsspJavaScriptTemplateTransformer\Include_t_Input.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestResources\Services\Transforms\HtmlJavaScriptTemplateTransformer\Simple_Input.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestResources\Services\Transforms\HtmlJavaScriptTemplateTransformer\Simple_Output.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestResources\Services\Transforms\HtmlJavaScriptTemplateTransformer\ValueBlock_Output.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestResources\Services\Transforms\HtmlJavaScriptTemplateTransformer\ValueBlock_Input.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestResources\Services\Transforms\HtmlJavaScriptTemplateTransformer\CodeBlock_Input.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestResources\Services\Transforms\HtmlJavaScriptTemplateTransformer\CodeBlock_Output.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestResources\Services\Transforms\HtmlJavaScriptTemplateTransformer\ValueBlock_t_Input.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestResources\Services\Transforms\HtmlJavaScriptTemplateTransformer\ValueBlock_t_Output.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestResources\Services\Transforms\HtmlJavaScriptTemplateTransformer\ValueBlock_r_Input.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestResources\Services\Transforms\HtmlJavaScriptTemplateTransformer\ValueBlock_r_Output.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestResources\Services\Transforms\HtmlJavaScriptTemplateTransformer\ValueBlock_encode_Output.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestResources\Services\Transforms\HtmlJavaScriptTemplateTransformer\ValueBlock_encode_Input.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestResources\Services\Transforms\HtmlJavaScriptTemplateTransformer\Uncomment_Input.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestResources\Services\Transforms\HtmlJavaScriptTemplateTransformer\Uncomment_Output.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestResources\Services\Transforms\HtmlJavaScriptTemplateTransformer\RemoveComment_Input.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestResources\Services\Transforms\HtmlJavaScriptTemplateTransformer\RemoveComment_Output.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestResources\Services\Transforms\HtmlJavaScriptTemplateTransformer\CodeBlock_t_Output.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestResources\Services\Transforms\HtmlJavaScriptTemplateTransformer\CodeBlock_t_Input.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestResources\Services\Transforms\HtmlJavaScriptTemplateTransformer\CodeBlock_s_Output.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestResources\Services\Transforms\HtmlJavaScriptTemplateTransformer\CodeBlock_s_Input.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestResources\Services\Transforms\HtmlJavaScriptTemplateTransformer\CodeBlock_empty_Input.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestResources\Services\Transforms\HtmlJavaScriptTemplateTransformer\CodeBlock_empty_Output.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestResources\Services\Transforms\HtmlJavaScriptTemplateTransformer\ValueBlock_s_Input.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestResources\Services\Transforms\HtmlJavaScriptTemplateTransformer\ValueBlock_s_Output.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestResources\Services\Transforms\HtmlJavaScriptTemplateTransformer\IncludedJssp_nest.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestResources\Services\Transforms\HtmlJavaScriptTemplateTransformer\IncludedHtml_html.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestResources\Services\Transforms\HtmlJavaScriptTemplateTransformer\IncludedJssp.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestResources\Services\Transforms\HtmlJavaScriptTemplateTransformer\IncludedHtml.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestResources\Services\Transforms\HtmlJavaScriptTemplateTransformer\IncludePre_Input.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestResources\Services\Transforms\HtmlJavaScriptTemplateTransformer\IncludePost_nest_Input.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestResources\Services\Transforms\HtmlJavaScriptTemplateTransformer\IncludePre_h_Input.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestResources\Services\Transforms\HtmlJavaScriptTemplateTransformer\IncludePre_h_Output.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestResources\Services\Transforms\HtmlJavaScriptTemplateTransformer\IncludePre_Output.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestResources\Services\Transforms\HtmlJavaScriptTemplateTransformer\IncludePost_nest_Output.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestResources\Services\Transforms\HtmlJavaScriptTemplateTransformer\IncludePost_Input.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestResources\Services\Transforms\HtmlJavaScriptTemplateTransformer\IncludePost_Output.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestResources\Services\Transforms\JsspJavaScriptTemplateTransformer\IncludedJssp_nest.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestResources\Services\Transforms\JsspJavaScriptTemplateTransformer\Include_nest_Input.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestResources\Services\Transforms\JsspJavaScriptTemplateTransformer\Include_nest_Output.txt" />
+  </ItemGroup>
+  <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\..\packages\NUnit3TestAdapter.3.8.0\build\net35\NUnit3TestAdapter.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\NUnit3TestAdapter.3.8.0\build\net35\NUnit3TestAdapter.props'))" />
+  </Target>
+</Project>

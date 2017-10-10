@@ -1,0 +1,7 @@
+﻿<%--!
+Adobe Campaign metadata:
+Schema: xtk:jst
+Name: cwm:test
+Label: This is a test
+!--%>
+<%= blah %>

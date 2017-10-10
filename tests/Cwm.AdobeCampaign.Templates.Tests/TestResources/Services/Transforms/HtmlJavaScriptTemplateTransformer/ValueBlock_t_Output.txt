@@ -1,0 +1,9 @@
+﻿<!doctype html>
+<html>
+<head></head>
+<body>
+<p><%= value %></p>
+<p><%= value %><span>text</span></p>
+<p><%= value %><span>plain text</span></p>
+</body>
+</html>

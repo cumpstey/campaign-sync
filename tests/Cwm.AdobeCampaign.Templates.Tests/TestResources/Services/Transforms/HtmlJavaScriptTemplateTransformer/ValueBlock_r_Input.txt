@@ -1,0 +1,7 @@
+﻿<!--@encode test.encode @--><!doctype html>
+<html>
+<head></head>
+<body>
+<p><!--/= value /r--> plain text</p>
+</body>
+</html>

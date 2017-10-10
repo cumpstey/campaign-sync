@@ -1,0 +1,6 @@
+﻿<!--!
+Dummy metadata
+!-->
+<xml>
+  <content />
+</xml>
