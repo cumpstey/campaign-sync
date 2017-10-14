@@ -1,0 +1,11 @@
+﻿<!doctype html>
+<html>
+<head></head>
+<body>
+<a href="/original">link text</a>
+<a href="/replacement">link text</a>
+<a href="/replacement">link text</a>
+<a href="<%= test.encode('/replacement') %>">link text</a>
+<a href="<%= '/replacement' %>">link text</a>
+</body>
+</html>

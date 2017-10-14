@@ -1,0 +1,11 @@
+﻿<!doctype html>
+<html>
+<head></head>
+<body>
+<p>para 1</p>
+<p></p>
+<p></p>
+<p><!-- comment --></p>
+<p><%= variable %></p>
+</body>
+</html>

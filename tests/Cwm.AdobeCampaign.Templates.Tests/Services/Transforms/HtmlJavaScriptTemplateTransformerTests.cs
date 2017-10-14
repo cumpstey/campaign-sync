@@ -21,31 +21,32 @@ namespace Cwm.AdobeCampaign.Templates.Tests.Services.Transforms
         /// may contain more than one testable feature. They're split out as far as is _reasonable_ rather than _possible_.
         /// </remarks>
         [Test(Description = "Transforming template.")]
-        [TestCase("Simple_Input", "Simple_Output", Description = "No transformable elements")]
+        [TestCase("simple_input", "simple_output", Description = "No transformable elements")]
         #region Comments: simple transforms
-        [TestCase("Uncomment_Input", "Uncomment_Output", Description = "Uncomment markup")]
-        [TestCase("RemoveComment_Input", "RemoveComment_Output", Description = "Remove comment from document")]
-        [TestCase("CodeBlock_Input", "CodeBlock_Output", Description = "Transform code block")]
-        [TestCase("CodeBlock_empty_Input", "CodeBlock_empty_Output", Description = "Transform empty code block")]
-        [TestCase("CodeBlock_t_Input", "CodeBlock_t_Output", Description = "Transform code block with t flag")]
-        [TestCase("CodeBlock_s_Input", "CodeBlock_s_Output", Description = "Transform code block with s flag")]
-        [TestCase("ValueBlock_Input", "ValueBlock_Output", Description = "Transform value block")]
-        [TestCase("ValueBlock_t_Input", "ValueBlock_t_Output", Description = "Transform value block with t flag")]
-        [TestCase("ValueBlock_r_Input", "ValueBlock_r_Output", Description = "Transform value block with r flag")]
-        [TestCase("ValueBlock_s_Input", "ValueBlock_s_Output", Description = "Transform value block with s flag")]
+        [TestCase("uncomment_input", "uncomment_output", Description = "Uncomment markup")]
+        [TestCase("removeComment_input", "removeComment_output", Description = "Remove comment from document")]
+        [TestCase("codeBlock_input", "codeBlock_output", Description = "Transform code block")]
+        [TestCase("codeBlock_empty_input", "codeBlock_empty_output", Description = "Transform empty code block")]
+        [TestCase("codeBlock_t_input", "codeBlock_t_output", Description = "Transform code block with t flag")]
+        [TestCase("codeBlock_s_input", "codeBlock_s_output", Description = "Transform code block with s flag")]
+        [TestCase("valueBlock_input", "valueBlock_output", Description = "Transform value block")]
+        [TestCase("valueBlock_t_input", "valueBlock_t_output", Description = "Transform value block with t flag")]
+        [TestCase("valueBlock_r_input", "valueBlock_r_output", Description = "Transform value block with r flag")]
+        [TestCase("valueBlock_s_input", "valueBlock_s_output", Description = "Transform value block with s flag")]
         #endregion
         #region Comments: complex functions
-        [TestCase("IncludePre_Input", "IncludePre_Output", Description = "Include file before transform")]
-        [TestCase("IncludePre_h_Input", "IncludePre_h_Output", Description = "Include file before transform with h flag")]
-        [TestCase("IncludePost_Input", "IncludePost_Output", Description = "Include file after transform")]
-        [TestCase("IncludePost_nest_Input", "IncludePost_nest_Output", Description = "Include file before transform with nesting")]
-        [TestCase("ValueBlock_encode_Input", "ValueBlock_encode_Output", Description = "Transform value block with encode function")]
-        [TestCase("Functions_Input", "Functions_Output", Description = "Render regions of document in functions")]
+        [TestCase("includePre_input", "includePre_output", Description = "Include file before transform")]
+        [TestCase("includePre_h_input", "includePre_h_output", Description = "Include file before transform with h flag")]
+        [TestCase("includePost_input", "includePost_output", Description = "Include file after transform")]
+        [TestCase("includePost_nest_input", "includePost_nest_output", Description = "Include file after transform with nested includes")]
+        [TestCase("valueBlock_encode_input", "valueBlock_encode_output", Description = "Transform value block with encode function")]
+        [TestCase("functions_input", "functions_output", Description = "Render regions of document in functions")]
+        [TestCase("functions_nest_input", "functions_nest_output", Description = "Render regions of document in functions, with nested function declarations")]
         #endregion
         #region Attributes
-        [TestCase("Attr_Input", "Attr_Output", Description = "Add new attribute, or replace existing attribute")]
-        [TestCase("Action_remove_Input", "Action_remove_Output", Description = "Remove markup")]
-        [TestCase("Action_empty_Input", "Action_empty_Output", Description = "Clear content from element")]
+        [TestCase("attr_input", "attr_output", Description = "Add new attribute, or replace existing attribute")]
+        [TestCase("action_remove_input", "action_remove_output", Description = "Remove markup")]
+        [TestCase("action_empty_input", "action_empty_output", Description = "Clear content from element")]
         #endregion
         public void Transform(string inputFile, string outputFile)
         {

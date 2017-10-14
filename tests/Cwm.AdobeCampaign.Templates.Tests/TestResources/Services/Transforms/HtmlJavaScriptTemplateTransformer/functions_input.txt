@@ -1,0 +1,18 @@
+﻿<!--/
+/*{functions}*/
+/-->
+<!doctype html>
+<html>
+<head></head>
+<body>
+<p>some text</p>
+<!--{ render1(data) [prototype:ViewRenderer] }-->
+<div><!--/= data /--></div>
+<!--{ end render1 }-->
+<p>some more text</p>
+<!--{ render2(data) }-->
+<p><!--/= data /--></p>
+<!--{ end render2 }-->
+<p>even more text</p>
+</body>
+</html>

@@ -66,7 +66,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="TestResources\Services\Transforms\JsspJavaScriptTemplateTransformer\IncludedJssp.txt" />
+    <EmbeddedResource Include="TestResources\Services\Transforms\JsspJavaScriptTemplateTransformer\_includedJssp.txt" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\Cwm.AdobeCampaign.Common\Cwm.AdobeCampaign.Common.csproj">
@@ -164,139 +164,169 @@
     <EmbeddedResource Include="TestResources\Services\Metadata\XmlMetadataProcessor\InvalidXml_Input.txt" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="TestResources\Services\Transforms\JsspJavaScriptTemplateTransformer\Simple_Input.txt" />
+    <EmbeddedResource Include="TestResources\Services\Transforms\JsspJavaScriptTemplateTransformer\simple_input.txt" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="TestResources\Services\Transforms\JsspJavaScriptTemplateTransformer\Include_Input.txt" />
+    <EmbeddedResource Include="TestResources\Services\Transforms\JsspJavaScriptTemplateTransformer\include_input.txt" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="TestResources\Services\Transforms\JsspJavaScriptTemplateTransformer\Simple_Output.txt" />
+    <EmbeddedResource Include="TestResources\Services\Transforms\JsspJavaScriptTemplateTransformer\simple_output.txt" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="TestResources\Services\Transforms\JsspJavaScriptTemplateTransformer\Include_Output.txt" />
+    <EmbeddedResource Include="TestResources\Services\Transforms\JsspJavaScriptTemplateTransformer\include_output.txt" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="TestResources\Services\Transforms\JsspJavaScriptTemplateTransformer\Include_t_Output.txt" />
+    <EmbeddedResource Include="TestResources\Services\Transforms\JsspJavaScriptTemplateTransformer\include_t_output.txt" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="TestResources\Services\Transforms\JsspJavaScriptTemplateTransformer\Include_t_Input.txt" />
+    <EmbeddedResource Include="TestResources\Services\Transforms\JsspJavaScriptTemplateTransformer\include_t_input.txt" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="TestResources\Services\Transforms\HtmlJavaScriptTemplateTransformer\Simple_Input.txt" />
+    <EmbeddedResource Include="TestResources\Services\Transforms\HtmlJavaScriptTemplateTransformer\simple_input.txt" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="TestResources\Services\Transforms\HtmlJavaScriptTemplateTransformer\Simple_Output.txt" />
+    <EmbeddedResource Include="TestResources\Services\Transforms\HtmlJavaScriptTemplateTransformer\simple_output.txt" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="TestResources\Services\Transforms\HtmlJavaScriptTemplateTransformer\ValueBlock_Output.txt" />
+    <EmbeddedResource Include="TestResources\Services\Transforms\HtmlJavaScriptTemplateTransformer\valueBlock_output.txt" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="TestResources\Services\Transforms\HtmlJavaScriptTemplateTransformer\ValueBlock_Input.txt" />
+    <EmbeddedResource Include="TestResources\Services\Transforms\HtmlJavaScriptTemplateTransformer\valueBlock_input.txt" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="TestResources\Services\Transforms\HtmlJavaScriptTemplateTransformer\CodeBlock_Input.txt" />
+    <EmbeddedResource Include="TestResources\Services\Transforms\HtmlJavaScriptTemplateTransformer\codeBlock_input.txt" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="TestResources\Services\Transforms\HtmlJavaScriptTemplateTransformer\CodeBlock_Output.txt" />
+    <EmbeddedResource Include="TestResources\Services\Transforms\HtmlJavaScriptTemplateTransformer\codeBlock_output.txt" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="TestResources\Services\Transforms\HtmlJavaScriptTemplateTransformer\ValueBlock_t_Input.txt" />
+    <EmbeddedResource Include="TestResources\Services\Transforms\HtmlJavaScriptTemplateTransformer\valueBlock_t_input.txt" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="TestResources\Services\Transforms\HtmlJavaScriptTemplateTransformer\ValueBlock_t_Output.txt" />
+    <EmbeddedResource Include="TestResources\Services\Transforms\HtmlJavaScriptTemplateTransformer\valueBlock_t_output.txt" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="TestResources\Services\Transforms\HtmlJavaScriptTemplateTransformer\ValueBlock_r_Input.txt" />
+    <EmbeddedResource Include="TestResources\Services\Transforms\HtmlJavaScriptTemplateTransformer\valueBlock_r_input.txt" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="TestResources\Services\Transforms\HtmlJavaScriptTemplateTransformer\ValueBlock_r_Output.txt" />
+    <EmbeddedResource Include="TestResources\Services\Transforms\HtmlJavaScriptTemplateTransformer\valueBlock_r_output.txt" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="TestResources\Services\Transforms\HtmlJavaScriptTemplateTransformer\ValueBlock_encode_Output.txt" />
+    <EmbeddedResource Include="TestResources\Services\Transforms\HtmlJavaScriptTemplateTransformer\valueBlock_encode_output.txt" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="TestResources\Services\Transforms\HtmlJavaScriptTemplateTransformer\ValueBlock_encode_Input.txt" />
+    <EmbeddedResource Include="TestResources\Services\Transforms\HtmlJavaScriptTemplateTransformer\valueBlock_encode_input.txt" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="TestResources\Services\Transforms\HtmlJavaScriptTemplateTransformer\Uncomment_Input.txt" />
+    <EmbeddedResource Include="TestResources\Services\Transforms\HtmlJavaScriptTemplateTransformer\uncomment_input.txt" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="TestResources\Services\Transforms\HtmlJavaScriptTemplateTransformer\Uncomment_Output.txt" />
+    <EmbeddedResource Include="TestResources\Services\Transforms\HtmlJavaScriptTemplateTransformer\uncomment_output.txt" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="TestResources\Services\Transforms\HtmlJavaScriptTemplateTransformer\RemoveComment_Input.txt" />
+    <EmbeddedResource Include="TestResources\Services\Transforms\HtmlJavaScriptTemplateTransformer\removeComment_input.txt" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="TestResources\Services\Transforms\HtmlJavaScriptTemplateTransformer\RemoveComment_Output.txt" />
+    <EmbeddedResource Include="TestResources\Services\Transforms\HtmlJavaScriptTemplateTransformer\removeComment_output.txt" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="TestResources\Services\Transforms\HtmlJavaScriptTemplateTransformer\CodeBlock_t_Output.txt" />
+    <EmbeddedResource Include="TestResources\Services\Transforms\HtmlJavaScriptTemplateTransformer\codeBlock_t_output.txt" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="TestResources\Services\Transforms\HtmlJavaScriptTemplateTransformer\CodeBlock_t_Input.txt" />
+    <EmbeddedResource Include="TestResources\Services\Transforms\HtmlJavaScriptTemplateTransformer\codeBlock_t_input.txt" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="TestResources\Services\Transforms\HtmlJavaScriptTemplateTransformer\CodeBlock_s_Output.txt" />
+    <EmbeddedResource Include="TestResources\Services\Transforms\HtmlJavaScriptTemplateTransformer\codeBlock_s_output.txt" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="TestResources\Services\Transforms\HtmlJavaScriptTemplateTransformer\CodeBlock_s_Input.txt" />
+    <EmbeddedResource Include="TestResources\Services\Transforms\HtmlJavaScriptTemplateTransformer\codeBlock_s_input.txt" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="TestResources\Services\Transforms\HtmlJavaScriptTemplateTransformer\CodeBlock_empty_Input.txt" />
+    <EmbeddedResource Include="TestResources\Services\Transforms\HtmlJavaScriptTemplateTransformer\codeBlock_empty_input.txt" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="TestResources\Services\Transforms\HtmlJavaScriptTemplateTransformer\CodeBlock_empty_Output.txt" />
+    <EmbeddedResource Include="TestResources\Services\Transforms\HtmlJavaScriptTemplateTransformer\codeBlock_empty_output.txt" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="TestResources\Services\Transforms\HtmlJavaScriptTemplateTransformer\ValueBlock_s_Input.txt" />
+    <EmbeddedResource Include="TestResources\Services\Transforms\HtmlJavaScriptTemplateTransformer\valueBlock_s_input.txt" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="TestResources\Services\Transforms\HtmlJavaScriptTemplateTransformer\ValueBlock_s_Output.txt" />
+    <EmbeddedResource Include="TestResources\Services\Transforms\HtmlJavaScriptTemplateTransformer\valueBlock_s_output.txt" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="TestResources\Services\Transforms\HtmlJavaScriptTemplateTransformer\IncludedJssp_nest.txt" />
+    <EmbeddedResource Include="TestResources\Services\Transforms\HtmlJavaScriptTemplateTransformer\_includedJssp_nest.txt" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="TestResources\Services\Transforms\HtmlJavaScriptTemplateTransformer\IncludedHtml_html.txt" />
+    <EmbeddedResource Include="TestResources\Services\Transforms\HtmlJavaScriptTemplateTransformer\_includedHtml_html.txt" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="TestResources\Services\Transforms\HtmlJavaScriptTemplateTransformer\IncludedJssp.txt" />
+    <EmbeddedResource Include="TestResources\Services\Transforms\HtmlJavaScriptTemplateTransformer\_includedJssp.txt" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="TestResources\Services\Transforms\HtmlJavaScriptTemplateTransformer\IncludedHtml.txt" />
+    <EmbeddedResource Include="TestResources\Services\Transforms\HtmlJavaScriptTemplateTransformer\_includedHtml.txt" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="TestResources\Services\Transforms\HtmlJavaScriptTemplateTransformer\IncludePre_Input.txt" />
+    <EmbeddedResource Include="TestResources\Services\Transforms\HtmlJavaScriptTemplateTransformer\includePre_input.txt" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="TestResources\Services\Transforms\HtmlJavaScriptTemplateTransformer\IncludePost_nest_Input.txt" />
+    <EmbeddedResource Include="TestResources\Services\Transforms\HtmlJavaScriptTemplateTransformer\includePost_nest_input.txt" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="TestResources\Services\Transforms\HtmlJavaScriptTemplateTransformer\IncludePre_h_Input.txt" />
+    <EmbeddedResource Include="TestResources\Services\Transforms\HtmlJavaScriptTemplateTransformer\includePre_h_input.txt" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="TestResources\Services\Transforms\HtmlJavaScriptTemplateTransformer\IncludePre_h_Output.txt" />
+    <EmbeddedResource Include="TestResources\Services\Transforms\HtmlJavaScriptTemplateTransformer\includePre_h_output.txt" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="TestResources\Services\Transforms\HtmlJavaScriptTemplateTransformer\IncludePre_Output.txt" />
+    <EmbeddedResource Include="TestResources\Services\Transforms\HtmlJavaScriptTemplateTransformer\includePre_output.txt" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="TestResources\Services\Transforms\HtmlJavaScriptTemplateTransformer\IncludePost_nest_Output.txt" />
+    <EmbeddedResource Include="TestResources\Services\Transforms\HtmlJavaScriptTemplateTransformer\includePost_nest_output.txt" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="TestResources\Services\Transforms\HtmlJavaScriptTemplateTransformer\IncludePost_Input.txt" />
+    <EmbeddedResource Include="TestResources\Services\Transforms\HtmlJavaScriptTemplateTransformer\includePost_input.txt" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="TestResources\Services\Transforms\HtmlJavaScriptTemplateTransformer\IncludePost_Output.txt" />
+    <EmbeddedResource Include="TestResources\Services\Transforms\HtmlJavaScriptTemplateTransformer\includePost_output.txt" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="TestResources\Services\Transforms\JsspJavaScriptTemplateTransformer\IncludedJssp_nest.txt" />
+    <EmbeddedResource Include="TestResources\Services\Transforms\JsspJavaScriptTemplateTransformer\_includedJssp_nest.txt" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="TestResources\Services\Transforms\JsspJavaScriptTemplateTransformer\Include_nest_Input.txt" />
+    <EmbeddedResource Include="TestResources\Services\Transforms\JsspJavaScriptTemplateTransformer\include_nest_input.txt" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="TestResources\Services\Transforms\JsspJavaScriptTemplateTransformer\Include_nest_Output.txt" />
+    <EmbeddedResource Include="TestResources\Services\Transforms\JsspJavaScriptTemplateTransformer\include_nest_output.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestResources\Services\Transforms\HtmlJavaScriptTemplateTransformer\functions_input.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestResources\Services\Transforms\HtmlJavaScriptTemplateTransformer\attr_input.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestResources\Services\Transforms\HtmlJavaScriptTemplateTransformer\action_empty_input.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestResources\Services\Transforms\HtmlJavaScriptTemplateTransformer\action_remove_input.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestResources\Services\Transforms\HtmlJavaScriptTemplateTransformer\attr_output.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestResources\Services\Transforms\HtmlJavaScriptTemplateTransformer\action_empty_output.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestResources\Services\Transforms\HtmlJavaScriptTemplateTransformer\action_remove_output.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestResources\Services\Transforms\HtmlJavaScriptTemplateTransformer\functions_output.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestResources\Services\Transforms\HtmlJavaScriptTemplateTransformer\functions_nest_input.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestResources\Services\Transforms\HtmlJavaScriptTemplateTransformer\functions_nest_output.txt" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

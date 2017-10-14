@@ -17,9 +17,9 @@ namespace Cwm.AdobeCampaign.Templates.Services.Transforms
     {
         #region Fields
 
-        private const string FunctionDefinitionFormat = @"function {0} ({1}) {{/-->{2}<!--/}} // end {0}";
+        private const string FunctionDefinitionFormat = @"function {0}({1}) {{/-->{2}<!--/}} // end {0}";
 
-        private const string FunctionPrototypeDefinitionFormat = @"{3}.prototype.{0} = function ({1}) {{/-->{2}<!--/}}; // end {0}";
+        private const string FunctionPrototypeDefinitionFormat = @"{3}.prototype.{0} = function({1}) {{/-->{2}<!--/}}; // end {0}";
 
         private const string FunctionPlaceholder = "/*{functions}*/";
 
@@ -96,6 +96,9 @@ namespace Cwm.AdobeCampaign.Templates.Services.Transforms
 
         #region Helpers
 
+        /// <summary>
+        /// Calls the function processing multiple times, to ensure that functions within functions are appropriately extracted.
+        /// </summary>
         private static string ProcessFunctionDefinitions(string input)
         {
             var output = input;
@@ -144,17 +147,20 @@ namespace Cwm.AdobeCampaign.Templates.Services.Transforms
             }
 
             found = formattedFuncs.Count;
+            if (found == 0)
+            {
+                return output;
+            }
 
             // Insert concatenated function definitions.
             var replacementIndex = output.IndexOf(FunctionPlaceholder);
             if (replacementIndex == -1)
             {
-                output = string.Concat(string.Join(Environment.NewLine + Environment.NewLine, formattedFuncs) + Environment.NewLine + Environment.NewLine, output);
+                output = string.Concat(string.Join(Environment.NewLine + Environment.NewLine, formattedFuncs.Reverse<string>()), output);
             }
             else
             {
-                //output = output.Remove(replacementIndex, FunctionPlaceholder.Length);
-                output = output.Insert(replacementIndex, string.Join(Environment.NewLine + Environment.NewLine, formattedFuncs.Reverse<string>()) + Environment.NewLine + Environment.NewLine);
+                output = output.Insert(replacementIndex, string.Join(Environment.NewLine + Environment.NewLine, formattedFuncs.Reverse<string>()));
             }
 
             return output;
@@ -165,6 +171,10 @@ namespace Cwm.AdobeCampaign.Templates.Services.Transforms
         /// </summary>
         private static string ProcessHtml(string input)
         {
+            // Default behaviour produces self-closing p tags, which is invalid html.
+            // Removing the p element from this dictionary seems to fix this.
+            HtmlNode.ElementsFlags.Remove("p");
+
             // Parse html.
             // This option forces closing of self-closing tags such as <br /> instead of <br>.
             var htmlDocument = new HtmlDocument

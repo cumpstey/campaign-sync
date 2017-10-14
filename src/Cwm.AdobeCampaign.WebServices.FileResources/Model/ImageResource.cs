@@ -1,4 +1,6 @@
-﻿using System.Xml;
+﻿using System;
+using System.Xml;
+using System.Xml.Linq;
 
 namespace Cwm.AdobeCampaign.WebServices.Model
 {
@@ -47,45 +49,46 @@ namespace Cwm.AdobeCampaign.WebServices.Model
         /// <summary>
         /// Formats the data into appropriate xml for sending in a persist request to Campaign.
         /// </summary>
-        /// <param name="ownerDocument">Document to create the xml element from</param>
         /// <returns>Xml element containing all the properties to update</returns>
-        public XmlElement GetXmlForPersist(XmlDocument ownerDocument)
+        public XElement GetXmlForPersist()
         {
-            var element = ownerDocument.CreateElement("file");
-            element.AppendAttribute("folderName", FolderName);
+            throw new NotImplementedException();
 
-            var fileResElement = element.AppendChild("fileRes");
-            fileResElement.AppendAttribute("internalName", FileRes.Name.Name);
+            //var element = ownerDocument.CreateElement("file");
+            //element.AppendAttribute("folderName", FolderName);
 
-            if (!string.IsNullOrEmpty(FileRes.Label))
-            {
-                fileResElement.AppendAttribute("label", FileRes.Label);
-            }
+            //var fileResElement = element.AppendChild("fileRes");
+            //fileResElement.AppendAttribute("internalName", FileRes.Name.Name);
 
-            if (!string.IsNullOrEmpty(FileRes.Alt))
-            {
-                fileResElement.AppendAttribute("alt", FileRes.Alt);
-            }
+            //if (!string.IsNullOrEmpty(FileRes.Label))
+            //{
+            //    fileResElement.AppendAttribute("label", FileRes.Label);
+            //}
 
-            if (FileRes.Width != null)
-            {
-                fileResElement.AppendAttribute("width", FileRes.Width.ToString());
-            }
+            //if (!string.IsNullOrEmpty(FileRes.Alt))
+            //{
+            //    fileResElement.AppendAttribute("alt", FileRes.Alt);
+            //}
 
-            if (FileRes.Height != null)
-            {
-                fileResElement.AppendAttribute("height", FileRes.Height.ToString());
-            }
+            //if (FileRes.Width != null)
+            //{
+            //    fileResElement.AppendAttribute("width", FileRes.Width.ToString());
+            //}
 
-            var fileContentElement = element.AppendChild("fileContent");
-            var fileContentCData = ownerDocument.CreateCDataSection(FileContent);
-            fileContentElement.AppendChild(fileContentCData);
+            //if (FileRes.Height != null)
+            //{
+            //    fileResElement.AppendAttribute("height", FileRes.Height.ToString());
+            //}
 
-            fileContentElement.AppendAttribute("mimeType", MimeType);
-            fileContentElement.AppendAttribute("md5", Md5);
-            fileContentElement.AppendAttribute("fileName", FileName);
+            //var fileContentElement = element.AppendChild("fileContent");
+            //var fileContentCData = ownerDocument.CreateCDataSection(FileContent);
+            //fileContentElement.AppendChild(fileContentCData);
 
-            return element;
+            //fileContentElement.AppendAttribute("mimeType", MimeType);
+            //fileContentElement.AppendAttribute("md5", Md5);
+            //fileContentElement.AppendAttribute("fileName", FileName);
+
+            //return element;
         }
 
         #endregion

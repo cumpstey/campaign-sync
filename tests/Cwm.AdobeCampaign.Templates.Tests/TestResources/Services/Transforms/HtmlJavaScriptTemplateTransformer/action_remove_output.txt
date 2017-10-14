@@ -2,7 +2,8 @@
 <html>
 <head></head>
 <body>
-<p>Main content</p>
-<!--@include-post _includedJssp @-->
+<p>para 1</p>
+
+
 </body>
 </html>

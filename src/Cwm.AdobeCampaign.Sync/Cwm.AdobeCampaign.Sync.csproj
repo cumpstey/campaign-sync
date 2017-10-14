@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Mappings\IncludeViewMapping.cs" />
+    <Compile Remove="Mappings\JavaScriptCodeMapping.cs" />
+    <Compile Remove="Mappings\JavaScriptTemplateMapping.cs" />
+    <Compile Remove="Mappings\OptionMapping.cs" />
+    <Compile Remove="Mappings\PublishingMapping.cs" />
+    <Compile Remove="Mappings\QueryFilterMapping.cs" />
+    <Compile Remove="Mappings\WorkflowMapping.cs" />
+    <Compile Remove="RequestMode.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CsvHelper" Version="3.2.0" />
+    <PackageReference Include="SixLabors.ImageSharp" Version="1.0.0-beta0001" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Cwm.AdobeCampaign.Templates\Cwm.AdobeCampaign.Templates.csproj" />
+    <ProjectReference Include="..\Cwm.AdobeCampaign.WebServices.FileResources\Cwm.AdobeCampaign.WebServices.FileResources.csproj" />
+    <ProjectReference Include="..\Cwm.AdobeCampaign.WebServices.Publishing\Cwm.AdobeCampaign.WebServices.Publishing.csproj" />
+    <ProjectReference Include="..\Cwm.AdobeCampaign.WebServices\Cwm.AdobeCampaign.WebServices.csproj" />
+  </ItemGroup>
+
+</Project>

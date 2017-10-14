@@ -14,8 +14,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\src\Cwm.AdobeCampaign.Templates\Cwm.AdobeCampaign.Templates.csproj" />
-    <ProjectReference Include="..\src\Cwm.AdobeCampaign.WebServices\Cwm.AdobeCampaign.WebServices.csproj" />
+    <ProjectReference Include="..\Cwm.AdobeCampaign.Templates\Cwm.AdobeCampaign.Templates.csproj" />
+    <ProjectReference Include="..\Cwm.AdobeCampaign.WebServices\Cwm.AdobeCampaign.WebServices.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,0 +1,11 @@
+﻿<!doctype html>
+<html>
+<head></head>
+<body>
+<p>para 1</p>
+<p data-action="empty">para 2</p>
+<p data-action="empty">para <strong>3</strong></p>
+<p data-action="empty">para <!-- comment --><strong>4</strong></p>
+<p data-action="empty">para <!--/= variable /--><strong>5</strong></p>
+</body>
+</html>

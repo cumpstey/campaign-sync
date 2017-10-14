@@ -1,4 +1,5 @@
-﻿using Cwm.AdobeCampaign.WebServices.Model;
+﻿using System.Threading.Tasks;
+using Cwm.AdobeCampaign.WebServices.Model;
 using Cwm.AdobeCampaign.WebServices.Services.Responses;
 
 namespace Cwm.AdobeCampaign.WebServices.Services
@@ -16,7 +17,7 @@ namespace Cwm.AdobeCampaign.WebServices.Services
         /// <param name="requestHandler">Request handler</param>
         /// <param name="item">Image file and metadata</param>
         /// <returns>Response</returns>
-        Response WriteImage(IRequestHandler requestHandler, ImageResource item);
+        Task<Response> WriteImageAsync(IRequestHandler requestHandler, ImageResource item);
         
         #endregion
     }

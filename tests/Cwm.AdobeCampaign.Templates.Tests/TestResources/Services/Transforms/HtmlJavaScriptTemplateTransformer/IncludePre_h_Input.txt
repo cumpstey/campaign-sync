@@ -3,6 +3,6 @@
 <head></head>
 <body>
 <p>Main content</p>
-<!--@include-pre IncludedHtml_html @h-->
+<!--@include-pre _includedHtml_html @h-->
 </body>
 </html>

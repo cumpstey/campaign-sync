@@ -1,2 +1,2 @@
 ﻿<p>Included content with nested includes</p>
-<%--@include IncludedJssp @t--%>
+<%--@include _includedJssp @t--%>

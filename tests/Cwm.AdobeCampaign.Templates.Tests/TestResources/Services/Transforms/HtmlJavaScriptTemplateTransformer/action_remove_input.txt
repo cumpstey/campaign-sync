@@ -1,0 +1,9 @@
+﻿<!doctype html>
+<html>
+<head></head>
+<body>
+<p>para 1</p>
+<p data-action="remove">para 2</p>
+<p data-action="remove">para <strong>3</strong></p>
+</body>
+</html>

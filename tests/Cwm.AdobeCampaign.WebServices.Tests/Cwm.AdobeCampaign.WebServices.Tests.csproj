@@ -76,19 +76,19 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="TestResources\Model\Schema\Case2.txt" />
+    <EmbeddedResource Include="TestResources\Model\Schema\case2_output.txt" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="TestResources\Model\Schema\RawXml.txt" />
+    <EmbeddedResource Include="TestResources\Model\Schema\xml_input.txt" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="TestResources\Model\Schema\Case1.txt" />
+    <EmbeddedResource Include="TestResources\Model\Schema\case1_output.txt" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="TestResources\Model\Schema\Case3.txt" />
+    <EmbeddedResource Include="TestResources\Model\Schema\case3_output.txt" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="TestResources\Model\Schema\BadXml.txt" />
+    <EmbeddedResource Include="TestResources\Model\Schema\badXml_input.txt" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

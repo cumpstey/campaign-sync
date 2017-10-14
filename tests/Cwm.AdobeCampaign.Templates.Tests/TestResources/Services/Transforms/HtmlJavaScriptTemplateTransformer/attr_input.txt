@@ -1,0 +1,11 @@
+﻿<!--@encode test.encode @--><!doctype html>
+<html>
+<head></head>
+<body>
+<a href="/original">link text</a>
+<a href="/original" data-attr-href="/replacement">link text</a>
+<a data-attr-href="/replacement">link text</a>
+<a href="/original" data-attr-href="[%= '/replacement' %]">link text</a>
+<a href="/original" data-attr-href="[%= '/replacement' %r]">link text</a>
+</body>
+</html>

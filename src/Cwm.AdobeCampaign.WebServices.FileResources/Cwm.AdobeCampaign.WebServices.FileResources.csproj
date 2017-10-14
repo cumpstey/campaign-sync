@@ -6,15 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Model\FileResource.cs" />
-    <Compile Remove="Model\ImageResource.cs" />
-    <Compile Remove="Services\IImageWriteService.cs" />
     <Compile Remove="Services\ImagePersistService.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Model\" />
-    <Folder Include="Services\" />
   </ItemGroup>
 
   <ItemGroup>

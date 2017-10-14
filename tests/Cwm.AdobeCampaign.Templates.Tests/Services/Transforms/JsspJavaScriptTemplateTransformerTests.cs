@@ -16,10 +16,10 @@ namespace Cwm.AdobeCampaign.Templates.Tests.Services.Transforms
     public class JsspJavaScriptTemplateTransformerTests : TestBase
     {
         [Test(Description = "Transforming template.")]
-        [TestCase("Simple_Input", "Simple_Output", Description = "No transformable elements")]
-        [TestCase("Include_Input", "Include_Output", Description = "Include file")]
-        [TestCase("Include_t_Input", "Include_t_Output", Description = "Include file with t flag")]
-        [TestCase("Include_nest_Input", "Include_nest_Output", Description = "Include file")]
+        [TestCase("simple_input", "simple_output", Description = "No transformable elements")]
+        [TestCase("include_input", "include_output", Description = "Include file")]
+        [TestCase("include_t_input", "include_t_output", Description = "Include file with t flag")]
+        [TestCase("include_nest_input", "include_nest_output", Description = "Include file")]
         public void Transform(string inputFile, string outputFile)
         {
             var input = GetEmbeddedResource(inputFile);

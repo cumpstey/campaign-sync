@@ -1,4 +1,6 @@
-﻿using System.Xml;
+﻿using System;
+using System.Xml;
+using System.Xml.Linq;
 using Cwm.AdobeCampaign.WebServices.Model.Abstract;
 
 namespace Cwm.AdobeCampaign.WebServices.Model
@@ -52,34 +54,34 @@ namespace Cwm.AdobeCampaign.WebServices.Model
         /// <summary>
         /// Formats the dataa into appropriate xml for sending in a persist request to Campaign.
         /// </summary>
-        /// <param name="ownerDocument">Document to create the xml element from</param>
         /// <returns>Xml element containing all the properties to update</returns>
-        public virtual XmlElement GetXmlForPersist(XmlDocument ownerDocument)
+        public override XElement GetXmlForPersist()
         {
-            var element = GetBaseXmlForPersist(ownerDocument, "@internalName");
-            element.AppendAttribute("internalName", Name.Name);
+            throw new NotImplementedException();
+            //var element = GetBaseXmlForPersist(ownerDocument, "@internalName");
+            //element.AppendAttribute("internalName", Name.Name);
 
-            if (!string.IsNullOrEmpty(Label))
-            {
-                element.AppendAttribute("label", Label);
-            }
+            //if (!string.IsNullOrEmpty(Label))
+            //{
+            //    element.AppendAttribute("label", Label);
+            //}
 
-            if (!string.IsNullOrEmpty(Alt))
-            {
-                element.AppendAttribute("alt", Label);
-            }
+            //if (!string.IsNullOrEmpty(Alt))
+            //{
+            //    element.AppendAttribute("alt", Label);
+            //}
 
-            if (Width == null)
-            {
-                element.AppendAttribute("width", Width.ToString());
-            }
+            //if (Width == null)
+            //{
+            //    element.AppendAttribute("width", Width.ToString());
+            //}
 
-            if (Height == null)
-            {
-                element.AppendAttribute("height", Height.ToString());
-            }
+            //if (Height == null)
+            //{
+            //    element.AppendAttribute("height", Height.ToString());
+            //}
 
-            return element;
+            //return element;
         }
 
         #endregion

@@ -1,0 +1,20 @@
+﻿<%
+ViewRenderer.prototype.render1 = function(data) {%>
+<div><%= data1 %></div>
+
+<div><%= data2 %></div>
+<%}; // end render1
+
+function render2(data) {%>
+<p><%= data %></p>
+<%} // end render2
+%>
+<!doctype html>
+<html>
+<head></head>
+<body>
+<p>some text</p>
+
+<p>some more text</p>
+</body>
+</html>
