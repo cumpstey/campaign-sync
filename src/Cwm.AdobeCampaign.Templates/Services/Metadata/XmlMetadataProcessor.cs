@@ -6,7 +6,6 @@ using System.Text.RegularExpressions;
 using System.Xml;
 using Cwm.AdobeCampaign.Templates.Exceptions;
 using Cwm.AdobeCampaign.Templates.Model;
-using Microsoft.Extensions.Logging;
 
 namespace Cwm.AdobeCampaign.Templates.Services.Metadata
 {
@@ -17,7 +16,7 @@ namespace Cwm.AdobeCampaign.Templates.Services.Metadata
     {
         #region Fields
 
-        private static readonly Regex MetadataCommentRegex = new Regex("^!(?<value>.*)!$", RegexOptions.Compiled | RegexOptions.Singleline);
+        private static readonly Regex MetadataCommentRegex = new Regex("^!(?<value>.*)!$", RegexOptions.Singleline);
 
         private static readonly string MetadataFormat = string.Format("!{0}{{0}}{0}!", Environment.NewLine);
 

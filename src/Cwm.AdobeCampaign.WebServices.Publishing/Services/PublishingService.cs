@@ -6,7 +6,9 @@ using System.Xml;
 using System.Xml.Linq;
 using Cwm.AdobeCampaign.WebServices.Services.Abstract;
 using Cwm.AdobeCampaign.WebServices.Services.Responses;
+#if NETSTANDARD2_0
 using Microsoft.Extensions.Logging;
+#endif
 
 namespace Cwm.AdobeCampaign.WebServices.Services
 {
@@ -21,16 +23,24 @@ namespace Cwm.AdobeCampaign.WebServices.Services
 
         public const string PublishTriggeredMessageInstancesServiceName = "PublishTriggeredMessageInstances";
 
+#if NETSTANDARD2_0
         private readonly ILogger _logger;
+#endif
 
         #endregion
 
         #region Constructor
 
+#if NETSTANDARD2_0
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PublishingService"/> class. 
+        /// </summary>
+        /// <param name="loggerFactory">Logger factory</param>
         public PublishingService(ILoggerFactory loggerFactory)
         {
             _logger = loggerFactory.CreateLogger<PublishingService>();
         }
+#endif
 
         #endregion
 
@@ -51,7 +61,9 @@ namespace Cwm.AdobeCampaign.WebServices.Services
             // Execute request and get response from server.
             var response = await requestHandler.ExecuteRequestAsync(new ServiceName(ServiceNamespace, PublishTriggeredMessageInstancesServiceName), requestDoc);
 
+#if NETSTANDARD2_0
             _logger.LogDebug($"Response to {PublishTriggeredMessageInstancesServiceName} received: {response.Status}");
+#endif
 
             if (!response.Success)
             {
@@ -75,7 +87,9 @@ namespace Cwm.AdobeCampaign.WebServices.Services
             }
             catch (Exception ex)
             {
+#if NETSTANDARD2_0
                 _logger.LogError(ex, $"Error parsing {PublishTriggeredMessageInstancesServiceName} response.");
+#endif
                 return new Response<IEnumerable<KeyValuePair<int, bool>>>(ResponseStatus.ParsingError, $"Failed to parse {PublishTriggeredMessageInstancesServiceName} response", ex);
             }
         }

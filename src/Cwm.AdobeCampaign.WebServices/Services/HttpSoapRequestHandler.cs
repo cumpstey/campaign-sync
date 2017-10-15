@@ -9,7 +9,9 @@ using Cwm.AdobeCampaign.WebServices.Services.Responses;
 using System.Xml.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+#if NETSTANDARD2_0
 using Microsoft.Extensions.Logging;
+#endif
 
 namespace Cwm.AdobeCampaign.WebServices.Services
 {
@@ -23,7 +25,9 @@ namespace Cwm.AdobeCampaign.WebServices.Services
         /// TODO: abstract this, to allow testing
         private readonly HttpClient _client;
 
+#if NETSTANDARD2_0
         private readonly ILogger _logger;
+#endif
 
         #endregion
 
@@ -36,9 +40,15 @@ namespace Cwm.AdobeCampaign.WebServices.Services
         /// <param name="client">Http client</param>
         /// <param name="uri">Uri of the SOAP handler</param>
         /// <param name="customHeaders">Headers to include in every request</param>
+#if NETSTANDARD2_0
         public HttpSoapRequestHandler(ILoggerFactory loggerFactory, HttpClient client, Uri uri, IEnumerable<string> customHeaders)
+#else
+        public HttpSoapRequestHandler(HttpClient client, Uri uri, IEnumerable<string> customHeaders)
+#endif
         {
+#if NETSTANDARD2_0
             _logger = loggerFactory.CreateLogger<HttpSoapRequestHandler>();
+#endif
             _client = client;
             Uri = uri ?? throw new ArgumentNullException(nameof(uri));
             CustomHeaders = customHeaders ?? new string[0];
@@ -94,13 +104,17 @@ namespace Cwm.AdobeCampaign.WebServices.Services
             }
             catch (HttpRequestException ex)
             {
+#if NETSTANDARD2_0
                 _logger.LogError(ex, $"Error making soap request.");
+#endif
                 return new Response<XElement>(ResponseStatus.ConnectionError, ex.Message);
             }
             catch (Exception ex)
             {
                 // Any error we translate as 'unknown', as this returns a status code.
+#if NETSTANDARD2_0
                 _logger.LogError(ex, $"Error making soap request.");
+#endif
                 return new Response<XElement>(ResponseStatus.UnknownError, ex.Message);
             }
 
@@ -109,13 +123,19 @@ namespace Cwm.AdobeCampaign.WebServices.Services
                 case HttpStatusCode.OK:
                     break;
                 case HttpStatusCode.NotFound:
+#if NETSTANDARD2_0
                     _logger.LogWarning($"{responseFromServer.Item1} response when making soap request.");
+#endif
                     return new Response<XElement>(ResponseStatus.NotFound, responseFromServer.Item3);
                 case HttpStatusCode.Forbidden:
+#if NETSTANDARD2_0
                     _logger.LogWarning($"{responseFromServer.Item1} response when making soap request.");
+#endif
                     return new Response<XElement>(ResponseStatus.Unauthorised, responseFromServer.Item3);
                 default:
+#if NETSTANDARD2_0
                     _logger.LogWarning($"{responseFromServer.Item1} response when making soap request.");
+#endif
                     return new Response<XElement>(ResponseStatus.UnknownError, responseFromServer.Item3);
             }
 
@@ -127,7 +147,9 @@ namespace Cwm.AdobeCampaign.WebServices.Services
             }
             catch (Exception ex)
             {
+#if NETSTANDARD2_0
                 _logger.LogWarning(ex, $"Invalid xml returned from soap request.");
+#endif
 
                 // This is an unknown error because the server should always return valid xml.
                 return new Response<XElement>(ResponseStatus.UnknownError, string.Concat("Invalid xml returned: ", ex.Message), ex);
@@ -139,7 +161,9 @@ namespace Cwm.AdobeCampaign.WebServices.Services
             if (responseElement.Name == soapNs + "Fault")
             {
                 var message = (responseElement.Element("detail") ?? responseElement.Element("faultstring"))?.Value ?? "No error message returned";
+#if NETSTANDARD2_0
                 _logger.LogWarning($@"Fault response received: ""{message}"".");
+#endif
                 return new Response<XElement>(ResponseStatus.ProcessingError, message);
             }
 
@@ -175,7 +199,7 @@ namespace Cwm.AdobeCampaign.WebServices.Services
             // TODO: parse these at set time, rather than here
             foreach (var header in CustomHeaders)
             {
-                var match = Regex.Match(header, @"^(?<name>[a-z_-]+):\s?(?<value>.*)$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+                var match = Regex.Match(header, @"^(?<name>[a-z_-]+):\s?(?<value>.*)$", RegexOptions.IgnoreCase);
                 if (!match.Success)
                 {
                     continue;

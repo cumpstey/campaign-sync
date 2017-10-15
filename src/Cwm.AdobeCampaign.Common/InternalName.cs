@@ -11,7 +11,7 @@ namespace Cwm.AdobeCampaign
     {
         #region Fields
 
-        private static readonly Regex ParseRegex = new Regex(@"^((?<namespace>[a-z]{3}):)?(?<name>[a-z0-9_\.]*)$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        private static readonly Regex ParseRegex = new Regex(@"^((?<namespace>[a-z]{3}):)?(?<name>[a-z0-9_\.]*)$", RegexOptions.IgnoreCase);
 
         #endregion
 
@@ -99,9 +99,9 @@ namespace Cwm.AdobeCampaign
         /// <returns>Internal name string</returns>
         public override string ToString()
         {
-            return string.IsNullOrEmpty(Namespace)
+            return string.IsNullOrWhiteSpace(Namespace)
                        ? Name
-                       : string.Format("{0}:{1}", Namespace, Name);
+                       : $"{Namespace}:{Name}";
         }
 
         #endregion

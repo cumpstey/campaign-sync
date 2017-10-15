@@ -11,7 +11,7 @@ namespace Cwm.AdobeCampaign
     {
         #region Fields
 
-        private static readonly Regex ParseRegex = new Regex(@"^(?<namespace>[a-z]{3}:[a-z0-9_]+)#(?<name>[a-z0-9_]+)$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        private static readonly Regex ParseRegex = new Regex(@"^(?<namespace>[a-z]{3}:[a-z0-9_]+)#(?<name>[a-z0-9_]+)$", RegexOptions.IgnoreCase);
 
         #endregion
 

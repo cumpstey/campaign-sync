@@ -4,7 +4,9 @@ using System.Xml.Linq;
 using Cwm.AdobeCampaign.WebServices.Model;
 using Cwm.AdobeCampaign.WebServices.Services.Abstract;
 using Cwm.AdobeCampaign.WebServices.Services.Responses;
+#if NETSTANDARD2_0
 using Microsoft.Extensions.Logging;
+#endif
 
 namespace Cwm.AdobeCampaign.WebServices.Services
 {
@@ -25,12 +27,15 @@ namespace Cwm.AdobeCampaign.WebServices.Services
         /// </summary>
         public const string PushRealTimeEventServiceName = "PushEvent";
 
+#if NETSTANDARD2_0
         private readonly ILogger _logger;
+#endif
 
         #endregion
 
         #region Constructor
 
+#if NETSTANDARD2_0
         /// <summary>
         /// Initializes a new instance of the <see cref="TriggeredMessageService"/> class. 
         /// </summary>
@@ -39,6 +44,7 @@ namespace Cwm.AdobeCampaign.WebServices.Services
         {
             _logger = loggerFactory.CreateLogger<TriggeredMessageService>();
         }
+#endif
 
         #endregion
 
@@ -78,7 +84,9 @@ namespace Cwm.AdobeCampaign.WebServices.Services
                 return new Response<long?>(response.Status, response.Message, response.Exception);
             }
 
+#if NETSTANDARD2_0
             _logger.LogDebug($"Response to {PushRealTimeEventServiceName} received: {response.Status}");
+#endif
 
             // Parse response to extract returned event id.
             // This should always be there - any unsuccessful response should be caught above.
@@ -89,7 +97,9 @@ namespace Cwm.AdobeCampaign.WebServices.Services
             }
             catch (Exception ex)
             {
+#if NETSTANDARD2_0
                 _logger.LogError(ex, $"Error parsing {PushRealTimeEventServiceName} response.");
+#endif
                 return new Response<long?>(ResponseStatus.ParsingError, $"Failed to parse {PushRealTimeEventServiceName} response", ex);
             }
         }

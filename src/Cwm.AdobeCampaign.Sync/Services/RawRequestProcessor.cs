@@ -17,7 +17,7 @@ namespace Cwm.AdobeCampaign.Sync.Services
     {
         #region Fields
 
-        private static readonly Regex MetadataCommentRegex = new Regex("^!(?<value>.*)!$", RegexOptions.Compiled | RegexOptions.Singleline);
+        private static readonly Regex MetadataCommentRegex = new Regex("^!(?<value>.*)!$", RegexOptions.Singleline);
 
         private readonly ILogger _logger;
 

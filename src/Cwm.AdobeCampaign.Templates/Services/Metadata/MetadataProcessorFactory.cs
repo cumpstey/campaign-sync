@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Logging;
+﻿#if NETSTANDARD2_0
+using Microsoft.Extensions.Logging;
+#endif
 
 namespace Cwm.AdobeCampaign.Templates.Services.Metadata
 {
@@ -9,16 +11,24 @@ namespace Cwm.AdobeCampaign.Templates.Services.Metadata
     {
         #region Fields
 
+#if NETSTANDARD2_0
         private ILoggerFactory _loggerFactory;
+#endif
 
         #endregion
 
         #region Constructor
 
+#if NETSTANDARD2_0
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MetadataProcessorFactory"/> class. 
+        /// </summary>
+        /// <param name="loggerFactory">Logger factory</param>
         public MetadataProcessorFactory(ILoggerFactory loggerFactory)
         {
             _loggerFactory = loggerFactory;
         }
+#endif
 
         #endregion
 

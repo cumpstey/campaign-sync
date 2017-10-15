@@ -13,7 +13,7 @@ namespace Cwm.AdobeCampaign.Templates.Services.Metadata
     {
         #region Fields
 
-        private static readonly Regex MetadataCommentRegex = new Regex("^<!--!(?<value>.*)!-->$", RegexOptions.Compiled | RegexOptions.Singleline);
+        private static readonly Regex MetadataCommentRegex = new Regex("^<!--!(?<value>.*)!-->$", RegexOptions.Singleline);
 
         private static readonly string MetadataFormat = string.Format("<!--!{0}{{0}}{0}!-->{{1}}", Environment.NewLine);
 

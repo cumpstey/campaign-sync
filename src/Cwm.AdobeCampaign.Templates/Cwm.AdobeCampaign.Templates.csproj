@@ -1,21 +1,28 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFrameworks>netstandard1.3;netstandard2.0</TargetFrameworks>
   </PropertyGroup>
 
   <ItemGroup>
     <Compile Remove="Services\Transforms\WorkflowTransformer.cs" />
   </ItemGroup>
 
+  <!-- Common references, compilation flags and build options -->
   <ItemGroup>
     <PackageReference Include="HtmlAgilityPack" Version="1.5.5" />
     <PackageReference Include="Humanizer.Core" Version="2.2.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="2.0.0" />
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\Cwm.AdobeCampaign.Common\Cwm.AdobeCampaign.Common.csproj" />
   </ItemGroup>
 
+  <!-- .NET Standard 2.0 references, compilation flags and build options -->
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard2.0'">
+    <DefineConstants>NETSTANDARD;NETSTANDARD2_0</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="2.0.0" />
+  </ItemGroup>
+  
 </Project>

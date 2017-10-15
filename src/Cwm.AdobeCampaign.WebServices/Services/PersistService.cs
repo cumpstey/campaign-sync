@@ -8,7 +8,9 @@ using Cwm.AdobeCampaign.WebServices.Model;
 using Cwm.AdobeCampaign.WebServices.Model.Abstract;
 using Cwm.AdobeCampaign.WebServices.Services.Abstract;
 using Cwm.AdobeCampaign.WebServices.Services.Responses;
+#if NETSTANDARD2_0
 using Microsoft.Extensions.Logging;
+#endif
 
 namespace Cwm.AdobeCampaign.WebServices.Services
 {
@@ -34,12 +36,15 @@ namespace Cwm.AdobeCampaign.WebServices.Services
         /// </summary>
         public const string WriteCollectionServiceName = "WriteCollection";
 
+#if NETSTANDARD2_0
         private readonly ILogger _logger;
+#endif
 
         #endregion
 
         #region Constructor
 
+#if NETSTANDARD2_0
         /// <summary>
         /// Initializes a new instance of the <see cref="PersistService"/> class. 
         /// </summary>
@@ -48,6 +53,7 @@ namespace Cwm.AdobeCampaign.WebServices.Services
         {
             _logger = loggerFactory.CreateLogger<PersistService>();
         }
+#endif
 
         #endregion
 
@@ -71,7 +77,7 @@ namespace Cwm.AdobeCampaign.WebServices.Services
             XNamespace serviceNs = string.Concat("urn:", ServiceNamespace);
 
             // Get schema from attribute on the class
-            var schemaAttribute = typeof(T).GetCustomAttribute<SchemaAttribute>(false);
+            var schemaAttribute = typeof(T).GetTypeInfo().GetCustomAttribute<SchemaAttribute>(false);
             if (schemaAttribute == null)
             {
                 throw new InvalidOperationException($"Class {GetType().FullName} must have a {typeof(SchemaAttribute).Name} attribute to be used as a persistable entity.");
@@ -91,7 +97,9 @@ namespace Cwm.AdobeCampaign.WebServices.Services
             // Execute request and get response from server.
             var response = await requestHandler.ExecuteRequestAsync(new ServiceName(ServiceNamespace, WriteServiceName), requestDoc);
 
+#if NETSTANDARD2_0
             _logger.LogDebug($"Response to {WriteServiceName} {schema} received: {response.Status}");
+#endif
 
             return response;
         }
@@ -114,7 +122,7 @@ namespace Cwm.AdobeCampaign.WebServices.Services
             XNamespace serviceNs = string.Concat("urn:", ServiceNamespace);
 
             // Get schema from attribute on the class.
-            var schemaAttribute = typeof(T).GetCustomAttribute<SchemaAttribute>(false);
+            var schemaAttribute = typeof(T).GetTypeInfo().GetCustomAttribute<SchemaAttribute>(false);
             if (schemaAttribute == null)
             {
                 throw new InvalidOperationException($"Class {GetType().FullName} must have a {typeof(SchemaAttribute).Name} attribute to be used as a persistable entity.");
@@ -140,7 +148,9 @@ namespace Cwm.AdobeCampaign.WebServices.Services
             // Execute request and get response from server.
             var response = await requestHandler.ExecuteRequestAsync(new ServiceName(ServiceNamespace, WriteCollectionServiceName), requestDoc);
 
+#if NETSTANDARD2_0
             _logger.LogDebug($"Response to {WriteCollectionServiceName} {schema} received: {response.Status}");
+#endif
 
             return response;
         }

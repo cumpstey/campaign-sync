@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-//using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Cwm.AdobeCampaign.Templates.Model;
+#if NETSTANDARD2_0
 using Microsoft.Extensions.Logging;
+#endif
 
 namespace Cwm.AdobeCampaign.Templates.Services.Transforms
 {
@@ -15,11 +16,13 @@ namespace Cwm.AdobeCampaign.Templates.Services.Transforms
     {
         #region Fields
 
-        private static readonly Regex IncludeRegex = new Regex(@"<%--@include\s*(?<path>.*?)\s*@(?<flags>[t]*)--%>", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        private static readonly Regex IncludeRegex = new Regex(@"<%--@include\s*(?<path>.*?)\s*@(?<flags>[t]*)--%>", RegexOptions.IgnoreCase);
 
-        private static readonly Regex CodeFileRegex = new Regex(@"^\s*<%(?<content>.*)%>\s*$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        private static readonly Regex CodeFileRegex = new Regex(@"^\s*<%(?<content>.*)%>\s*$", RegexOptions.IgnoreCase);
 
+#if NETSTANDARD2_0
         private readonly ILogger _logger;
+#endif
 
         private readonly IFileProvider _fileProvider;
 
@@ -32,9 +35,15 @@ namespace Cwm.AdobeCampaign.Templates.Services.Transforms
         /// </summary>
         /// <param name="loggerFactory">Logger factory</param>
         /// <param name="fileProvider">File provider</param>
+#if NETSTANDARD2_0
         public JsspJavaScriptTemplateTransformer(ILoggerFactory loggerFactory, IFileProvider fileProvider)
+#else
+        public JsspJavaScriptTemplateTransformer(IFileProvider fileProvider)
+#endif
         {
+#if NETSTANDARD2_0
             _logger = loggerFactory.CreateLogger<JsspJavaScriptTemplateTransformer>();
+#endif
             _fileProvider = fileProvider;
         }
 
@@ -70,7 +79,7 @@ namespace Cwm.AdobeCampaign.Templates.Services.Transforms
         }
 
         #endregion
-        
+
         #region Helpers
 
         /// <summary>
@@ -95,7 +104,7 @@ namespace Cwm.AdobeCampaign.Templates.Services.Transforms
                 //var fullPath = Path.GetFullPath(Path.Combine(workingDirectory, path));
                 //if (File.Exists(fullPath))
                 var fullPath = _fileProvider.GetFullPath(_fileProvider.CombinePaths(workingDirectory, path));
-                if(_fileProvider.FileExists(fullPath))
+                if (_fileProvider.FileExists(fullPath))
                 {
                     //var fileContent = File.ReadAllText(fullPath);
                     var fileContent = _fileProvider.ReadAllText(fullPath);
@@ -112,7 +121,9 @@ namespace Cwm.AdobeCampaign.Templates.Services.Transforms
                 }
                 else
                 {
+#if NETSTANDARD2_0
                     _logger.LogWarning($"Cannot include file in template, as it does not exist: {fullPath}.");
+#endif
                 }
             }
 

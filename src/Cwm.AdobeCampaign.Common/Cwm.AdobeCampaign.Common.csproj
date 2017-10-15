@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFrameworks>netstandard1.0</TargetFrameworks>
     <RootNamespace>Cwm.AdobeCampaign</RootNamespace>
     <AssemblyName>Cwm.AdobeCampaign.Common</AssemblyName>
   </PropertyGroup>
@@ -9,9 +9,5 @@
   <ItemGroup>
     <Compile Remove="XmlElementExtensions.cs" />
   </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="System.Xml.XDocument" Version="4.3.0" />
-  </ItemGroup>
-
+  
 </Project>

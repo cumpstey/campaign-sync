@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
-using System.Web;
+using System.Net;
 using HtmlAgilityPack;
 using Cwm.AdobeCampaign.Templates.Model;
+#if NETSTANDARD2_0
 using Microsoft.Extensions.Logging;
+#endif
 
 namespace Cwm.AdobeCampaign.Templates.Services.Transforms
 {
@@ -23,13 +25,15 @@ namespace Cwm.AdobeCampaign.Templates.Services.Transforms
 
         private const string FunctionPlaceholder = "/*{functions}*/";
 
-        private static readonly Regex FullFunctionRegex = new Regex(@"<!--\{\s*(?<func>[a-z0-9_]+)\s*\((?<args>.*?)\)(\s*\[prototype:(?<prototypeClass>.*?)\])?\s*\}-->(?<code>.*?)<!--\{\s*end\s*\k<func>\s*\}-->", RegexOptions.Singleline | RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        private static readonly Regex FullFunctionRegex = new Regex(@"<!--\{\s*(?<func>[a-z0-9_]+)\s*\((?<args>.*?)\)(\s*\[prototype:(?<prototypeClass>.*?)\])?\s*\}-->(?<code>.*?)<!--\{\s*end\s*\k<func>\s*\}-->", RegexOptions.Singleline | RegexOptions.IgnoreCase);
 
-        private static readonly Regex IncludeWhenRegex = new Regex(@"<!--@include-(?<when>pre|post)\s*(?<path>.*?)\s*@(?<flags>[ht]*)-->", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        private static readonly Regex IncludeWhenRegex = new Regex(@"<!--@include-(?<when>pre|post)\s*(?<path>.*?)\s*@(?<flags>[ht]*)-->", RegexOptions.IgnoreCase);
 
-        private static readonly Regex IncludeRegex = new Regex(@"<%--@include\s*(?<path>.*?)\s*@(?<flags>[t]*)--%>", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        private static readonly Regex IncludeRegex = new Regex(@"<%--@include\s*(?<path>.*?)\s*@(?<flags>[t]*)--%>", RegexOptions.IgnoreCase);
 
+#if NETSTANDARD2_0
         private readonly ILogger _logger;
+#endif
 
         private readonly IFileProvider _fileProvider;
 
@@ -42,9 +46,15 @@ namespace Cwm.AdobeCampaign.Templates.Services.Transforms
         /// </summary>
         /// <param name="loggerFactory">Logger factory</param>
         /// <param name="fileProvider">File provider</param>
+#if NETSTANDARD2_0
         public HtmlJavaScriptTemplateTransformer(ILoggerFactory loggerFactory, IFileProvider fileProvider)
+#else
+        public HtmlJavaScriptTemplateTransformer(IFileProvider fileProvider)
+#endif
         {
+#if NETSTANDARD2_0
             _logger = loggerFactory.CreateLogger<HtmlJavaScriptTemplateTransformer>();
+#endif
             _fileProvider = fileProvider;
         }
 
@@ -259,7 +269,7 @@ namespace Cwm.AdobeCampaign.Templates.Services.Transforms
                             code = string.Format("{0}({1})", encodeFunction, code);
                         }
 
-                        ownerNode.Attributes.Add(attributeName, string.Format("<%= {0} %>", HttpUtility.HtmlDecode(code)));
+                        ownerNode.Attributes.Add(attributeName, string.Format("<%= {0} %>", WebUtility.HtmlDecode(code)));
                     }
                 }
                 else
@@ -358,7 +368,7 @@ namespace Cwm.AdobeCampaign.Templates.Services.Transforms
                     }
                 }
             }
-            
+
             // Generate output as string.
             var outputWriter = new StringWriter();
             htmlDocument.Save(outputWriter);
@@ -401,7 +411,9 @@ namespace Cwm.AdobeCampaign.Templates.Services.Transforms
                                              : fileContent;
                     if (includeContent == null)
                     {
+#if NETSTANDARD2_0
                         _logger.LogWarning($"No includable content in file: {fullPath}.");
+#endif
                     }
                     else
                     {
@@ -418,7 +430,9 @@ namespace Cwm.AdobeCampaign.Templates.Services.Transforms
                 }
                 else
                 {
+#if NETSTANDARD2_0
                     _logger.LogWarning($"Cannot include file in template, as it does not exist: {fullPath}.");
+#endif
                 }
             }
 
@@ -460,7 +474,9 @@ namespace Cwm.AdobeCampaign.Templates.Services.Transforms
                 }
                 else
                 {
+#if NETSTANDARD2_0
                     _logger.LogWarning($"Cannot include file in template, as it does not exist: {fullPath}.");
+#endif
                 }
             }
 

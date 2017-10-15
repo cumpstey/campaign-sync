@@ -30,7 +30,7 @@ namespace Cwm.AdobeCampaign.WebServices.Model.Abstract
         /// <exception cref="InvalidOperationException">Thrown if the class doesn't have a <see cref="SchemaAttribute" /> attribute.</exception>
         protected XElement GetBaseXmlForPersist(string key)
         {
-            var schemaAttribute = GetType().GetCustomAttribute<SchemaAttribute>(false);
+            var schemaAttribute = GetType().GetTypeInfo().GetCustomAttribute<SchemaAttribute>(false);
             if (schemaAttribute == null)
             {
                 throw new InvalidOperationException($"Class {GetType().FullName} must have a {typeof(SchemaAttribute).Name} attribute to be used as a persistable entity.");

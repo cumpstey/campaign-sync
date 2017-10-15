@@ -1,6 +1,8 @@
 ﻿using Cwm.AdobeCampaign.WebServices.Services.Abstract;
 using Cwm.AdobeCampaign.WebServices.Services.Responses;
+#if NETSTANDARD2_0
 using Microsoft.Extensions.Logging;
+#endif
 using System.Xml.Linq;
 using System.Threading.Tasks;
 using System;
@@ -29,12 +31,15 @@ namespace Cwm.AdobeCampaign.WebServices.Services
         /// </summary>
         public const string BuildSchemaServiceName = "BuildSchemaFromId";
 
+#if NETSTANDARD2_0
         private readonly ILogger _logger;
+#endif
 
         #endregion
 
         #region Constructor
 
+#if NETSTANDARD2_0
         /// <summary>
         /// Initializes a new instance of the <see cref="BuilderService"/> class. 
         /// </summary>
@@ -43,6 +48,7 @@ namespace Cwm.AdobeCampaign.WebServices.Services
         {
             _logger = loggerFactory.CreateLogger<BuilderService>();
         }
+#endif
 
         #endregion
 
@@ -66,7 +72,9 @@ namespace Cwm.AdobeCampaign.WebServices.Services
             // Execute request and get response from server.
             var response = await requestHandler.ExecuteRequestAsync(new ServiceName(ServiceNamespace, BuildNavigationHierarchyServiceName), requestDoc);
 
+#if NETSTANDARD2_0
             _logger.LogDebug($"Response to {BuildNavigationHierarchyServiceName} received: {response.Status}");
+#endif
 
             return response;
         }
@@ -94,7 +102,9 @@ namespace Cwm.AdobeCampaign.WebServices.Services
             // Execute request and get response from server.
             var response = await requestHandler.ExecuteRequestAsync(new ServiceName(ServiceNamespace, BuildSchemaServiceName), requestDoc);
 
+#if NETSTANDARD2_0
             _logger.LogDebug($"Response to {BuildSchemaServiceName} received: {response.Status}");
+#endif
 
             return response;
         }
