@@ -11,7 +11,7 @@ namespace Zone.Campaign
     {
         #region Fields
 
-        private static readonly Regex ParseRegex = new Regex(@"^((?<namespace>[a-z]{3}):)?(?<name>[a-z0-9_\.]*)$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        private static readonly Regex ParseRegex = new Regex(@"^((?<namespace>[a-z]+):)?(?<name>[a-z0-9_\.]*)$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         #endregion
 
